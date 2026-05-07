@@ -13,7 +13,8 @@
       "Bash(xcodebuild -scheme LEO -destination 'platform=iOS Simulator,name=iPhone 15' -quiet CODE_SIGNING_ALLOWED=NO build)",
       "Bash(xcrun simctl *)",
       "Bash(xcodebuild *)",
-      "Bash(python3 *)"
+      "Bash(python3 *)",
+      "Bash(SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator17.5.sdk xcodebuild -target LEO SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator17.5.sdk TARGETED_DEVICE_FAMILY=1 CODE_SIGNING_ALLOWED=NO SWIFT_STRICT_CONCURRENCY=minimal)"
     ]
   }
 }

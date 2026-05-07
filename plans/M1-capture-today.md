@@ -12,19 +12,19 @@
 
 ## Task summary
 
-- [ ] M1-T01 — Today view scaffold
-- [ ] M1-T02 — Item row component + detail sheet
-- [ ] M1-T03 — Quick-add bar UI + view model
-- [ ] M1-T04 — Deterministic date parser
-- [ ] M1-T05 — Foundation Models parser fallback
-- [ ] M1-T06 — Inbox view
-- [ ] M1-T07 — Drag-to-reschedule on Today
-- [ ] M1-T08 — Accessibility + Dynamic Type pass
+- [x] M1-T01 — Today view scaffold
+- [x] M1-T02 — Item row component + detail sheet
+- [x] M1-T03 — Quick-add bar UI + view model
+- [x] M1-T04 — Deterministic date parser
+- [x] M1-T05 — Foundation Models parser fallback
+- [x] M1-T06 — Inbox view
+- [x] M1-T07 — Drag-to-reschedule on Today
+- [x] M1-T08 — Accessibility + Dynamic Type pass
 
 ---
 
 ### M1-T01 — Today view scaffold
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** M0 complete
 - **Estimated effort:** M
 
@@ -61,7 +61,7 @@ Lay out the Today timeline with date header, hour rail, time-blocked items rende
 ---
 
 ### M1-T02 — Item row + detail sheet
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** M1-T01
 - **Estimated effort:** M
 
@@ -100,7 +100,7 @@ Reusable item row used by Today, Inbox, and later by Week. Detail sheet for edit
 ---
 
 ### M1-T03 — Quick-add bar UI + view model
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** M1-T02
 - **Estimated effort:** M
 
@@ -142,7 +142,7 @@ A persistent capture surface on Today that turns free text into a draft Item via
 ---
 
 ### M1-T04 — Deterministic date parser
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** M1-T03
 - **Estimated effort:** L
 
@@ -192,7 +192,7 @@ A fast, dependency-free parser that handles 80%+ of common phrases without hitti
 ---
 
 ### M1-T05 — Foundation Models parser fallback
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** M1-T04
 - **Estimated effort:** M
 
@@ -238,7 +238,7 @@ When the deterministic parser's confidence is below threshold, ask Apple's on-de
 ---
 
 ### M1-T06 — Inbox view
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** M1-T03
 - **Estimated effort:** S
 
@@ -265,7 +265,7 @@ A list view for items that lack scheduling info, so they can be triaged later.
 ---
 
 ### M1-T07 — Drag-to-reschedule on Today
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** M1-T01, M1-T02
 - **Estimated effort:** M
 
@@ -295,7 +295,7 @@ Drag an item on the Today timeline to a new time. Snap to 5-minute increments. C
 ---
 
 ### M1-T08 — Accessibility + Dynamic Type pass
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** M1-T01, M1-T02, M1-T03, M1-T06
 - **Estimated effort:** M
 

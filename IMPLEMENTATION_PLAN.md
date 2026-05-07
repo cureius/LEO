@@ -65,17 +65,17 @@ See [`AGENTS.md`](AGENTS.md) — re-read every session. They are not rephrased h
 
 ## Status tracker (the live state)
 
-**Current milestone:** M1 — Capture & Today
+**Current milestone:** M2 — Recurring & Notifications
 **Currently-in-progress task:** *(none yet)*
-**Last completed task:** `M0-T08`
-**Next eligible task:** `M1-T01`
+**Last completed task:** `M1-T08`
+**Next eligible task:** `M2-T01`
 
 ### Milestone progress
 
 | Milestone | File | Status | Tasks done / total | Notes |
 |---|---|---|---|---|
 | M0 — Foundation | [`plans/M0-foundation.md`](plans/M0-foundation.md) | Done | 8 / 8 | Xcode 15.4 / iOS 17; bump to 18 when Xcode 16 installed |
-| M1 — Capture & Today | [`plans/M1-capture-today.md`](plans/M1-capture-today.md) | Not started | 0 / 8 | |
+| M1 — Capture & Today | [`plans/M1-capture-today.md`](plans/M1-capture-today.md) | Done | 8 / 8 | Today view, QuickAdd, parser, ItemRow, Inbox, drag-reschedule |
 | M2 — Recurring & Notifications | [`plans/M2-recurring-notifications.md`](plans/M2-recurring-notifications.md) | Not started | 0 / 7 | |
 | M3 — Integration & Sync | [`plans/M3-integration-sync.md`](plans/M3-integration-sync.md) | Not started | 0 / 7 | |
 | M4 — AI Assistant | [`plans/M4-ai-assistant.md`](plans/M4-ai-assistant.md) | Not started | 0 / 7 | |
