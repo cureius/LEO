@@ -73,7 +73,8 @@ targets:
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
         LSRequiresIPhoneOS: true
         UIApplicationSupportsIndirectInputEvents: true
-        UILaunchStoryboardName: LaunchScreen
+        UILaunchScreen:
+          UIColorName: ""
         UIRequiredDeviceCapabilities:
           - armv7
         UISupportedInterfaceOrientations:

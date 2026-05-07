@@ -10,11 +10,14 @@ enum AuthorizationStatus: Sendable {
 
 /// All UNUserNotificationCenter interactions go through this actor.
 /// Features never call UNUserNotificationCenter directly — route through here.
-actor NotificationManager: NSObject {
-    private let center = UNUserNotificationCenter.current()
+/// Note: NSObject removed — actor cannot inherit from a class in Swift.
+/// UNUserNotificationCenterDelegate conformance is added in M2 via a separate
+/// NSObject-based delegate shim.
+actor NotificationManager {
+    nonisolated let center = UNUserNotificationCenter.current()
 
-    override init() {
-        super.init()
+    init() {
+        logger.info("NotificationManager initialized")
     }
 
     func requestAuthorization() async -> AuthorizationStatus {
@@ -39,7 +42,6 @@ actor NotificationManager: NSObject {
         }
     }
 
-    /// Upsert a notification for a single Item. Full scheduling engine ships in M2.
     func schedule(identifier: String, title: String, body: String, date: Date) async throws {
         let content = UNMutableNotificationContent()
         content.title = title

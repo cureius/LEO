@@ -10,7 +10,16 @@ final class AppEnvironment {
     let tagRepository: TagRepository
     let notificationManager: NotificationManager
 
-    init(useInMemory: Bool = false) {
+    /// useInMemory defaults to true in DEBUG so the simulator always gets a
+    /// clean fast-boot without hitting the SwiftData file lock issue seen in
+    /// Xcode 15 simulator. Flip to false once on-disk persistence is verified.
+    init(useInMemory: Bool = {
+        #if DEBUG
+        return true
+        #else
+        return false
+        #endif
+    }()) {
         let controller = PersistenceController(useInMemory: useInMemory)
         self.persistenceController = controller
         self.itemRepository = ItemRepository(controller: controller)

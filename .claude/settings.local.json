@@ -14,7 +14,28 @@
       "Bash(xcrun simctl *)",
       "Bash(xcodebuild *)",
       "Bash(python3 *)",
-      "Bash(SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator17.5.sdk xcodebuild -target LEO SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator17.5.sdk TARGETED_DEVICE_FAMILY=1 CODE_SIGNING_ALLOWED=NO SWIFT_STRICT_CONCURRENCY=minimal)"
+      "Bash(SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator17.5.sdk xcodebuild -target LEO SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator17.5.sdk TARGETED_DEVICE_FAMILY=1 CODE_SIGNING_ALLOWED=NO SWIFT_STRICT_CONCURRENCY=minimal)",
+      "Bash(grep -v \"^$\")",
+      "Read(//Library/Developer/CoreSimulator/Profiles/Runtimes/**)",
+      "Read(//Users/raj/Library/Developer/CoreSimulator/**)",
+      "Bash(sudo xcodebuild -runFirstLaunch)",
+      "Bash(open -a Simulator)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(echo \"DONE: $?\")",
+      "Bash(xcrun assetutil *)",
+      "Bash(codesign --force --sign - /Users/raj/Library/Developer/Xcode/DerivedData/LEO-equiioijbofqdldqkzvdglxcgijg/Build/Products/Debug-iphonesimulator/LEO.app)",
+      "Bash(xargs ls -la)",
+      "Bash(kill -9 43184)",
+      "Bash(kill -KILL 43184)",
+      "Bash(echo \"uninstall exit: $?\")",
+      "Bash(awk '{print $6,$7,$8,$9}')",
+      "Bash(echo \"launch exit: $?\")",
+      "Bash(kill -9 46239)",
+      "Bash(swiftc /tmp/LEOMinTest.swift -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator17.5.sdk -target arm64-apple-ios17.0-simulator -F /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator17.5.sdk/System/Library/Frameworks -module-name LEOMinTest -parse-as-library -o /tmp/LEOMinTest)",
+      "Bash(echo \"Exit: $?\")",
+      "Bash(echo \"iPhone15 screenshot: $?\")",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }

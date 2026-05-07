@@ -5,20 +5,17 @@ import OSLog
 private let logger = Logger(subsystem: "com.leo.app", category: "persistence")
 
 /// Central SwiftData container. All repositories get their ModelContext from here.
-/// CloudKit configuration is in M0-T06; this actor owns the container lifetime.
 final class PersistenceController {
     let container: ModelContainer
 
-    /// - Parameter useInMemory: Pass `true` for tests and Xcode previews.
     init(useInMemory: Bool = false) {
+        logger.info("PersistenceController init start (inMemory=\(useInMemory))")
         let schema = Schema(SchemaV1.models)
         let config: ModelConfiguration
 
         if useInMemory {
             config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
         } else {
-            // CloudKit private DB sync wired in M0-T06.
-            // For now: persistent store, no CloudKit until capability is configured.
             config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
         }
 
@@ -28,14 +25,25 @@ final class PersistenceController {
                 migrationPlan: MigrationPlanV1.self,
                 configurations: config
             )
-            logger.info("PersistenceController initialized (inMemory=\(useInMemory))")
+            logger.info("PersistenceController initialized OK (inMemory=\(useInMemory))")
         } catch {
-            logger.error("Failed to create ModelContainer: \(error)")
-            fatalError("Cannot create ModelContainer: \(error)")
+            // On failure, fall back to in-memory so the app still launches
+            logger.error("ModelContainer init failed: \(error) — falling back to in-memory")
+            let fallback = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+            do {
+                container = try ModelContainer(
+                    for: schema,
+                    migrationPlan: MigrationPlanV1.self,
+                    configurations: fallback
+                )
+                logger.warning("Running on in-memory fallback store — data will NOT persist")
+            } catch {
+                logger.fault("Even in-memory ModelContainer failed: \(error)")
+                fatalError("Cannot create any ModelContainer: \(error)")
+            }
         }
     }
 
-    /// A new background context for off-main-thread work.
     @MainActor
     var mainContext: ModelContext { container.mainContext }
 
