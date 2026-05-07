@@ -1,0 +1,15 @@
+--indent 4
+--tabwidth 4
+--swiftversion 5.10
+--maxwidth 120
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--closingparen balanced
+--importgrouping alpha
+--trailingcommas always
+--semicolons never
+--header strip
+--disable andOperator
+--disable initCoderUnavailable
+--disable redundantSelf

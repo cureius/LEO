@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "m*"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: macos-14
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.app/Contents/Developer
+        # Note: Bump to Xcode 16 for iOS 18 target and Swift 6.
+
+      - name: Cache DerivedData
+        uses: actions/cache@v4
+        with:
+          path: ~/Library/Developer/Xcode/DerivedData
+          key: ${{ runner.os }}-derived-data-${{ hashFiles('**/*.swift') }}
+          restore-keys: ${{ runner.os }}-derived-data-
+
+      - name: Install SwiftFormat
+        run: brew install swiftformat
+
+      - name: Install SwiftLint
+        run: brew install swiftlint
+
+      - name: SwiftFormat lint
+        run: swiftformat --lint LEO LEOTests LEOUITests
+
+      - name: SwiftLint
+        run: swiftlint lint --strict
+
+      - name: Build
+        run: |
+          xcodebuild \
+            -scheme LEO \
+            -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
+            -derivedDataPath ~/Library/Developer/Xcode/DerivedData \
+            build \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Test
+        run: |
+          xcodebuild \
+            -scheme LEO \
+            -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
+            -derivedDataPath ~/Library/Developer/Xcode/DerivedData \
+            test \
+            CODE_SIGNING_ALLOWED=NO \
+            | xcpretty || true

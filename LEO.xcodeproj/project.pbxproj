@@ -1,0 +1,1382 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 60;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		07F51E20AE5316B7D0C8743B /* PersistenceControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E871CF4B3BFE1D9CCCDB51AD /* PersistenceControllerTests.swift */; };
+		181D657314E79558AE166B20 /* ErrorBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACAD4D8D551475C747D3AF0B /* ErrorBanner.swift */; };
+		1A72AD8D68E313A7BE585B13 /* SchemaSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6703057FC03BE90004E6920 /* SchemaSync.swift */; };
+		1F16E1423661FF3DB5E75ED9 /* DebugMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2F1B07EE649B091F6067A5 /* DebugMenu.swift */; };
+		22212AE3827F1E28C207211C /* LEOApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2292495090B859545EBA1C7A /* LEOApp.swift */; };
+		23E2F5DFEFBF1893B5143295 /* ItemPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85CACFCF1F6290BF663ACB6F /* ItemPatch.swift */; };
+		28BD83E961CDB63906ADD619 /* Anchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197DA7CB48DB56BD3218C81B /* Anchor.swift */; };
+		2D268335A587DF2E68116041 /* Seeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D88E284E7D2B910CA9A1B12 /* Seeder.swift */; };
+		302CF3FF68A248AA495E3605 /* ItemMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = C786385EA62125C8C828BD8A /* ItemMapping.swift */; };
+		31134E795D3B8465B7E9EDE1 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B0FD2FCDC0D78151BA9C0A9 /* RootView.swift */; };
+		3DBABEEAF6356C35D5C9B0CC /* LEOCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C30F6A20889E761FCA74F8 /* LEOCard.swift */; };
+		3E2A04774537B03A3D1184A2 /* StoredHabitInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF775267C4742345B2B77BA /* StoredHabitInstance.swift */; };
+		3F814DF54069181CFC41AFEE /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A988974046F9C4CDD6D44EE9 /* TaskItem.swift */; };
+		41359E06D063808576F268EE /* ItemRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE1D87280EC35768DF355B3 /* ItemRepository.swift */; };
+		443D8509DFEB154568264FE5 /* LEOChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9497A1767D0DDDD68AF4363 /* LEOChip.swift */; };
+		46CF2717F6562F91F25DE6B0 /* HabitInstanceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDEB4D2A60BF1F43267C938 /* HabitInstanceItem.swift */; };
+		4703464DAF05E74437D007C3 /* StoredTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EFB3730D32FD59A4EA0171 /* StoredTag.swift */; };
+		4CE7922C333BEC8D03B46B02 /* DiffTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FBAB409AFFB26C8F662240B /* DiffTests.swift */; };
+		4FFA6DCF79BD77B73283786E /* LEOButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001F3FED1621B5F6212E81E3 /* LEOButton.swift */; };
+		5931D1AA73088DF28C81ECF2 /* ItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889794EB2C78D9A71D74EE49 /* ItemTests.swift */; };
+		6FADDDCA98E356532FA64A8A /* LEOEmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D8F4FACA95C9DEFB869472 /* LEOEmptyState.swift */; };
+		742D683957E2F7CA03C74397 /* MetricsSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51441558C209AB484755FD01 /* MetricsSubscriber.swift */; };
+		7A180FA396B89CB269F39F9D /* LocationTrigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC7D73A213F9F0DECBF532B /* LocationTrigger.swift */; };
+		7C84322DA42B9D19905C5078 /* StoredEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B4428058D6D3826EBC37F6 /* StoredEvent.swift */; };
+		80C96626AFDEF1582492F130 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700F6AC59B59926330C9238B /* NotificationManager.swift */; };
+		832A2268D4758566E9F204A0 /* StoredReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7121466EC0683B3AF3D82FEE /* StoredReminder.swift */; };
+		8695E690DBC9159CA41E0586 /* ItemChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0C8A1FBA75CDFB0F91DD5F /* ItemChange.swift */; };
+		8CA0D5968FE46432024CF3B3 /* SchemaV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9DC13418DC210C3B371410 /* SchemaV1.swift */; };
+		93425393A1F77DA8A1858B67 /* StoredTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21234BD488E3902ADC96A0A /* StoredTask.swift */; };
+		97C6D1E13E05833F7AEA2FE6 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4EE2E13B02ABF60D43FF5D /* PersistenceController.swift */; };
+		995870704743260F9C784A53 /* LEOUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD05EE81B197FF782C7B9D2 /* LEOUITests.swift */; };
+		998394ABBE78E699C88D79B7 /* Environment+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70A711B26C01011C7A6F0BF /* Environment+Keys.swift */; };
+		9A62CD1EC25A63A801AC54DA /* TagRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAA17A0030150282CCF2F6B /* TagRepository.swift */; };
+		9CE778B906AE246D2CA53C89 /* Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F03B6485E20C09361D3AD7 /* Diff.swift */; };
+		A0BC3E991594CBFDC3813781 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF236AF1F0A83A7B3EFB8832 /* Item.swift */; };
+		A45B6C80A108B5726BBF0CA0 /* Importance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CA0994C1118EE5A476C143 /* Importance.swift */; };
+		A6C186ACD416C0E58DC5CE86 /* StoredOverride.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E3243FD98CD6BDECC6C115 /* StoredOverride.swift */; };
+		AAC9D01D54C1F1D527A4FD3C /* ReminderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4133C5CDC309F75FC5D374B1 /* ReminderItem.swift */; };
+		ABF5024C1643AEBEAEA2E312 /* HabitRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629CBDFCEA7CF631BCC45E37 /* HabitRepository.swift */; };
+		B5C393A1574BC7F60E89DF87 /* MigrationPlanV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8B3D834A12A1D7E51E1D4F9 /* MigrationPlanV1.swift */; };
+		B65D68AA78680B53520CF333 /* AlarmItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9EF78DEEB8AF960521D417 /* AlarmItem.swift */; };
+		C9E687878EEE528E7104F964 /* EventItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85430CE926F736F473A8262 /* EventItem.swift */; };
+		CD40A4A694699646DDCBFD2B /* LEOTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B748C21D917DB88313909F /* LEOTextField.swift */; };
+		D143568BAAF1048512B47071 /* StoredHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05130DA0786473EDF89E9BB6 /* StoredHabit.swift */; };
+		D679BA4C1DFA048687FE98AB /* StoredAlarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F0E1008D54E3CC84304AEB /* StoredAlarm.swift */; };
+		E3B0F00D4CD7274FD3650937 /* StoredRecurrenceRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F196CC8514C468D8EA8F2 /* StoredRecurrenceRule.swift */; };
+		E5F37D10A4703D29A7784061 /* Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11956697451E1473AF10245 /* Completion.swift */; };
+		E6E0DAC84F4B70B4E75244EA /* RecurrenceRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D81AA8A3EA006BAEB42DFF1 /* RecurrenceRule.swift */; };
+		E72BE964AC9A4A6450C7E129 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345761AFFCBA4899D1C3E2F9 /* Theme.swift */; };
+		E9154D966F390622256F4A6E /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B3E51847CF00F493786DD7 /* Habit.swift */; };
+		EB79C26E0EA4A07319818808 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43ABC2B208D5C9B20C0E927 /* AppEnvironment.swift */; };
+		F14B586D0896E49EC3FE4AFE /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F35D62E0AE159254B5A5593 /* Tag.swift */; };
+		F23D8C9C61E8A1045156DED7 /* DesignSystemPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA97C9CD13F23AF6940D464 /* DesignSystemPreview.swift */; };
+		FD49D9CEDBFD7465DFD57ED3 /* ItemPredicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D45E3AC90F740DDB8D88FB /* ItemPredicate.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BFAB3C196EF54B5F67CE5A67 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B4D55EA941B5FA656D56FCE6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6E45B50C9DFF491D1347F67A;
+			remoteInfo = LEO;
+		};
+		FC23ACE24B558C2CE3190A51 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B4D55EA941B5FA656D56FCE6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6E45B50C9DFF491D1347F67A;
+			remoteInfo = LEO;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		001F3FED1621B5F6212E81E3 /* LEOButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOButton.swift; sourceTree = "<group>"; };
+		05130DA0786473EDF89E9BB6 /* StoredHabit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredHabit.swift; sourceTree = "<group>"; };
+		0C3B4FA4BB1720F75A300E1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0F35D62E0AE159254B5A5593 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
+		0FF775267C4742345B2B77BA /* StoredHabitInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredHabitInstance.swift; sourceTree = "<group>"; };
+		14FF1DBB1CCE4FEB0E8FF169 /* LEOUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LEOUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		197DA7CB48DB56BD3218C81B /* Anchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anchor.swift; sourceTree = "<group>"; };
+		1A0C8A1FBA75CDFB0F91DD5F /* ItemChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemChange.swift; sourceTree = "<group>"; };
+		1BD05EE81B197FF782C7B9D2 /* LEOUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOUITests.swift; sourceTree = "<group>"; };
+		1D81AA8A3EA006BAEB42DFF1 /* RecurrenceRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurrenceRule.swift; sourceTree = "<group>"; };
+		1D88E284E7D2B910CA9A1B12 /* Seeder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seeder.swift; sourceTree = "<group>"; };
+		2292495090B859545EBA1C7A /* LEOApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOApp.swift; sourceTree = "<group>"; };
+		2F9DC13418DC210C3B371410 /* SchemaV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaV1.swift; sourceTree = "<group>"; };
+		345761AFFCBA4899D1C3E2F9 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		3E3F196CC8514C468D8EA8F2 /* StoredRecurrenceRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredRecurrenceRule.swift; sourceTree = "<group>"; };
+		3FC7D73A213F9F0DECBF532B /* LocationTrigger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTrigger.swift; sourceTree = "<group>"; };
+		4133C5CDC309F75FC5D374B1 /* ReminderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderItem.swift; sourceTree = "<group>"; };
+		49B748C21D917DB88313909F /* LEOTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOTextField.swift; sourceTree = "<group>"; };
+		51441558C209AB484755FD01 /* MetricsSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetricsSubscriber.swift; sourceTree = "<group>"; };
+		59E3243FD98CD6BDECC6C115 /* StoredOverride.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredOverride.swift; sourceTree = "<group>"; };
+		629CBDFCEA7CF631BCC45E37 /* HabitRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRepository.swift; sourceTree = "<group>"; };
+		6A9EF78DEEB8AF960521D417 /* AlarmItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmItem.swift; sourceTree = "<group>"; };
+		6E4EE2E13B02ABF60D43FF5D /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		700F6AC59B59926330C9238B /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		7121466EC0683B3AF3D82FEE /* StoredReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredReminder.swift; sourceTree = "<group>"; };
+		85CACFCF1F6290BF663ACB6F /* ItemPatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemPatch.swift; sourceTree = "<group>"; };
+		889794EB2C78D9A71D74EE49 /* ItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTests.swift; sourceTree = "<group>"; };
+		8B0FD2FCDC0D78151BA9C0A9 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		8FBAB409AFFB26C8F662240B /* DiffTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffTests.swift; sourceTree = "<group>"; };
+		93B3E51847CF00F493786DD7 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
+		96D45E3AC90F740DDB8D88FB /* ItemPredicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemPredicate.swift; sourceTree = "<group>"; };
+		99778E63993070879442F89F /* LEOTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LEOTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2C30F6A20889E761FCA74F8 /* LEOCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOCard.swift; sourceTree = "<group>"; };
+		A70A711B26C01011C7A6F0BF /* Environment+Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+Keys.swift"; sourceTree = "<group>"; };
+		A7EFB3730D32FD59A4EA0171 /* StoredTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredTag.swift; sourceTree = "<group>"; };
+		A9497A1767D0DDDD68AF4363 /* LEOChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOChip.swift; sourceTree = "<group>"; };
+		A988974046F9C4CDD6D44EE9 /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
+		ACAD4D8D551475C747D3AF0B /* ErrorBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorBanner.swift; sourceTree = "<group>"; };
+		B0CA0994C1118EE5A476C143 /* Importance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Importance.swift; sourceTree = "<group>"; };
+		B43ABC2B208D5C9B20C0E927 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		B6703057FC03BE90004E6920 /* SchemaSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaSync.swift; sourceTree = "<group>"; };
+		C786385EA62125C8C828BD8A /* ItemMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemMapping.swift; sourceTree = "<group>"; };
+		C7F03B6485E20C09361D3AD7 /* Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diff.swift; sourceTree = "<group>"; };
+		CBE1D87280EC35768DF355B3 /* ItemRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemRepository.swift; sourceTree = "<group>"; };
+		D21234BD488E3902ADC96A0A /* StoredTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredTask.swift; sourceTree = "<group>"; };
+		DBDEB4D2A60BF1F43267C938 /* HabitInstanceItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitInstanceItem.swift; sourceTree = "<group>"; };
+		DCAA17A0030150282CCF2F6B /* TagRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagRepository.swift; sourceTree = "<group>"; };
+		DEE302472A2676B650163AF2 /* LEO.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LEO.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1B4428058D6D3826EBC37F6 /* StoredEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredEvent.swift; sourceTree = "<group>"; };
+		E2D8F4FACA95C9DEFB869472 /* LEOEmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOEmptyState.swift; sourceTree = "<group>"; };
+		E871CF4B3BFE1D9CCCDB51AD /* PersistenceControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceControllerTests.swift; sourceTree = "<group>"; };
+		E8B3D834A12A1D7E51E1D4F9 /* MigrationPlanV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationPlanV1.swift; sourceTree = "<group>"; };
+		E9F0E1008D54E3CC84304AEB /* StoredAlarm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredAlarm.swift; sourceTree = "<group>"; };
+		ED6DF7DDD0C69A8C1CF5003D /* LEO.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LEO.entitlements; sourceTree = "<group>"; };
+		EF236AF1F0A83A7B3EFB8832 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		F11956697451E1473AF10245 /* Completion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Completion.swift; sourceTree = "<group>"; };
+		F85430CE926F736F473A8262 /* EventItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventItem.swift; sourceTree = "<group>"; };
+		FCA97C9CD13F23AF6940D464 /* DesignSystemPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystemPreview.swift; sourceTree = "<group>"; };
+		FD2F1B07EE649B091F6067A5 /* DebugMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugMenu.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		02FAD01A504250E9616CD72A /* App */ = {
+			isa = PBXGroup;
+			children = (
+				B43ABC2B208D5C9B20C0E927 /* AppEnvironment.swift */,
+				A70A711B26C01011C7A6F0BF /* Environment+Keys.swift */,
+				2292495090B859545EBA1C7A /* LEOApp.swift */,
+				8B0FD2FCDC0D78151BA9C0A9 /* RootView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		04FB1CBE22D1D39DABA22C97 /* OnDevice */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = OnDevice;
+			sourceTree = "<group>";
+		};
+		071FE11417AD2C159D822E93 /* Today */ = {
+			isa = PBXGroup;
+			children = (
+				2E232D2C69B8AB6E1745481E /* ViewModels */,
+				428191B6C93A746735CC7F1F /* Views */,
+			);
+			path = Today;
+			sourceTree = "<group>";
+		};
+		072570896AB08E5DDC2CEC60 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				8F5B5F1C38B538F5FF1E524F /* Dev */,
+				D19D19C33E4DF46D4D1D1674 /* Telemetry */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		0E419E36534B3656B72B7D86 /* SwiftData */ = {
+			isa = PBXGroup;
+			children = (
+				6DD94E8FEDC1643A4C2EDFE1 /* Migrations */,
+				B5EC7AB595EBD44A94B6A68C /* Models */,
+				B7B4E358D9853BDE83548267 /* Schema */,
+				6E4EE2E13B02ABF60D43FF5D /* PersistenceController.swift */,
+			);
+			path = SwiftData;
+			sourceTree = "<group>";
+		};
+		180B77878787F8CE32CCEC5A /* AI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AI;
+			sourceTree = "<group>";
+		};
+		19231EE9858A1A95763D3403 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		1AEC37897620D37DB09715D5 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
+		222F5D087E0C10BCB75B8095 /* LEOTests */ = {
+			isa = PBXGroup;
+			children = (
+				180B77878787F8CE32CCEC5A /* AI */,
+				273E0542EE3663148A608AEB /* Domain */,
+				6CFE0041AD51969B2EDCC063 /* Persistence */,
+			);
+			path = LEOTests;
+			sourceTree = "<group>";
+		};
+		256BB69001699CEB68F1BD86 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				700F6AC59B59926330C9238B /* NotificationManager.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		273E0542EE3663148A608AEB /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				8297A4B7B344DDC8DE93F15E /* Capture */,
+				7747FA148E820CDC869F7594 /* Diff */,
+				AFDF62EE418D4430FB135A11 /* Habits */,
+				9FC865C84D63BD8C58F6CC34 /* Items */,
+				74D957BB1788AADE215A61BC /* Recurrence */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		2744168A2F5987E4EBFC72B0 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				629CBDFCEA7CF631BCC45E37 /* HabitRepository.swift */,
+				96D45E3AC90F740DDB8D88FB /* ItemPredicate.swift */,
+				CBE1D87280EC35768DF355B3 /* ItemRepository.swift */,
+				DCAA17A0030150282CCF2F6B /* TagRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		2B369B7D55F7B48D68EF2D87 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2DEF80E092B53D6967771655 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		2E232D2C69B8AB6E1745481E /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2F09E08E0201C6B90EB23367 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				ACAD4D8D551475C747D3AF0B /* ErrorBanner.swift */,
+				001F3FED1621B5F6212E81E3 /* LEOButton.swift */,
+				A2C30F6A20889E761FCA74F8 /* LEOCard.swift */,
+				A9497A1767D0DDDD68AF4363 /* LEOChip.swift */,
+				E2D8F4FACA95C9DEFB869472 /* LEOEmptyState.swift */,
+				49B748C21D917DB88313909F /* LEOTextField.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		3265093FE201B94B1C5FDF57 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DEE302472A2676B650163AF2 /* LEO.app */,
+				99778E63993070879442F89F /* LEOTests.xctest */,
+				14FF1DBB1CCE4FEB0E8FF169 /* LEOUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		362D20DFB8AE586DB7507723 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3B3499F2C8B6526668098590 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		3E5646E162712BBBAEAA741E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0C3B4FA4BB1720F75A300E1C /* Info.plist */,
+				ED6DF7DDD0C69A8C1CF5003D /* LEO.entitlements */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		40C91D7AF330C834DB484117 /* Paywall */ = {
+			isa = PBXGroup;
+			children = (
+				19231EE9858A1A95763D3403 /* ViewModels */,
+				A6BE7FFCF450763AAC2C48B3 /* Views */,
+			);
+			path = Paywall;
+			sourceTree = "<group>";
+		};
+		4135DAC6AEF60D901B57D4B1 /* AI */ = {
+			isa = PBXGroup;
+			children = (
+				EF01CDF2ACD4733A8ABE0AD5 /* Cloud */,
+				04FB1CBE22D1D39DABA22C97 /* OnDevice */,
+				735AE281F33E525C3D701BF0 /* Prompts */,
+				4411733D4CB79D378A5AC6B3 /* Review */,
+				75C0110D67296CC8312635C6 /* Routing */,
+			);
+			path = AI;
+			sourceTree = "<group>";
+		};
+		428191B6C93A746735CC7F1F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4411733D4CB79D378A5AC6B3 /* Review */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Review;
+			sourceTree = "<group>";
+		};
+		448BC9DCD1392662518F99FA /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				2F09E08E0201C6B90EB23367 /* Components */,
+				FCA97C9CD13F23AF6940D464 /* DesignSystemPreview.swift */,
+				345761AFFCBA4899D1C3E2F9 /* Theme.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		48E4D8E4ACADAE876FF5E430 /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				6A9EF78DEEB8AF960521D417 /* AlarmItem.swift */,
+				197DA7CB48DB56BD3218C81B /* Anchor.swift */,
+				F11956697451E1473AF10245 /* Completion.swift */,
+				F85430CE926F736F473A8262 /* EventItem.swift */,
+				DBDEB4D2A60BF1F43267C938 /* HabitInstanceItem.swift */,
+				B0CA0994C1118EE5A476C143 /* Importance.swift */,
+				EF236AF1F0A83A7B3EFB8832 /* Item.swift */,
+				85CACFCF1F6290BF663ACB6F /* ItemPatch.swift */,
+				3FC7D73A213F9F0DECBF532B /* LocationTrigger.swift */,
+				4133C5CDC309F75FC5D374B1 /* ReminderItem.swift */,
+				0F35D62E0AE159254B5A5593 /* Tag.swift */,
+				A988974046F9C4CDD6D44EE9 /* TaskItem.swift */,
+			);
+			path = Items;
+			sourceTree = "<group>";
+		};
+		49EBD8809CC7E5687A15EFDB /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		4F446A0B45E7FEC038B88254 /* Recurrence */ = {
+			isa = PBXGroup;
+			children = (
+				C4B9006996EBC34E40D24F8E /* ViewModels */,
+				F195D86F57D004796328C144 /* Views */,
+			);
+			path = Recurrence;
+			sourceTree = "<group>";
+		};
+		5352980361006369B054FA53 /* LiveActivities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = LiveActivities;
+			sourceTree = "<group>";
+		};
+		54E61EF54242DC57904A4538 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		5D3177D40EB7C212B3A8B175 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		66BF812F30DEF984937B4ACE /* Integrations */ = {
+			isa = PBXGroup;
+			children = (
+				CEB8295F9137C46C92F8D848 /* AppIntents */,
+				F1CEDCE6415C5C8917D6DE28 /* Focus */,
+				5352980361006369B054FA53 /* LiveActivities */,
+				9BCD633A7A52C808C6EACB81 /* Shortcuts */,
+				1AEC37897620D37DB09715D5 /* Widgets */,
+			);
+			path = Integrations;
+			sourceTree = "<group>";
+		};
+		6CFE0041AD51969B2EDCC063 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				E871CF4B3BFE1D9CCCDB51AD /* PersistenceControllerTests.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		6DD94E8FEDC1643A4C2EDFE1 /* Migrations */ = {
+			isa = PBXGroup;
+			children = (
+				E8B3D834A12A1D7E51E1D4F9 /* MigrationPlanV1.swift */,
+			);
+			path = Migrations;
+			sourceTree = "<group>";
+		};
+		6F1FB4F9DDBE8ACBEAFE411D /* EventKit */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = EventKit;
+			sourceTree = "<group>";
+		};
+		6F643C3088B4B854BD9CF1E6 /* Alarms */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Alarms;
+			sourceTree = "<group>";
+		};
+		7190323D1EE958F3463D42AE /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				B4B500D41369C797E40728B0 /* Capture */,
+				BE4B40F1D85F3325A7FDCD94 /* Diff */,
+				873A881F315125050DC0D8CB /* Habits */,
+				48E4D8E4ACADAE876FF5E430 /* Items */,
+				B94C4EDEEFF7762CEF587847 /* Recurrence */,
+				7DA09D82FABA6FDD2CAD85BB /* Scheduling */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		72057CD52EDEB79E10C12520 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		735AE281F33E525C3D701BF0 /* Prompts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Prompts;
+			sourceTree = "<group>";
+		};
+		74D957BB1788AADE215A61BC /* Recurrence */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Recurrence;
+			sourceTree = "<group>";
+		};
+		75C0110D67296CC8312635C6 /* Routing */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Routing;
+			sourceTree = "<group>";
+		};
+		7747FA148E820CDC869F7594 /* Diff */ = {
+			isa = PBXGroup;
+			children = (
+				8FBAB409AFFB26C8F662240B /* DiffTests.swift */,
+			);
+			path = Diff;
+			sourceTree = "<group>";
+		};
+		7DA09D82FABA6FDD2CAD85BB /* Scheduling */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Scheduling;
+			sourceTree = "<group>";
+		};
+		8297A4B7B344DDC8DE93F15E /* Capture */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Capture;
+			sourceTree = "<group>";
+		};
+		82C2A552BE96FD7A98EA7493 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		84BBCFD843A0D30C58D3D515 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				72057CD52EDEB79E10C12520 /* ViewModels */,
+				8C9556CC18D01680283E5310 /* Views */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		873A881F315125050DC0D8CB /* Habits */ = {
+			isa = PBXGroup;
+			children = (
+				93B3E51847CF00F493786DD7 /* Habit.swift */,
+			);
+			path = Habits;
+			sourceTree = "<group>";
+		};
+		8747F21EB639595EAF4FB38D /* Inbox */ = {
+			isa = PBXGroup;
+			children = (
+				B57663F5D05578E10D910316 /* ViewModels */,
+				90868660CF92891CDABE77F3 /* Views */,
+			);
+			path = Inbox;
+			sourceTree = "<group>";
+		};
+		879A111EF3C4E594262395A6 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		8C9556CC18D01680283E5310 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		8F5B5F1C38B538F5FF1E524F /* Dev */ = {
+			isa = PBXGroup;
+			children = (
+				FD2F1B07EE649B091F6067A5 /* DebugMenu.swift */,
+				1D88E284E7D2B910CA9A1B12 /* Seeder.swift */,
+			);
+			path = Dev;
+			sourceTree = "<group>";
+		};
+		8F9A5FA1D23AFB5D809383FE /* Capture */ = {
+			isa = PBXGroup;
+			children = (
+				879A111EF3C4E594262395A6 /* ViewModels */,
+				2B369B7D55F7B48D68EF2D87 /* Views */,
+			);
+			path = Capture;
+			sourceTree = "<group>";
+		};
+		90868660CF92891CDABE77F3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		939F499ABA177478C869BC1B /* CloudKit */ = {
+			isa = PBXGroup;
+			children = (
+				B6703057FC03BE90004E6920 /* SchemaSync.swift */,
+			);
+			path = CloudKit;
+			sourceTree = "<group>";
+		};
+		9BCD633A7A52C808C6EACB81 /* Shortcuts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Shortcuts;
+			sourceTree = "<group>";
+		};
+		9FC865C84D63BD8C58F6CC34 /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				889794EB2C78D9A71D74EE49 /* ItemTests.swift */,
+			);
+			path = Items;
+			sourceTree = "<group>";
+		};
+		A6BE7FFCF450763AAC2C48B3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A6E6CDB338140094DC55C51C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		AD7C8E3213AAB0DDAAE6F512 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				939F499ABA177478C869BC1B /* CloudKit */,
+				6F1FB4F9DDBE8ACBEAFE411D /* EventKit */,
+				F2AFEFD03F5C423D615DC811 /* Mapping */,
+				2744168A2F5987E4EBFC72B0 /* Repositories */,
+				0E419E36534B3656B72B7D86 /* SwiftData */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		AFDF62EE418D4430FB135A11 /* Habits */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Habits;
+			sourceTree = "<group>";
+		};
+		B4B500D41369C797E40728B0 /* Capture */ = {
+			isa = PBXGroup;
+			children = (
+				F0497849A128902B09DB8723 /* Parsers */,
+			);
+			path = Capture;
+			sourceTree = "<group>";
+		};
+		B57663F5D05578E10D910316 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		B5EC7AB595EBD44A94B6A68C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E9F0E1008D54E3CC84304AEB /* StoredAlarm.swift */,
+				E1B4428058D6D3826EBC37F6 /* StoredEvent.swift */,
+				05130DA0786473EDF89E9BB6 /* StoredHabit.swift */,
+				0FF775267C4742345B2B77BA /* StoredHabitInstance.swift */,
+				59E3243FD98CD6BDECC6C115 /* StoredOverride.swift */,
+				3E3F196CC8514C468D8EA8F2 /* StoredRecurrenceRule.swift */,
+				7121466EC0683B3AF3D82FEE /* StoredReminder.swift */,
+				A7EFB3730D32FD59A4EA0171 /* StoredTag.swift */,
+				D21234BD488E3902ADC96A0A /* StoredTask.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B757AFE9E740178E54191C49 /* Review */ = {
+			isa = PBXGroup;
+			children = (
+				D38EF977335582C20F76BC43 /* ViewModels */,
+				A6E6CDB338140094DC55C51C /* Views */,
+			);
+			path = Review;
+			sourceTree = "<group>";
+		};
+		B7B4E358D9853BDE83548267 /* Schema */ = {
+			isa = PBXGroup;
+			children = (
+				2F9DC13418DC210C3B371410 /* SchemaV1.swift */,
+			);
+			path = Schema;
+			sourceTree = "<group>";
+		};
+		B94C4EDEEFF7762CEF587847 /* Recurrence */ = {
+			isa = PBXGroup;
+			children = (
+				1D81AA8A3EA006BAEB42DFF1 /* RecurrenceRule.swift */,
+			);
+			path = Recurrence;
+			sourceTree = "<group>";
+		};
+		BE01922FEF74324968A7CA5F /* LEO */ = {
+			isa = PBXGroup;
+			children = (
+				4135DAC6AEF60D901B57D4B1 /* AI */,
+				6F643C3088B4B854BD9CF1E6 /* Alarms */,
+				02FAD01A504250E9616CD72A /* App */,
+				448BC9DCD1392662518F99FA /* DesignSystem */,
+				7190323D1EE958F3463D42AE /* Domain */,
+				E8D8AFD852A9D6A07CD5F91C /* Features */,
+				66BF812F30DEF984937B4ACE /* Integrations */,
+				256BB69001699CEB68F1BD86 /* Notifications */,
+				AD7C8E3213AAB0DDAAE6F512 /* Persistence */,
+				3E5646E162712BBBAEAA741E /* Resources */,
+				072570896AB08E5DDC2CEC60 /* Utilities */,
+			);
+			path = LEO;
+			sourceTree = "<group>";
+		};
+		BE4B40F1D85F3325A7FDCD94 /* Diff */ = {
+			isa = PBXGroup;
+			children = (
+				C7F03B6485E20C09361D3AD7 /* Diff.swift */,
+				1A0C8A1FBA75CDFB0F91DD5F /* ItemChange.swift */,
+			);
+			path = Diff;
+			sourceTree = "<group>";
+		};
+		C2168D89F7703826CE15DD46 /* ItemDetail */ = {
+			isa = PBXGroup;
+			children = (
+				49EBD8809CC7E5687A15EFDB /* ViewModels */,
+				C432FE3B1AC97D849C6D3AD1 /* Views */,
+			);
+			path = ItemDetail;
+			sourceTree = "<group>";
+		};
+		C432FE3B1AC97D849C6D3AD1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C4B9006996EBC34E40D24F8E /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		CD7027D72D69AB520CD73922 /* AssistantChat */ = {
+			isa = PBXGroup;
+			children = (
+				3B3499F2C8B6526668098590 /* ViewModels */,
+				362D20DFB8AE586DB7507723 /* Views */,
+			);
+			path = AssistantChat;
+			sourceTree = "<group>";
+		};
+		CEB8295F9137C46C92F8D848 /* AppIntents */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AppIntents;
+			sourceTree = "<group>";
+		};
+		D19D19C33E4DF46D4D1D1674 /* Telemetry */ = {
+			isa = PBXGroup;
+			children = (
+				51441558C209AB484755FD01 /* MetricsSubscriber.swift */,
+			);
+			path = Telemetry;
+			sourceTree = "<group>";
+		};
+		D38EF977335582C20F76BC43 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		DE7842DBE585D0347C131FC6 /* Habits */ = {
+			isa = PBXGroup;
+			children = (
+				54E61EF54242DC57904A4538 /* ViewModels */,
+				82C2A552BE96FD7A98EA7493 /* Views */,
+			);
+			path = Habits;
+			sourceTree = "<group>";
+		};
+		DEE43299F689A56EFACED06B /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				FA07404CFA13456A744CBB13 /* ViewModels */,
+				5D3177D40EB7C212B3A8B175 /* Views */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		E51B17E34F37383ED2A4443F /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		E82A17455E4B917CBE0C87BF /* LEOUITests */ = {
+			isa = PBXGroup;
+			children = (
+				1BD05EE81B197FF782C7B9D2 /* LEOUITests.swift */,
+			);
+			path = LEOUITests;
+			sourceTree = "<group>";
+		};
+		E8D8AFD852A9D6A07CD5F91C /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				CD7027D72D69AB520CD73922 /* AssistantChat */,
+				8F9A5FA1D23AFB5D809383FE /* Capture */,
+				DE7842DBE585D0347C131FC6 /* Habits */,
+				8747F21EB639595EAF4FB38D /* Inbox */,
+				C2168D89F7703826CE15DD46 /* ItemDetail */,
+				2DEF80E092B53D6967771655 /* Notifications */,
+				84BBCFD843A0D30C58D3D515 /* Onboarding */,
+				40C91D7AF330C834DB484117 /* Paywall */,
+				4F446A0B45E7FEC038B88254 /* Recurrence */,
+				B757AFE9E740178E54191C49 /* Review */,
+				DEE43299F689A56EFACED06B /* Settings */,
+				071FE11417AD2C159D822E93 /* Today */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		EF01CDF2ACD4733A8ABE0AD5 /* Cloud */ = {
+			isa = PBXGroup;
+			children = (
+				E51B17E34F37383ED2A4443F /* Tools */,
+			);
+			path = Cloud;
+			sourceTree = "<group>";
+		};
+		F0497849A128902B09DB8723 /* Parsers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Parsers;
+			sourceTree = "<group>";
+		};
+		F195D86F57D004796328C144 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F1CEDCE6415C5C8917D6DE28 /* Focus */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Focus;
+			sourceTree = "<group>";
+		};
+		F2AFEFD03F5C423D615DC811 /* Mapping */ = {
+			isa = PBXGroup;
+			children = (
+				C786385EA62125C8C828BD8A /* ItemMapping.swift */,
+			);
+			path = Mapping;
+			sourceTree = "<group>";
+		};
+		F331CAC7E16E031F7BEBBEDF = {
+			isa = PBXGroup;
+			children = (
+				BE01922FEF74324968A7CA5F /* LEO */,
+				222F5D087E0C10BCB75B8095 /* LEOTests */,
+				E82A17455E4B917CBE0C87BF /* LEOUITests */,
+				3265093FE201B94B1C5FDF57 /* Products */,
+			);
+			indentWidth = 4;
+			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
+		};
+		FA07404CFA13456A744CBB13 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		277743A9F4DB58FA86DF4F50 /* LEOUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 584524D27445F1044D8A9E2D /* Build configuration list for PBXNativeTarget "LEOUITests" */;
+			buildPhases = (
+				338953485D90F87A1576D809 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D93D679496758A2EC24E80C6 /* PBXTargetDependency */,
+			);
+			name = LEOUITests;
+			packageProductDependencies = (
+			);
+			productName = LEOUITests;
+			productReference = 14FF1DBB1CCE4FEB0E8FF169 /* LEOUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		6E45B50C9DFF491D1347F67A /* LEO */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5BCF35E9129146A26EBE7939 /* Build configuration list for PBXNativeTarget "LEO" */;
+			buildPhases = (
+				1BF749834C03C99753F5AA1A /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LEO;
+			packageProductDependencies = (
+			);
+			productName = LEO;
+			productReference = DEE302472A2676B650163AF2 /* LEO.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C7E0A14DAB2B10BCFFEB97B8 /* LEOTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B3E1105877DA3F236F7AC0BE /* Build configuration list for PBXNativeTarget "LEOTests" */;
+			buildPhases = (
+				8601E5A855FB3664E55C5A30 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D7ADB0D3F487A8A3600164B8 /* PBXTargetDependency */,
+			);
+			name = LEOTests;
+			packageProductDependencies = (
+			);
+			productName = LEOTests;
+			productReference = 99778E63993070879442F89F /* LEOTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B4D55EA941B5FA656D56FCE6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					277743A9F4DB58FA86DF4F50 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+						TestTargetID = 6E45B50C9DFF491D1347F67A;
+					};
+					6E45B50C9DFF491D1347F67A = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					C7E0A14DAB2B10BCFFEB97B8 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 2F2ED1CF71DBC400ECBEC4E7 /* Build configuration list for PBXProject "LEO" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = F331CAC7E16E031F7BEBBEDF;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 3265093FE201B94B1C5FDF57 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6E45B50C9DFF491D1347F67A /* LEO */,
+				C7E0A14DAB2B10BCFFEB97B8 /* LEOTests */,
+				277743A9F4DB58FA86DF4F50 /* LEOUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1BF749834C03C99753F5AA1A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B65D68AA78680B53520CF333 /* AlarmItem.swift in Sources */,
+				28BD83E961CDB63906ADD619 /* Anchor.swift in Sources */,
+				EB79C26E0EA4A07319818808 /* AppEnvironment.swift in Sources */,
+				E5F37D10A4703D29A7784061 /* Completion.swift in Sources */,
+				1F16E1423661FF3DB5E75ED9 /* DebugMenu.swift in Sources */,
+				F23D8C9C61E8A1045156DED7 /* DesignSystemPreview.swift in Sources */,
+				9CE778B906AE246D2CA53C89 /* Diff.swift in Sources */,
+				998394ABBE78E699C88D79B7 /* Environment+Keys.swift in Sources */,
+				181D657314E79558AE166B20 /* ErrorBanner.swift in Sources */,
+				C9E687878EEE528E7104F964 /* EventItem.swift in Sources */,
+				E9154D966F390622256F4A6E /* Habit.swift in Sources */,
+				46CF2717F6562F91F25DE6B0 /* HabitInstanceItem.swift in Sources */,
+				ABF5024C1643AEBEAEA2E312 /* HabitRepository.swift in Sources */,
+				A45B6C80A108B5726BBF0CA0 /* Importance.swift in Sources */,
+				A0BC3E991594CBFDC3813781 /* Item.swift in Sources */,
+				8695E690DBC9159CA41E0586 /* ItemChange.swift in Sources */,
+				302CF3FF68A248AA495E3605 /* ItemMapping.swift in Sources */,
+				23E2F5DFEFBF1893B5143295 /* ItemPatch.swift in Sources */,
+				FD49D9CEDBFD7465DFD57ED3 /* ItemPredicate.swift in Sources */,
+				41359E06D063808576F268EE /* ItemRepository.swift in Sources */,
+				22212AE3827F1E28C207211C /* LEOApp.swift in Sources */,
+				4FFA6DCF79BD77B73283786E /* LEOButton.swift in Sources */,
+				3DBABEEAF6356C35D5C9B0CC /* LEOCard.swift in Sources */,
+				443D8509DFEB154568264FE5 /* LEOChip.swift in Sources */,
+				6FADDDCA98E356532FA64A8A /* LEOEmptyState.swift in Sources */,
+				CD40A4A694699646DDCBFD2B /* LEOTextField.swift in Sources */,
+				7A180FA396B89CB269F39F9D /* LocationTrigger.swift in Sources */,
+				742D683957E2F7CA03C74397 /* MetricsSubscriber.swift in Sources */,
+				B5C393A1574BC7F60E89DF87 /* MigrationPlanV1.swift in Sources */,
+				80C96626AFDEF1582492F130 /* NotificationManager.swift in Sources */,
+				97C6D1E13E05833F7AEA2FE6 /* PersistenceController.swift in Sources */,
+				E6E0DAC84F4B70B4E75244EA /* RecurrenceRule.swift in Sources */,
+				AAC9D01D54C1F1D527A4FD3C /* ReminderItem.swift in Sources */,
+				31134E795D3B8465B7E9EDE1 /* RootView.swift in Sources */,
+				1A72AD8D68E313A7BE585B13 /* SchemaSync.swift in Sources */,
+				8CA0D5968FE46432024CF3B3 /* SchemaV1.swift in Sources */,
+				2D268335A587DF2E68116041 /* Seeder.swift in Sources */,
+				D679BA4C1DFA048687FE98AB /* StoredAlarm.swift in Sources */,
+				7C84322DA42B9D19905C5078 /* StoredEvent.swift in Sources */,
+				D143568BAAF1048512B47071 /* StoredHabit.swift in Sources */,
+				3E2A04774537B03A3D1184A2 /* StoredHabitInstance.swift in Sources */,
+				A6C186ACD416C0E58DC5CE86 /* StoredOverride.swift in Sources */,
+				E3B0F00D4CD7274FD3650937 /* StoredRecurrenceRule.swift in Sources */,
+				832A2268D4758566E9F204A0 /* StoredReminder.swift in Sources */,
+				4703464DAF05E74437D007C3 /* StoredTag.swift in Sources */,
+				93425393A1F77DA8A1858B67 /* StoredTask.swift in Sources */,
+				F14B586D0896E49EC3FE4AFE /* Tag.swift in Sources */,
+				9A62CD1EC25A63A801AC54DA /* TagRepository.swift in Sources */,
+				3F814DF54069181CFC41AFEE /* TaskItem.swift in Sources */,
+				E72BE964AC9A4A6450C7E129 /* Theme.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		338953485D90F87A1576D809 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				995870704743260F9C784A53 /* LEOUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8601E5A855FB3664E55C5A30 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4CE7922C333BEC8D03B46B02 /* DiffTests.swift in Sources */,
+				5931D1AA73088DF28C81ECF2 /* ItemTests.swift in Sources */,
+				07F51E20AE5316B7D0C8743B /* PersistenceControllerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D7ADB0D3F487A8A3600164B8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6E45B50C9DFF491D1347F67A /* LEO */;
+			targetProxy = BFAB3C196EF54B5F67CE5A67 /* PBXContainerItemProxy */;
+		};
+		D93D679496758A2EC24E80C6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6E45B50C9DFF491D1347F67A /* LEO */;
+			targetProxy = FC23ACE24B558C2CE3190A51 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1AEAFA1AC17B2FBA51B8FA0A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leo.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.10;
+			};
+			name = Release;
+		};
+		34D6BF698D14023DABCA78DD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.leo.app;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				SWIFT_VERSION = 5.10;
+			};
+			name = Debug;
+		};
+		3E53F30DE23D0E4A47D149E9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.leo.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = LEO;
+			};
+			name = Release;
+		};
+		5AC8BB98817CF4410C5847B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LEO/Resources/LEO.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				INFOPLIST_FILE = LEO/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.leo.app;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		629693E2B4122C6096ED12D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LEO/Resources/LEO.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				INFOPLIST_FILE = LEO/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.leo.app;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		767D92F4222638B3A16549A0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.leo.tests;
+				SDKROOT = iphoneos;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LEO.app/LEO";
+			};
+			name = Release;
+		};
+		C04A88857F0D472282CD8508 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.leo.tests;
+				SDKROOT = iphoneos;
+				SWIFT_STRICT_CONCURRENCY = targeted;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LEO.app/LEO";
+			};
+			name = Debug;
+		};
+		F93D78DB16A288B0E04C871D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.leo.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = LEO;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2F2ED1CF71DBC400ECBEC4E7 /* Build configuration list for PBXProject "LEO" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34D6BF698D14023DABCA78DD /* Debug */,
+				1AEAFA1AC17B2FBA51B8FA0A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		584524D27445F1044D8A9E2D /* Build configuration list for PBXNativeTarget "LEOUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F93D78DB16A288B0E04C871D /* Debug */,
+				3E53F30DE23D0E4A47D149E9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5BCF35E9129146A26EBE7939 /* Build configuration list for PBXNativeTarget "LEO" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5AC8BB98817CF4410C5847B3 /* Debug */,
+				629693E2B4122C6096ED12D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B3E1105877DA3F236F7AC0BE /* Build configuration list for PBXNativeTarget "LEOTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C04A88857F0D472282CD8508 /* Debug */,
+				767D92F4222638B3A16549A0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B4D55EA941B5FA656D56FCE6 /* Project object */;
+}

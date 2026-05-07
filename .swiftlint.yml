@@ -1,0 +1,60 @@
+disabled_rules:
+  - line_length          # handled by swiftformat
+  - trailing_whitespace  # handled by swiftformat
+  - todo                 # we use task-file TODOs; don't lint them
+
+opt_in_rules:
+  - force_unwrapping
+  - empty_count
+  - closure_spacing
+  - collection_alignment
+  - contains_over_first_not_nil
+  - discouraged_optional_boolean
+  - explicit_init
+  - fatal_error_message
+  - first_where
+  - let_var_whitespace
+  - missing_docs
+  - modifier_order
+  - object_literal
+  - operator_usage_whitespace
+  - overridden_super_call
+  - prefer_self_type_over_type_of_self
+  - redundant_nil_coalescing
+  - sorted_imports
+  - toggle_bool
+  - unowned_variable_capture
+  - vertical_parameter_alignment_on_call
+  - yoda_condition
+
+excluded:
+  - LEOTests
+  - LEOUITests
+  - project.yml
+
+force_unwrapping:
+  severity: error
+
+identifier_name:
+  min_length: 2
+  excluded:
+    - id
+    - db
+    - i
+    - e
+    - s
+
+type_body_length:
+  warning: 400
+  error: 600
+
+function_body_length:
+  warning: 60
+  error: 100
+
+missing_docs:
+  warning:
+    - open
+    - public
+
+reporter: "xcode"

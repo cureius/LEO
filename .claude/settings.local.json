@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xcode-select -p)",
+      "Bash(xcodebuild -version)",
+      "Bash(swift --version)",
+      "Bash(xcodebuild -showsdks)",
+      "Bash(brew --version)",
+      "Bash(brew install *)",
+      "Bash(xcodegen version *)",
+      "Bash(chmod +x *)",
+      "Bash(xcodegen generate *)",
+      "Bash(xcodebuild -scheme LEO -destination 'platform=iOS Simulator,name=iPhone 15' -quiet CODE_SIGNING_ALLOWED=NO build)",
+      "Bash(xcrun simctl *)",
+      "Bash(xcodebuild *)",
+      "Bash(python3 *)"
+    ]
+  }
+}
