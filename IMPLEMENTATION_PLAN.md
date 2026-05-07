@@ -111,6 +111,7 @@ When the user (or the agent, with user approval) makes a decision that overrides
 | 2026-05-07 | Deployment target iOS 17.0 (not 18.0) for now | Xcode 15.4 installed; bump target + strict concurrency when Xcode 16 is installed |
 | 2026-05-07 | xcodegen 2.45.4 used to generate project.yml; pbxproj objectVersion patched to 60 | No xcode-16 available; project opens in Xcode 15.4 |
 | 2026-05-07 | `@Previewable` macro removed from previews | Not available in Swift 5.10 / Xcode 15; use wrapper structs instead |
+| 2026-05-08 | `ModelConfiguration` uses `.cloudKitDatabase(.none)` until M3 | SwiftData validates CloudKit rules (all attrs optional, all rels have inverses) at container init even for in-memory stores when app is signed with CloudKit entitlements. M3 must make all @Model attrs optional and add inverse to StoredHabit.recurrenceRule before switching to `.private("iCloud.com.leo.app")` |
 
 ---
 
