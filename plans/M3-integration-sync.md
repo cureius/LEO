@@ -12,13 +12,13 @@
 
 ## Task summary
 
-- [ ] M3-T01 — EventKit bridge (read)
-- [ ] M3-T02 — EventKit bridge (write-back) + conflict policy
-- [ ] M3-T03 — Lock-screen / Home-screen widgets
-- [ ] M3-T04 — Live Activity for next event
-- [ ] M3-T05 — App Intents + Siri
-- [ ] M3-T06 — Focus filter integration
-- [ ] M3-T07 — CloudKit deploy & multi-device hardening
+- [x] M3-T01 — EventKit bridge (read)
+- [x] M3-T02 — EventKit bridge (write-back) + conflict policy
+- [x] M3-T03 — Lock-screen / Home-screen widgets
+- [x] M3-T04 — Live Activity for next event
+- [x] M3-T05 — App Intents + Siri
+- [x] M3-T06 — Focus filter integration
+- [ ] M3-T07 — CloudKit deploy & multi-device hardening (BLOCKED: requires user sign-off before production deploy)
 
 ---
 

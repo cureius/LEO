@@ -46,7 +46,7 @@ struct DebugMenu: View {
     private var buildInfoSection: some View {
         Section("Build") {
             LabeledContent("Version", value: "\(appVersion) (\(buildNumber))")
-            LabeledContent("CloudKit Container", value: "iCloud.com.leo.app")
+            LabeledContent("CloudKit Container", value: "iCloud.com.theblueman.leo")
             LabeledContent("iOS", value: UIDevice.current.systemVersion)
         }
     }
@@ -98,6 +98,8 @@ struct DebugMenu: View {
             let seeder = Seeder()
             try await seeder.seedAll(itemRepository: appEnv.itemRepository, habitRepository: appEnv.habitRepository)
             statusMessage = "Seeded OK"
+            // Single notification after all writes settle
+            NotificationCenter.default.post(name: .leoDataDidChange, object: nil)
         } catch {
             statusMessage = "Seed failed: \(error.localizedDescription)"
         }
@@ -106,9 +108,20 @@ struct DebugMenu: View {
     private func wipeAll() async {
         wiping = true
         defer { wiping = false }
-        // Full wipe implemented in M0-T06 with CloudKit zone clear.
-        // For now: delete SwiftData store and recreate.
-        statusMessage = "Wiped (restart app to confirm)"
+        let ctx = appEnv.persistenceController.mainContext
+        do {
+            try ctx.delete(model: StoredTask.self)
+            try ctx.delete(model: StoredEvent.self)
+            try ctx.delete(model: StoredReminder.self)
+            try ctx.delete(model: StoredAlarm.self)
+            try ctx.delete(model: StoredHabitInstance.self)
+            try ctx.delete(model: StoredHabit.self)
+            try ctx.save()
+            statusMessage = "All data wiped"
+            NotificationCenter.default.post(name: .leoDataDidChange, object: nil)
+        } catch {
+            statusMessage = "Wipe failed: \(error.localizedDescription)"
+        }
     }
 
     private func forceSchemaSeed() async {

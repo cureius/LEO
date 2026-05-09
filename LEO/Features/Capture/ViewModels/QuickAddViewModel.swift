@@ -2,7 +2,7 @@ import Foundation
 import Observation
 import OSLog
 
-private let logger = Logger(subsystem: "com.leo.app", category: "capture")
+private let logger = Logger(subsystem: "com.theblueman.leo", category: "capture")
 
 @MainActor
 @Observable

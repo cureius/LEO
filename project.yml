@@ -10,6 +10,25 @@ options:
   tabWidth: 4
   usesTabs: false
   defaultConfig: Debug
+  createIntermediateGroups: true
+
+schemes:
+  LEO:
+    build:
+      targets:
+        LEO: all
+        LEOWidgets: [build]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets: [LEOTests, LEOUITests]
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
 
 settings:
   base:
@@ -18,7 +37,7 @@ settings:
     ENABLE_PREVIEWS: YES
     MARKETING_VERSION: "1.0.0"
     CURRENT_PROJECT_VERSION: "1"
-    PRODUCT_BUNDLE_IDENTIFIER: com.leo.app
+    PRODUCT_BUNDLE_IDENTIFIER: com.theblueman.leo
     DEVELOPMENT_TEAM: ""
     CODE_SIGN_STYLE: Automatic
 
@@ -39,31 +58,22 @@ targets:
       - LEO/Resources
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.leo.app
+        PRODUCT_BUNDLE_IDENTIFIER: com.theblueman.leo
         INFOPLIST_FILE: LEO/Resources/Info.plist
-        CODE_SIGN_ENTITLEMENTS: LEO/Resources/LEO.entitlements
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         SWIFT_STRICT_CONCURRENCY: targeted
       configs:
         Debug:
           DEBUG_INFORMATION_FORMAT: dwarf
           SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+          CODE_SIGN_ENTITLEMENTS: LEO/Resources/LEO-debug.entitlements
         Release:
           DEBUG_INFORMATION_FORMAT: "dwarf-with-dsym"
           SWIFT_ACTIVE_COMPILATION_CONDITIONS: ""
-    entitlements:
-      path: LEO/Resources/LEO.entitlements
-      properties:
-        com.apple.developer.icloud-services:
-          - CloudKit
-        com.apple.developer.icloud-container-identifiers:
-          - iCloud.com.leo.app
-        com.apple.developer.cloudkit.development-containers-identifiers:
-          - iCloud.com.leo.app
-        com.apple.security.application-groups:
-          - group.com.leo.app
-        aps-environment: development
-        com.apple.developer.usernotifications.communication: true
+          CODE_SIGN_ENTITLEMENTS: LEO/Resources/LEO.entitlements
+    dependencies:
+      - target: LEOWidgets
+        embed: true
     info:
       path: LEO/Resources/Info.plist
       properties:
@@ -74,7 +84,7 @@ targets:
         LSRequiresIPhoneOS: true
         UIApplicationSupportsIndirectInputEvents: true
         UILaunchScreen:
-          UIColorName: ""
+          UIColorName: "Background"
         UIRequiredDeviceCapabilities:
           - armv7
         UISupportedInterfaceOrientations:
@@ -82,12 +92,13 @@ targets:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
         UIBackgroundModes:
+          - fetch
           - remote-notification
           - processing
           - location
         BGTaskSchedulerPermittedIdentifiers:
-          - com.leo.refresh
-          - com.leo.processing
+          - com.theblueman.leo.refresh
+          - com.theblueman.leo.processing
         NSCalendarsUsageDescription: "LEO syncs with your iOS calendars to show everything in one place."
         NSCalendarsWriteOnlyAccessUsageDescription: "LEO creates events in your iOS calendars."
         NSRemindersUsageDescription: "LEO syncs with your reminders to show everything in one place."
@@ -96,6 +107,29 @@ targets:
         NSMicrophoneUsageDescription: "LEO uses the microphone for voice quick-add."
         NSSpeechRecognitionUsageDescription: "LEO uses speech recognition to convert your voice to captured items."
         NSUserTrackingUsageDescription: "LEO does not track you. This entry is required by iOS."
+
+  LEOWidgets:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: LEOWidgets
+        excludes:
+          - "**/.gitkeep"
+    dependencies:
+      - sdk: WidgetKit.framework
+      - sdk: SwiftUI.framework
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.theblueman.leo.widgets
+        INFOPLIST_FILE: LEOWidgets/Info.plist
+        SWIFT_STRICT_CONCURRENCY: targeted
+        APPLICATION_EXTENSION_API_ONLY: YES
+    entitlements:
+      path: LEOWidgets/LEOWidgets.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.theblueman.leo
 
   LEOTests:
     type: bundle.unit-test
@@ -109,7 +143,7 @@ targets:
       - target: LEO
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.leo.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.theblueman.leo.tests
         SWIFT_STRICT_CONCURRENCY: targeted
 
   LEOUITests:
@@ -124,5 +158,5 @@ targets:
       - target: LEO
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.leo.uitests
+        PRODUCT_BUNDLE_IDENTIFIER: com.theblueman.leo.uitests
         TEST_TARGET_NAME: LEO

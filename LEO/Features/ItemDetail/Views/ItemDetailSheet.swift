@@ -32,6 +32,8 @@ private struct ItemDetailFormView: View {
     var onDelete: (() -> Void)?
 
     @State private var showDeleteConfirm = false
+    @State private var showRecurrenceBuilder = false
+    @State private var recurrenceBuilderVM: RecurrenceBuilderViewModel = RecurrenceBuilderViewModel()
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -57,6 +59,8 @@ private struct ItemDetailFormView: View {
                     }
                     .pickerStyle(.menu)
                 }
+
+                recurrenceSection
 
                 typeSpecificSection
 
@@ -92,6 +96,39 @@ private struct ItemDetailFormView: View {
                             dismiss()
                         }
                     }
+                }
+            }
+            .sheet(isPresented: $showRecurrenceBuilder) {
+                RecurrenceBuilderView(vm: recurrenceBuilderVM) { rule in
+                    vm.recurrenceRule = rule
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var recurrenceSection: some View {
+        Section("Repeat") {
+            Button {
+                recurrenceBuilderVM.anchorStart = (vm.anchor.sortDate ?? .now)
+                if let rule = vm.recurrenceRule, let parsed = try? rule.parsed() {
+                    recurrenceBuilderVM.apply(parsed)
+                }
+                showRecurrenceBuilder = true
+            } label: {
+                HStack {
+                    Text(vm.recurrenceRule.map { RecurrenceFormatter.summary(for: (try? $0.parsed()) ?? RRule(frequency: .daily)) } ?? "Never")
+                        .foregroundStyle(vm.recurrenceRule != nil ? Theme.Color.textPrimary : Theme.Color.textSecondary)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(Theme.Color.textSecondary)
+                }
+            }
+            .buttonStyle(.plain)
+
+            if vm.recurrenceRule != nil {
+                Button("Remove repeat", role: .destructive) {
+                    vm.recurrenceRule = nil
                 }
             }
         }

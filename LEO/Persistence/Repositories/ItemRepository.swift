@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 import OSLog
 
-private let logger = Logger(subsystem: "com.leo.app", category: "repository")
+private let logger = Logger(subsystem: "com.theblueman.leo", category: "repository")
 
 /// Central read/write repository for all Item kinds.
 /// Views never call this directly — they go through view models.
@@ -38,6 +38,8 @@ actor ItemRepository {
         try insertItem(item, context: context)
         try context.save()
         logger.info("Added item \(item.id) '\(item.title)'")
+        await refreshWidgetSnapshot()
+        postChange()
     }
 
     func update(_ item: any Item) async throws {
@@ -45,12 +47,65 @@ actor ItemRepository {
         try deleteStored(id: item.id, context: context)
         try insertItem(item, context: context)
         try context.save()
+        await refreshWidgetSnapshot()
+        postChange()
     }
 
     func delete(id: UUID) async throws {
         let context = controller.newBackgroundContext()
         try deleteStored(id: id, context: context)
         try context.save()
+        await refreshWidgetSnapshot()
+        postChange()
+    }
+
+    private nonisolated func postChange() {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .leoDataDidChange, object: nil)
+        }
+    }
+
+    private func refreshWidgetSnapshot() async {
+        guard let items = try? await fetch(predicate: .all) else { return }
+        let today = Date.now
+        let start = Calendar.current.startOfDay(for: today)
+        let end = start.addingTimeInterval(86400)
+        let interval = DateInterval(start: start, end: end)
+
+        let todayItems = items
+            .filter { item -> Bool in
+                guard let d = item.anchor.sortDate else { return false }
+                return interval.contains(d)
+            }
+            .prefix(5)
+            .map { item in
+                WidgetSnapshot.SnapshotItem(
+                    id: item.id,
+                    title: item.title,
+                    time: item.anchor.sortDate,
+                    typeSymbol: symbolName(for: item),
+                    isCompleted: item.isCompleted
+                )
+            }
+
+        let nextItem = todayItems.first(where: { !$0.isCompleted })
+
+        let snapshot = WidgetSnapshot(
+            todayItems: Array(todayItems),
+            nextItem: nextItem,
+            habitRing: WidgetSnapshot.HabitRingSummary(total: 0, completed: 0)
+        )
+        WidgetSnapshotStore.write(snapshot)
+    }
+
+    private func symbolName(for item: any Item) -> String {
+        switch item {
+        case is EventItem:    return "calendar"
+        case is ReminderItem: return "bell"
+        case is AlarmItem:    return "alarm"
+        case is HabitInstanceItem: return "repeat.circle"
+        default:              return "checklist"
+        }
     }
 
     // MARK: - Change stream

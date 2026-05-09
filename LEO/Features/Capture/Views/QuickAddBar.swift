@@ -1,20 +1,16 @@
 import SwiftUI
 
 struct QuickAddBar: View {
-    @Environment(AppEnvironment.self) private var appEnv
-    @State private var viewModel: QuickAddViewModel? = nil
+    @State private var vm: QuickAddViewModel
     var onItemAdded: (() -> Void)? = nil
 
+    init(repository: ItemRepository, onItemAdded: (() -> Void)? = nil) {
+        _vm = State(wrappedValue: QuickAddViewModel(repository: repository))
+        self.onItemAdded = onItemAdded
+    }
+
     var body: some View {
-        Group {
-            if let vm = viewModel {
-                QuickAddBarContent(vm: vm, onItemAdded: onItemAdded)
-            }
-        }
-        .onAppear {
-            guard viewModel == nil else { return }
-            viewModel = QuickAddViewModel(repository: appEnv.itemRepository)
-        }
+        QuickAddBarContent(vm: vm, onItemAdded: onItemAdded)
     }
 }
 
@@ -53,6 +49,13 @@ private struct QuickAddBarContent: View {
                     .onSubmit { Task { await submitAndNotify() } }
                     .accessibilityLabel("Quick add")
                     .accessibilityHint("Type anything to capture it. Press Return to save.")
+                    .toolbar {
+                        ToolbarItemGroup(placement: .keyboard) {
+                            Spacer()
+                            Button("Done") { isFocused = false }
+                                .fontWeight(.semibold)
+                        }
+                    }
 
                 Button { Task { await submitAndNotify() } } label: {
                     Image(systemName: "arrow.up.circle.fill")
@@ -97,6 +100,7 @@ private struct QuickAddBarContent: View {
     private func submitAndNotify() async {
         let submitted = await vm.submit()
         if submitted {
+            isFocused = false
             withAnimation(.spring(duration: 0.25)) { showUndoToast = true }
             onItemAdded?()
             Task {
@@ -108,10 +112,10 @@ private struct QuickAddBarContent: View {
 }
 
 #Preview {
+    let env = AppEnvironment(useInMemory: true)
     VStack {
         Spacer()
-        QuickAddBar(onItemAdded: {})
+        QuickAddBar(repository: env.itemRepository, onItemAdded: {})
     }
-    .environment(AppEnvironment(useInMemory: true))
     .background(Theme.Color.background)
 }

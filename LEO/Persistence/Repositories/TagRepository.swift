@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 import OSLog
 
-private let logger = Logger(subsystem: "com.leo.app", category: "tags")
+private let logger = Logger(subsystem: "com.theblueman.leo", category: "tags")
 
 actor TagRepository {
     private let controller: PersistenceController

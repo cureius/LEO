@@ -35,7 +35,24 @@
       "Bash(echo \"Exit: $?\")",
       "Bash(echo \"iPhone15 screenshot: $?\")",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(plutil -p \"/Users/raj/Library/Developer/Xcode/DerivedData/LEO-equiioijbofqdldqkzvdglxcgijg/Build/Products/Debug-iphonesimulator/LEO.app/Info.plist\")",
+      "Bash(plutil -p \"/Users/raj/Library/Developer/Xcode/DerivedData/LEO-equiioijbofqdldqkzvdglxcgijg/Build/Products/Debug-iphonesimulator/LEO.app/PlugIns/LEOWidgets.appex/Info.plist\")",
+      "Bash(plutil *)",
+      "Bash(/Applications/Xcode.app/Contents/MacOS/Xcode --version)",
+      "Bash(defaults read *)",
+      "Bash(grep -E \"\\(Domain|\\\\.swift$\\)\")",
+      "Bash(sed -i '' '1662s/CODE_SIGN_STYLE = Manual;/CODE_SIGN_STYLE = Automatic;/' /Users/raj/Raj/personal/IOS/LEO/LEO.xcodeproj/project.pbxproj)",
+      "Bash(sed -i '' '1686s/CODE_SIGN_STYLE = Manual;/CODE_SIGN_STYLE = Automatic;/' /Users/raj/Raj/personal/IOS/LEO/LEO.xcodeproj/project.pbxproj)",
+      "Bash(sed -i '' '/PROVISIONING_PROFILE_SPECIFIER = \"\";/d' /Users/raj/Raj/personal/IOS/LEO/LEO.xcodeproj/project.pbxproj)",
+      "Bash(sed -i '' '/CODE_SIGN_IDENTITY = \"iPhone Developer\";/d' /Users/raj/Raj/personal/IOS/LEO/LEO.xcodeproj/project.pbxproj)",
+      "Bash(xargs -0 sed -i '' -e 's/com\\\\.leo\\\\.app\\\\.processing/com.theblueman.leo.processing/g' -e 's/com\\\\.leo\\\\.app\\\\.refresh/com.theblueman.leo.refresh/g' -e 's/com\\\\.leo\\\\.app\\\\.widgets/com.theblueman.leo.widgets/g' -e 's/com\\\\.leo\\\\.app/com.theblueman.leo/g' -e 's/com\\\\.leo\\\\.tests/com.theblueman.leo.tests/g' -e 's/com\\\\.leo\\\\.uitests/com.theblueman.leo.uitests/g')",
+      "Bash(xcrun devicectl *)",
+      "Bash(xargs cat)",
+      "Bash(xargs ls)",
+      "Bash(git checkout *)",
+      "Bash(brew list *)",
+      "Bash(xcodegen --version)"
     ]
   }
 }

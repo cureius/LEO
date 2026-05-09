@@ -2,7 +2,7 @@ import SwiftData
 import Foundation
 import OSLog
 
-private let logger = Logger(subsystem: "com.leo.app", category: "persistence")
+private let logger = Logger(subsystem: "com.theblueman.leo", category: "persistence")
 
 /// Central SwiftData container.
 ///
@@ -10,7 +10,7 @@ private let logger = Logger(subsystem: "com.leo.app", category: "persistence")
 /// `.cloudKitDatabase(.none)` to bypass CloudKit schema validation — which
 /// requires all attributes to be optional and all relationships to have inverses.
 /// When M3 arrives, the @Model types will be made CloudKit-compliant and this
-/// will switch to `.cloudKitDatabase(.private("iCloud.com.leo.app"))`.
+/// will switch to `.cloudKitDatabase(.private("iCloud.com.theblueman.leo"))`.
 final class PersistenceController {
     let container: ModelContainer
 

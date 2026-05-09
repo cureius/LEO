@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 import OSLog
 
-private let logger = Logger(subsystem: "com.leo.app", category: "cloudkit")
+private let logger = Logger(subsystem: "com.theblueman.leo", category: "cloudkit")
 
 /// Debug-only utility to push the schema to CloudKit by writing and deleting a sample record of each type.
 /// CloudKit auto-creates record types on first write; this seeds the dev schema intentionally.

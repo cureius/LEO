@@ -1,30 +1,53 @@
 import Foundation
 import SwiftUI
+import UserNotifications
 
 /// Central DI container wired at the app level and distributed via @Environment.
+/// Initialized off the main thread (Task.detached in LEOApp); all stored services
+/// are actors or thread-safe types.
 @Observable
 final class AppEnvironment {
     let persistenceController: PersistenceController
     let itemRepository: ItemRepository
     let habitRepository: HabitRepository
     let tagRepository: TagRepository
+    let seriesRepository: SeriesRepository
     let notificationManager: NotificationManager
+    let travelTimePreReminder: TravelTimePreReminder
+    let eventKitBridge: EventKitBridge
+    let eventKitWriteBack: EventKitWriteBack
+    let claudeClient: ClaudeClient
+    let weeklyReviewGenerator: WeeklyReviewGenerator
+    let alarmEngine: AlarmEngine
+    let alarmActivityManager: AlarmActivityManager
+    // Strong reference so delegate isn't deallocated
+    let notificationDelegate: NotificationDelegate
 
-    /// useInMemory defaults to true in DEBUG so the simulator always gets a
-    /// clean fast-boot without hitting the SwiftData file lock issue seen in
-    /// Xcode 15 simulator. Flip to false once on-disk persistence is verified.
-    init(useInMemory: Bool = {
-        #if DEBUG
-        return true
-        #else
-        return false
-        #endif
-    }()) {
+    init(useInMemory: Bool = false) {
         let controller = PersistenceController(useInMemory: useInMemory)
         self.persistenceController = controller
         self.itemRepository = ItemRepository(controller: controller)
         self.habitRepository = HabitRepository(controller: controller)
         self.tagRepository = TagRepository(controller: controller)
-        self.notificationManager = NotificationManager()
+        self.seriesRepository = SeriesRepository(controller: controller)
+
+        let nm = NotificationManager()
+        self.notificationManager = nm
+        self.travelTimePreReminder = TravelTimePreReminder(notificationManager: nm)
+        self.eventKitBridge = EventKitBridge(itemRepository: itemRepository)
+        self.eventKitWriteBack = EventKitWriteBack()
+        let claude = ClaudeClient()
+        self.claudeClient = claude
+        self.weeklyReviewGenerator = WeeklyReviewGenerator(
+            itemRepository: itemRepository,
+            habitRepository: habitRepository,
+            claudeClient: claude
+        )
+        self.alarmEngine = AlarmEngine(notificationManager: nm)
+        self.alarmActivityManager = AlarmActivityManager()
+
+        let delegate = NotificationDelegate(itemRepository: itemRepository)
+        self.notificationDelegate = delegate
+        UNUserNotificationCenter.current().delegate = delegate
     }
 }

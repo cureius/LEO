@@ -6,12 +6,10 @@
 	<string>development</string>
 	<key>com.apple.developer.cloudkit.development-containers-identifiers</key>
 	<array>
-		<string>iCloud.com.leo.app</string>
+		<string>iCloud.com.theblueman.leo</string>
 	</array>
 	<key>com.apple.developer.icloud-container-identifiers</key>
-	<array>
-		<string>iCloud.com.leo.app</string>
-	</array>
+	<array/>
 	<key>com.apple.developer.icloud-services</key>
 	<array>
 		<string>CloudKit</string>
@@ -19,8 +17,6 @@
 	<key>com.apple.developer.usernotifications.communication</key>
 	<true/>
 	<key>com.apple.security.application-groups</key>
-	<array>
-		<string>group.com.leo.app</string>
-	</array>
+	<array/>
 </dict>
 </plist>

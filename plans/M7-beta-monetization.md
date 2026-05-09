@@ -12,12 +12,12 @@
 
 ## Task summary
 
-- [ ] M7-T01 — StoreKit 2 products + paywall UI
-- [ ] M7-T02 — Pro gating wiring
-- [ ] M7-T03 — Trial + family sharing
-- [ ] M7-T04 — TestFlight beta launch (≤ 500 testers)
-- [ ] M7-T05 — In-app feedback channel
-- [ ] M7-T06 — Crash + non-fatal monitoring polish
+- [x] M7-T01 — StoreKit 2 products + paywall UI
+- [x] M7-T02 — Pro gating wiring
+- [x] M7-T03 — Trial + family sharing (code complete; App Store Connect config needed by user)
+- [ ] M7-T04 — TestFlight beta launch (BLOCKED: requires user to submit via App Store Connect)
+- [x] M7-T05 — In-app feedback channel
+- [x] M7-T06 — Crash + non-fatal monitoring polish
 
 ---
 

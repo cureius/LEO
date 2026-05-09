@@ -14,13 +14,13 @@
 
 ## Task summary
 
-- [ ] M6-T01 — Real alarm playback
-- [ ] M6-T02 — Alarm Live Activity
-- [ ] M6-T03 — Alarm UX (set / silent fallback / snooze)
-- [ ] M6-T04 — Apple Watch app (read + capture-by-dictation)
-- [ ] M6-T05 — Onboarding flow
-- [ ] M6-T06 — Settings surface
-- [ ] M6-T07 — Empty / error / loading states
+- [x] M6-T01 — Real alarm playback
+- [x] M6-T02 — Alarm Live Activity
+- [x] M6-T03 — Alarm UX (set / silent fallback / snooze)
+- [ ] M6-T04 — Apple Watch app (DEFERRED to v1.1 — see open question)
+- [x] M6-T05 — Onboarding flow
+- [x] M6-T06 — Settings surface
+- [x] M6-T07 — Empty / error / loading states
 
 ---
 

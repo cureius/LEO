@@ -1,10 +1,11 @@
 import SwiftUI
 
+// MARK: - Root
+
 @MainActor
 struct TodayView: View {
     @Environment(AppEnvironment.self) private var appEnv
     @State private var viewModel: TodayViewModel? = nil
-    @State private var showQuickAdd = false
     @State private var selectedItem: (any Item)? = nil
 
     var body: some View {
@@ -22,6 +23,8 @@ struct TodayView: View {
             let vm = TodayViewModel(itemRepository: appEnv.itemRepository)
             viewModel = vm
             await vm.loadItems()
+            // Observe data changes for the lifetime of this view
+            await vm.startObserving()
         }
     }
 
@@ -35,6 +38,8 @@ struct TodayView: View {
                 if vm.isLoading {
                     ProgressView()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Theme.Color.background)
+
                 } else if vm.timedItems.isEmpty && vm.untimedItems.isEmpty {
                     LEOEmptyState(
                         title: "Nothing today",
@@ -42,25 +47,26 @@ struct TodayView: View {
                         icon: "calendar.badge.plus"
                     )
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Theme.Color.background)
+
                 } else {
                     TodayScrollView(
                         timedItems: vm.timedItems,
                         untimedItems: vm.untimedItems,
                         onComplete: { item in Task { await vm.completeItem(item) } },
-                        onTap: { item in selectedItem = item },
-                        onReschedule: { item, anchor in Task { await vm.reschedule(item: item, to: anchor) } }
+                        onTap: { item in selectedItem = item }
                     )
                 }
             }
-            .background(Theme.Color.background)
 
-            if let errorMsg = vm.error {
-                ErrorBanner(message: errorMsg, retry: { Task { await vm.loadItems() } })
+            if let msg = vm.error {
+                ErrorBanner(message: msg, retry: { Task { await vm.loadItems() } })
                     .padding(Theme.Spacing.lg)
             }
         }
+        .background(Theme.Color.background)
         .sheet(item: Binding(
-            get: { selectedItem.map { IdentifiableItem(item: $0) } },
+            get: { selectedItem.map { IdentifiableItem($0) } },
             set: { selectedItem = $0?.item }
         )) { wrapper in
             ItemDetailSheet(item: wrapper.item, onSave: { _ in
@@ -71,18 +77,17 @@ struct TodayView: View {
     }
 }
 
-// MARK: - Today header
+// MARK: - Header
 
 private struct TodayHeader: View {
     let date: Date
-
     private var isToday: Bool { Calendar.current.isDateInToday(date) }
 
     var body: some View {
-        HStack(spacing: Theme.Spacing.sm) {
-            VStack(alignment: .leading, spacing: 2) {
+        HStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 1) {
                 Text(date, format: .dateTime.weekday(.wide))
-                    .font(Theme.Typography.headline)
+                    .font(.system(size: 22, weight: .bold))
                     .foregroundStyle(isToday ? Theme.Color.accent : Theme.Color.textPrimary)
                 Text(date, format: .dateTime.month(.wide).day())
                     .font(Theme.Typography.callout)
@@ -96,253 +101,414 @@ private struct TodayHeader: View {
         .padding(.horizontal, Theme.Spacing.lg)
         .padding(.vertical, Theme.Spacing.md)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(accessibilityDateLabel)
-    }
-
-    private var accessibilityDateLabel: String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .full
-        return (isToday ? "Today, " : "") + formatter.string(from: date)
+        .accessibilityLabel(
+            (isToday ? "Today, " : "")
+            + date.formatted(.dateTime.weekday(.wide).month(.wide).day())
+        )
     }
 }
 
-// MARK: - Scrollable timeline
+// MARK: - Scroll view
 
 private struct TodayScrollView: View {
     let timedItems: [any Item]
     let untimedItems: [any Item]
     let onComplete: (any Item) -> Void
     let onTap: (any Item) -> Void
-    let onReschedule: (any Item, Anchor) -> Void
 
-    private let startHour = 6
-    private let endHour = 23
-    private let hourHeight: CGFloat = 60  // 60pt per hour = 1pt/min
+    // Ticks every minute so the NOW marker re-evaluates its position automatically
+    @State private var now: Date = .now
+    private let minuteTimer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+
+    // Sorted timed items + "now" marker injected between past & future
+    private var scheduleEntries: [ScheduleEntry] {
+        let sorted = timedItems.sorted {
+            ($0.anchor.sortDate ?? .distantFuture) < ($1.anchor.sortDate ?? .distantFuture)
+        }
+        var entries = sorted.map { ScheduleEntry.item($0) }
+        // Use `now` (state) so SwiftUI re-evaluates this when the timer fires
+        let nowIdx = sorted.firstIndex(where: {
+            ($0.anchor.sortDate ?? .distantFuture) > now
+        }) ?? sorted.count
+        entries.insert(.nowMarker, at: nowIdx)
+        return entries
+    }
 
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 0) {
-                    // Untimed items lane
+                LazyVStack(spacing: 0, pinnedViews: []) {
+
+                    // ── Unscheduled tasks ──────────────────────────────
                     if !untimedItems.isEmpty {
-                        untimedLane
-                        Divider().background(Theme.Color.divider).padding(.vertical, Theme.Spacing.sm)
+                        SectionHeader(title: "Unscheduled", count: untimedItems.count)
+
+                        ForEach(untimedItems, id: \.id) { item in
+                            UnscheduledRow(
+                                item: item,
+                                onComplete: onComplete,
+                                onTap: onTap
+                            )
+                            RowDivider()
+                        }
+                        Spacer().frame(height: Theme.Spacing.lg)
                     }
 
-                    // Hour grid + items
-                    ZStack(alignment: .topLeading) {
-                        hourGrid
-                        timedItemsLayer
-                        NowLine(startHour: startHour, hourHeight: hourHeight)
+                    // ── Timed schedule ─────────────────────────────────
+                    if !timedItems.isEmpty {
+                        SectionHeader(title: "Schedule", count: timedItems.count)
+
+                        ForEach(scheduleEntries) { entry in
+                            switch entry {
+                            case .item(let item):
+                                ScheduleRow(item: item, onComplete: onComplete, onTap: onTap)
+                                    .id(item.id)
+                                RowDivider(leadingPad: 60)
+                            case .nowMarker:
+                                NowMarkerRow()
+                                    .id("now-marker")
+                            }
+                        }
                     }
-                    .frame(height: CGFloat(endHour - startHour) * hourHeight + 80)
-                    .padding(.horizontal, Theme.Spacing.lg)
                 }
-                .padding(.bottom, 100) // quick-add bar clearance
+                .padding(.bottom, 120)
             }
+            .scrollDismissesKeyboard(.interactively)
             .onAppear {
-                let nowHour = Calendar.current.component(.hour, from: .now)
-                let scrollHour = max(startHour, nowHour - 1)
-                proxy.scrollTo("hour-\(scrollHour)", anchor: .top)
-            }
-        }
-    }
-
-    // MARK: - Untimed lane
-
-    private var untimedLane: some View {
-        VStack(alignment: .leading, spacing: Theme.Spacing.sm) {
-            Text("No time set")
-                .font(Theme.Typography.caption)
-                .foregroundStyle(Theme.Color.textSecondary)
-                .padding(.horizontal, Theme.Spacing.lg)
-            ForEach(untimedItems, id: \.id) { item in
-                ItemRow(item: item, onComplete: onComplete, onTap: onTap)
-                    .padding(.horizontal, Theme.Spacing.lg)
-            }
-        }
-        .padding(.vertical, Theme.Spacing.sm)
-    }
-
-    // MARK: - Hour rail
-
-    private var hourGrid: some View {
-        VStack(spacing: 0) {
-            ForEach(startHour..<endHour, id: \.self) { hour in
-                HStack(alignment: .top, spacing: Theme.Spacing.sm) {
-                    Text(hourLabel(hour))
-                        .font(Theme.Typography.caption)
-                        .foregroundStyle(Theme.Color.textSecondary)
-                        .frame(width: 44, alignment: .trailing)
-                    Rectangle()
-                        .fill(Theme.Color.divider)
-                        .frame(height: 0.5)
-                        .frame(maxWidth: .infinity)
-                }
-                .frame(height: hourHeight)
-                .id("hour-\(hour)")
-            }
-        }
-    }
-
-    private func hourLabel(_ hour: Int) -> String {
-        let d = Calendar.current.date(bySettingHour: hour, minute: 0, second: 0, of: .now)!
-        return d.formatted(.dateTime.hour())
-    }
-
-    // MARK: - Timed items layer
-
-    private var timedItemsLayer: some View {
-        ZStack(alignment: .topLeading) {
-            ForEach(timedItems, id: \.id) { item in
-                if let sortDate = item.anchor.sortDate {
-                    let topOffset = yOffset(for: sortDate)
-                    let itemHeight = height(for: item)
-                    TimelineItemCard(
-                        item: item,
-                        height: itemHeight,
-                        onComplete: onComplete,
-                        onTap: onTap
-                    )
-                    .frame(maxWidth: .infinity)
-                    .padding(.leading, 52) // after the hour label
-                    .offset(y: topOffset)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    withAnimation { proxy.scrollTo("now-marker", anchor: .center) }
                 }
             }
+            .onReceive(minuteTimer) { fired in
+                now = fired   // triggers scheduleEntries to recompute
+            }
         }
-    }
-
-    private func yOffset(for date: Date) -> CGFloat {
-        let cal = Calendar.current
-        let hour = CGFloat(cal.component(.hour, from: date) - startHour)
-        let minute = CGFloat(cal.component(.minute, from: date))
-        return (hour * hourHeight) + (minute / 60 * hourHeight)
-    }
-
-    private func height(for item: any Item) -> CGFloat {
-        if case .timeBlock(let s, let e) = item.anchor {
-            let minutes = e.timeIntervalSince(s) / 60
-            return max(44, CGFloat(minutes) / 60 * hourHeight)
-        }
-        return 44
     }
 }
 
-// MARK: - Now line (ticks every 60s)
+// MARK: - Schedule entry model
 
-private struct NowLine: View {
-    let startHour: Int
-    let hourHeight: CGFloat
+private enum ScheduleEntry: Identifiable {
+    case item(any Item)
+    case nowMarker
+
+    var id: String {
+        switch self {
+        case .item(let i): return i.id.uuidString
+        case .nowMarker:   return "now-marker"
+        }
+    }
+}
+
+// MARK: - Section header
+
+private struct SectionHeader: View {
+    let title: String
+    let count: Int
 
     var body: some View {
-        TimelineView(.periodic(from: .now, by: 60)) { _ in
-            let offset = nowOffset()
-            HStack(spacing: 0) {
-                Text("▶")
-                    .font(.system(size: 8))
-                    .foregroundStyle(Theme.Color.danger)
-                    .frame(width: 52, alignment: .trailing)
-                Rectangle()
-                    .fill(Theme.Color.danger)
-                    .frame(height: 1.5)
-                    .frame(maxWidth: .infinity)
-            }
-            .offset(y: offset)
-            .accessibilityHidden(true)
+        HStack(alignment: .firstTextBaseline, spacing: 6) {
+            Text(title.uppercased())
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundStyle(Theme.Color.textSecondary)
+                .tracking(0.6)
+            Text("\(count)")
+                .font(.system(size: 11, weight: .medium))
+                .foregroundStyle(Theme.Color.textSecondary.opacity(0.6))
+            Spacer()
         }
-    }
-
-    private func nowOffset() -> CGFloat {
-        let cal = Calendar.current
-        let now = Date.now
-        let hour = CGFloat(cal.component(.hour, from: now) - startHour)
-        let minute = CGFloat(cal.component(.minute, from: now))
-        return (hour * hourHeight) + (minute / 60 * hourHeight)
+        .padding(.horizontal, Theme.Spacing.lg)
+        .padding(.top, Theme.Spacing.lg)
+        .padding(.bottom, Theme.Spacing.xs)
     }
 }
 
-// MARK: - Timeline item card
+// MARK: - Dividers
 
-private struct TimelineItemCard: View {
+private struct RowDivider: View {
+    var leadingPad: CGFloat = Theme.Spacing.lg
+
+    var body: some View {
+        Divider()
+            .background(Theme.Color.divider)
+            .padding(.leading, leadingPad)
+    }
+}
+
+// MARK: - Now marker
+
+private struct NowMarkerRow: View {
+    var body: some View {
+        HStack(spacing: 0) {
+            // Aligns with the time column
+            Text("NOW")
+                .font(.system(size: 9, weight: .bold))
+                .foregroundStyle(Theme.Color.danger)
+                .frame(width: 52, alignment: .trailing)
+                .padding(.trailing, 8)
+
+            Circle()
+                .fill(Theme.Color.danger)
+                .frame(width: 6, height: 6)
+
+            Rectangle()
+                .fill(Theme.Color.danger)
+                .frame(height: 1)
+        }
+        .padding(.horizontal, Theme.Spacing.lg)
+        .padding(.vertical, 6)
+        .accessibilityHidden(true)
+    }
+}
+
+// MARK: - Unscheduled task row
+
+private struct UnscheduledRow: View {
     let item: any Item
-    let height: CGFloat
     let onComplete: (any Item) -> Void
     let onTap: (any Item) -> Void
 
     var body: some View {
         Button { onTap(item) } label: {
-            HStack(spacing: Theme.Spacing.sm) {
-                Rectangle()
-                    .fill(typeColor)
-                    .frame(width: 3)
+            HStack(spacing: Theme.Spacing.md) {
+                CompletionButton(item: item, onComplete: onComplete)
+
                 VStack(alignment: .leading, spacing: 2) {
                     Text(item.title)
-                        .font(Theme.Typography.callout)
-                        .foregroundStyle(Theme.Color.textPrimary)
-                        .lineLimit(height > 60 ? 2 : 1)
-                    if let timeStr = timeString {
-                        Text(timeStr)
-                            .font(Theme.Typography.caption)
-                            .foregroundStyle(Theme.Color.textSecondary)
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundStyle(
+                            item.isCompleted ? Theme.Color.textSecondary : Theme.Color.textPrimary
+                        )
+                        .strikethrough(item.isCompleted, color: Theme.Color.textSecondary)
+                        .lineLimit(2)
+
+                    if !item.tags.isEmpty {
+                        tagsLabel
                     }
                 }
-                Spacer()
-                if item.importance == .high || item.importance == .urgent {
-                    Image(systemName: item.importance == .urgent ? "exclamationmark.2" : "exclamationmark")
-                        .font(.caption)
-                        .foregroundStyle(Theme.Color.warning)
-                }
+
+                Spacer(minLength: 0)
+                ImportanceBadge(importance: item.importance, completed: item.isCompleted)
             }
-            .padding(.horizontal, Theme.Spacing.sm)
-            .padding(.vertical, Theme.Spacing.xs)
-            .frame(height: height, alignment: .top)
+            .padding(.horizontal, Theme.Spacing.lg)
+            .padding(.vertical, 11)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .background(typeColor.opacity(0.1))
-        .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.sm))
-        .overlay(RoundedRectangle(cornerRadius: Theme.Radius.sm).strokeBorder(typeColor.opacity(0.3), lineWidth: 1))
-        .contextMenu {
-            Button("Complete") { onComplete(item) }
-            Button("Edit") { onTap(item) }
+        .contextMenu { rowContextMenu }
+    }
+
+    private var tagsLabel: some View {
+        Text(item.tags.map(\.name).joined(separator: " · "))
+            .font(.system(size: 12))
+            .foregroundStyle(Theme.Color.textSecondary)
+            .lineLimit(1)
+    }
+
+    @ViewBuilder
+    private var rowContextMenu: some View {
+        if !item.isCompleted {
+            Button("Complete", systemImage: "checkmark.circle") { onComplete(item) }
         }
-        .accessibilityLabel(accessibilityLabel)
-        .accessibilityHint("Double tap to open details")
+        Button("Edit", systemImage: "pencil") { onTap(item) }
+    }
+}
+
+// MARK: - Schedule (timed) row
+
+private struct ScheduleRow: View {
+    let item: any Item
+    let onComplete: (any Item) -> Void
+    let onTap: (any Item) -> Void
+
+    private var isNow: Bool {
+        guard case .timeBlock(let s, let e) = item.anchor else { return false }
+        return s <= Date.now && Date.now < e
+    }
+
+    var body: some View {
+        Button { onTap(item) } label: {
+            HStack(alignment: .top, spacing: 0) {
+                // ── Time label (52pt) ──────────────────────────────────
+                Text(startTimeText)
+                    .font(.system(size: 12, weight: .medium, design: .rounded))
+                    .foregroundStyle(
+                        item.isCompleted ? Theme.Color.textSecondary.opacity(0.5) : Theme.Color.textSecondary
+                    )
+                    .frame(width: 52, alignment: .trailing)
+                    .padding(.trailing, 8)
+                    .padding(.top, 13)
+
+                // ── Type indicator ─────────────────────────────────────
+                typeIndicator
+
+                // ── Content ────────────────────────────────────────────
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack(alignment: .top, spacing: 6) {
+                        Text(item.title)
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundStyle(
+                                item.isCompleted ? Theme.Color.textSecondary : Theme.Color.textPrimary
+                            )
+                            .strikethrough(item.isCompleted, color: Theme.Color.textSecondary)
+                            .lineLimit(2)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                        ImportanceBadge(importance: item.importance, completed: item.isCompleted)
+                        CompletionButton(item: item, onComplete: onComplete)
+                    }
+
+                    subtitleText
+                }
+                .padding(.top, 10)
+                .padding(.bottom, 12)
+                .padding(.trailing, Theme.Spacing.lg)
+            }
+            .background(isNow ? typeColor.opacity(0.05) : Color.clear)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .contextMenu { rowContextMenu }
+    }
+
+    // Left colour bar (timeBlock) or dot (point/alarm)
+    @ViewBuilder
+    private var typeIndicator: some View {
+        if case .timeBlock = item.anchor {
+            RoundedRectangle(cornerRadius: 1.5)
+                .fill(typeColor.opacity(item.isCompleted ? 0.3 : 1))
+                .frame(width: 3)
+                .padding(.vertical, 6)
+                .padding(.trailing, 8)
+        } else {
+            Circle()
+                .fill(typeColor.opacity(item.isCompleted ? 0.3 : 1))
+                .frame(width: 7, height: 7)
+                .padding(.trailing, 8)
+                .frame(width: 3)    // same column width as the bar
+                .padding(.top, 17)
+        }
+    }
+
+    @ViewBuilder
+    private var subtitleText: some View {
+        let parts = subtitleParts
+        if !parts.isEmpty {
+            Text(parts.joined(separator: " · "))
+                .font(.system(size: 12))
+                .foregroundStyle(Theme.Color.textSecondary)
+                .lineLimit(1)
+        }
+    }
+
+    private var subtitleParts: [String] {
+        var parts: [String] = []
+
+        // Time range or point
+        switch item.anchor {
+        case .timeBlock(let s, let e):
+            let fmt = Date.FormatStyle().hour().minute()
+            parts.append("\(s.formatted(fmt))–\(e.formatted(fmt))")
+        case .point(let d):
+            parts.append(d.formatted(.dateTime.hour().minute()))
+        default: break
+        }
+
+        // Location (first segment only — keeps it short)
+        if let ev = item as? EventItem, let loc = ev.location, !loc.isEmpty {
+            parts.append(loc.components(separatedBy: ",").first?.trimmingCharacters(in: .whitespaces) ?? loc)
+        }
+
+        // Attendee count
+        if let ev = item as? EventItem, !ev.attendees.isEmpty {
+            let n = ev.attendees.count
+            parts.append(n == 1 ? "1 person" : "\(n) people")
+        }
+
+        // Tags
+        if !item.tags.isEmpty {
+            parts.append(item.tags.map(\.name).joined(separator: ", "))
+        }
+
+        return parts
+    }
+
+    private var startTimeText: String {
+        guard let d = item.anchor.sortDate else { return "" }
+        return d.formatted(.dateTime.hour().minute())
     }
 
     private var typeColor: Color {
         switch item {
-        case is EventItem:         return Theme.Color.accent
-        case is ReminderItem:      return Theme.Color.success
-        case is AlarmItem:         return Theme.Color.danger
-        case is HabitInstanceItem: return Theme.Color.warning
-        default:                   return Theme.Color.textSecondary
+        case is EventItem:          return Theme.Color.accent
+        case is ReminderItem:       return Theme.Color.success
+        case is AlarmItem:          return Theme.Color.danger
+        case is HabitInstanceItem:  return Theme.Color.warning
+        default:                    return Theme.Color.textSecondary
         }
     }
 
-    private var timeString: String? {
-        switch item.anchor {
-        case .timeBlock(let s, let e):
-            return "\(s.formatted(.dateTime.hour().minute())) – \(e.formatted(.dateTime.hour().minute()))"
-        case .point(let d):
-            return d.formatted(.dateTime.hour().minute())
-        default:
-            return nil
+    @ViewBuilder
+    private var rowContextMenu: some View {
+        if !item.isCompleted {
+            Button("Complete", systemImage: "checkmark.circle") { onComplete(item) }
         }
-    }
-
-    private var accessibilityLabel: String {
-        var parts = [item.title]
-        if let t = timeString { parts.append(t) }
-        if item.importance != .normal { parts.append(item.importance.displayName) }
-        return parts.joined(separator: ", ")
+        Button("Edit", systemImage: "pencil") { onTap(item) }
     }
 }
 
-// MARK: - Type-erased Identifiable wrapper for .sheet(item:)
+// MARK: - Shared sub-components
+
+private struct CompletionButton: View {
+    let item: any Item
+    let onComplete: (any Item) -> Void
+
+    var body: some View {
+        Button { onComplete(item) } label: {
+            Image(systemName: item.isCompleted ? "checkmark.circle.fill" : "circle")
+                .font(.system(size: 20))
+                .foregroundStyle(
+                    item.isCompleted ? Theme.Color.success : Theme.Color.textSecondary.opacity(0.35)
+                )
+                .contentShape(Circle().scale(1.4))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(item.isCompleted ? "Mark incomplete" : "Mark complete")
+    }
+}
+
+private struct ImportanceBadge: View {
+    let importance: Importance
+    let completed: Bool
+
+    var body: some View {
+        if !completed {
+            switch importance {
+            case .urgent:
+                Text("Urgent")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(Theme.Color.danger)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 2)
+                    .background(Theme.Color.danger.opacity(0.12))
+                    .clipShape(Capsule())
+            case .high:
+                Image(systemName: "exclamationmark")
+                    .font(.system(size: 11, weight: .bold))
+                    .foregroundStyle(Theme.Color.warning)
+            default:
+                EmptyView()
+            }
+        }
+    }
+}
+
+// MARK: - Helpers
 
 private struct IdentifiableItem: Identifiable {
     let item: any Item
     var id: UUID { item.id }
+    init(_ item: any Item) { self.item = item }
 }
 
 #Preview("Today — seeded") {

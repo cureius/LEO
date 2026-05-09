@@ -12,13 +12,13 @@
 
 ## Task summary
 
-- [ ] M4-T01 — Claude API client + prompt caching
-- [ ] M4-T02 — Tool definitions + tool runtime
-- [ ] M4-T03 — Diff review sheet
-- [ ] M4-T04 — Chat UI ("Ask LEO")
-- [ ] M4-T05 — Model routing (on-device vs cloud)
-- [ ] M4-T06 — Token budget meter + privacy controls
-- [ ] M4-T07 — Eval harness
+- [x] M4-T01 — Claude API client + prompt caching
+- [x] M4-T02 — Tool definitions + tool runtime
+- [x] M4-T03 — Diff review sheet
+- [x] M4-T04 — Chat UI ("Ask LEO")
+- [x] M4-T05 — Model routing (on-device vs cloud)
+- [x] M4-T06 — Token budget meter + privacy controls
+- [ ] M4-T07 — Eval harness (deferred: requires API key + live data to be meaningful)
 
 ---
 

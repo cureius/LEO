@@ -65,10 +65,10 @@ See [`AGENTS.md`](AGENTS.md) — re-read every session. They are not rephrased h
 
 ## Status tracker (the live state)
 
-**Current milestone:** M2 — Recurring & Notifications
-**Currently-in-progress task:** *(none yet)*
-**Last completed task:** `M1-T08`
-**Next eligible task:** `M2-T01`
+**Current milestone:** M8 — Launch
+**Currently-in-progress task:** `M8-T01` (BLOCKED — requires App Store Connect submission by user)
+**Last completed task:** `M7-T06`
+**Next eligible task:** `M8-T01` (user action required)
 
 ### Milestone progress
 
@@ -76,13 +76,13 @@ See [`AGENTS.md`](AGENTS.md) — re-read every session. They are not rephrased h
 |---|---|---|---|---|
 | M0 — Foundation | [`plans/M0-foundation.md`](plans/M0-foundation.md) | Done | 8 / 8 | Xcode 15.4 / iOS 17; bump to 18 when Xcode 16 installed |
 | M1 — Capture & Today | [`plans/M1-capture-today.md`](plans/M1-capture-today.md) | Done | 8 / 8 | Today view, QuickAdd, parser, ItemRow, Inbox, drag-reschedule |
-| M2 — Recurring & Notifications | [`plans/M2-recurring-notifications.md`](plans/M2-recurring-notifications.md) | Not started | 0 / 7 | |
-| M3 — Integration & Sync | [`plans/M3-integration-sync.md`](plans/M3-integration-sync.md) | Not started | 0 / 7 | |
-| M4 — AI Assistant | [`plans/M4-ai-assistant.md`](plans/M4-ai-assistant.md) | Not started | 0 / 7 | |
-| M5 — Habits & Review | [`plans/M5-habits-review.md`](plans/M5-habits-review.md) | Not started | 0 / 6 | |
-| M6 — Alarms, Watch, Polish | [`plans/M6-alarms-watch-polish.md`](plans/M6-alarms-watch-polish.md) | Not started | 0 / 7 | |
-| M7 — Beta & Monetization | [`plans/M7-beta-monetization.md`](plans/M7-beta-monetization.md) | Not started | 0 / 6 | |
-| M8 — Launch | [`plans/M8-launch.md`](plans/M8-launch.md) | Not started | 0 / 5 | |
+| M2 — Recurring & Notifications | [`plans/M2-recurring-notifications.md`](plans/M2-recurring-notifications.md) | Done | 7 / 7 | RRule parser, engine, overrides, extensions, UI builder, notifications, location |
+| M3 — Integration & Sync | [`plans/M3-integration-sync.md`](plans/M3-integration-sync.md) | In Progress | 6 / 7 | T07 (CloudKit production deploy) BLOCKED — requires user sign-off |
+| M4 — AI Assistant | [`plans/M4-ai-assistant.md`](plans/M4-ai-assistant.md) | In Progress | 6 / 7 | T07 (eval harness) deferred — needs live API key |
+| M5 — Habits & Review | [`plans/M5-habits-review.md`](plans/M5-habits-review.md) | Done | 6 / 6 | HabitMaterializer, StreakEngine, HabitsView, WeeklyReview |
+| M6 — Alarms, Watch, Polish | [`plans/M6-alarms-watch-polish.md`](plans/M6-alarms-watch-polish.md) | In Progress | 6 / 7 | Watch app deferred to v1.1 |
+| M7 — Beta & Monetization | [`plans/M7-beta-monetization.md`](plans/M7-beta-monetization.md) | In Progress | 5 / 6 | T04 (TestFlight) BLOCKED — requires App Store Connect submission |
+| M8 — Launch | [`plans/M8-launch.md`](plans/M8-launch.md) | In Progress | 2 / 5 | T01/T04 BLOCKED — App Store Connect submission; T02 (marketing site) needs hosting |
 
 ### How to update this tracker
 
@@ -110,6 +110,7 @@ When the user (or the agent, with user approval) makes a decision that overrides
 | 2026-05-07 | AI proposes diffs; never auto-mutates v1 | Trust + safety |
 | 2026-05-07 | Deployment target iOS 17.0 (not 18.0) for now | Xcode 15.4 installed; bump target + strict concurrency when Xcode 16 is installed |
 | 2026-05-07 | xcodegen 2.45.4 used to generate project.yml; pbxproj objectVersion patched to 60 | No xcode-16 available; project opens in Xcode 15.4 |
+| 2026-05-08 | Bumped deployment target to iOS 18.0; xcodeVersion updated to 17.0 | User has Xcode 17 + iPhone 13 iOS 26; objectVersion 77 patch no longer needed |
 | 2026-05-07 | `@Previewable` macro removed from previews | Not available in Swift 5.10 / Xcode 15; use wrapper structs instead |
 | 2026-05-08 | `ModelConfiguration` uses `.cloudKitDatabase(.none)` until M3 | SwiftData validates CloudKit rules (all attrs optional, all rels have inverses) at container init even for in-memory stores when app is signed with CloudKit entitlements. M3 must make all @Model attrs optional and add inverse to StoredHabit.recurrenceRule before switching to `.private("iCloud.com.leo.app")` |
 

@@ -2,7 +2,7 @@ import Foundation
 import Observation
 import OSLog
 
-private let logger = Logger(subsystem: "com.leo.app", category: "itemdetail")
+private let logger = Logger(subsystem: "com.theblueman.leo", category: "itemdetail")
 
 @MainActor
 @Observable
@@ -28,6 +28,9 @@ final class ItemDetailViewModel {
     // MARK: - AlarmItem extras
     var soundProfile: AlarmSound = .default
     var escalates: Bool = true
+
+    // MARK: - Recurrence
+    var recurrenceRule: RecurrenceRule? = nil
 
     // MARK: - HabitInstanceItem (read-only here; habits edited separately)
 

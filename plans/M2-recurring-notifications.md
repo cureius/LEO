@@ -12,13 +12,13 @@
 
 ## Task summary
 
-- [ ] M2-T01 — RRULE parser + serializer
-- [ ] M2-T02 — Recurrence expansion engine
-- [ ] M2-T03 — Per-occurrence overrides (skip / move)
-- [ ] M2-T04 — LEO recurrence extensions (workdays-only, holidays, etc.)
-- [ ] M2-T05 — Visual recurrence rule builder
-- [ ] M2-T06 — Time-based notifications
-- [ ] M2-T07 — Location reminders + travel-time pre-reminders
+- [x] M2-T01 — RRULE parser + serializer
+- [x] M2-T02 — Recurrence expansion engine
+- [x] M2-T03 — Per-occurrence overrides (skip / move)
+- [x] M2-T04 — LEO recurrence extensions (workdays-only, holidays, etc.)
+- [x] M2-T05 — Visual recurrence rule builder
+- [x] M2-T06 — Time-based notifications
+- [x] M2-T07 — Location reminders + travel-time pre-reminders
 
 ---
 

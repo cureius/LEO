@@ -12,12 +12,12 @@
 
 ## Task summary
 
-- [ ] M5-T01 — Habit definition + materializer
-- [ ] M5-T02 — Habit row inline on Today
-- [ ] M5-T03 — Forgiving streaks
-- [ ] M5-T04 — Habits tab (rings, history)
-- [ ] M5-T05 — Weekly review generator
-- [ ] M5-T06 — Weekly review UI
+- [x] M5-T01 — Habit definition + materializer
+- [x] M5-T02 — Habit row inline on Today
+- [x] M5-T03 — Forgiving streaks
+- [x] M5-T04 — Habits tab (rings, history)
+- [x] M5-T05 — Weekly review generator
+- [x] M5-T06 — Weekly review UI
 
 ---
 

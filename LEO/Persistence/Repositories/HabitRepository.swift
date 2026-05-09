@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 import OSLog
 
-private let logger = Logger(subsystem: "com.leo.app", category: "habits")
+private let logger = Logger(subsystem: "com.theblueman.leo", category: "habits")
 
 actor HabitRepository {
     private let controller: PersistenceController
@@ -32,6 +32,7 @@ actor HabitRepository {
         context.insert(try storedFrom(habit))
         try context.save()
         logger.info("Added habit '\(habit.name)'")
+        postChange()
     }
 
     func update(_ habit: Habit) async throws {
@@ -40,6 +41,13 @@ actor HabitRepository {
         stored.filter { $0.id == habit.id }.forEach { context.delete($0) }
         context.insert(try storedFrom(habit))
         try context.save()
+        postChange()
+    }
+
+    private nonisolated func postChange() {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .leoDataDidChange, object: nil)
+        }
     }
 
     func archive(id: UUID) async throws {
@@ -47,6 +55,14 @@ actor HabitRepository {
         let stored = try context.fetch(FetchDescriptor<StoredHabit>())
         stored.filter { $0.id == id }.forEach { $0.isArchived = true }
         try context.save()
+    }
+
+    func allActive() async -> [Habit] {
+        (try? await fetchAll().filter { !$0.isArchived }) ?? []
+    }
+
+    func instances(for habitID: UUID, in interval: DateInterval) async -> [HabitInstanceItem] {
+        (try? await fetchInstances(in: interval).filter { $0.habitID == habitID }) ?? []
     }
 
     func addInstance(_ instance: HabitInstanceItem) async throws {

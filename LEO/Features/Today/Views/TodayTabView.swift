@@ -3,6 +3,7 @@ import SwiftUI
 /// Today tab: the timeline + the pinned quick-add bar.
 @MainActor
 struct TodayTabView: View {
+    @Environment(AppEnvironment.self) private var appEnv
     @State private var refreshToken = UUID()
 
     var body: some View {
@@ -13,8 +14,7 @@ struct TodayTabView: View {
                     .navigationTitle("")
                     .navigationBarHidden(true)
 
-                QuickAddBar {
-                    // Refresh Today when a new item is captured
+                QuickAddBar(repository: appEnv.itemRepository) {
                     refreshToken = UUID()
                 }
             }

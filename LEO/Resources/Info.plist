@@ -4,8 +4,8 @@
 <dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>com.leo.refresh</string>
-		<string>com.leo.processing</string>
+		<string>com.theblueman.leo.refresh</string>
+		<string>com.theblueman.leo.processing</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
@@ -47,6 +47,7 @@
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>fetch</string>
 		<string>remote-notification</string>
 		<string>processing</string>
 		<string>location</string>

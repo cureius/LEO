@@ -1,0 +1,70 @@
+{
+  "identifier" : "LEO_StoreKit",
+  "nonConsumableProducts" : [],
+  "nonRenewingSubscriptions" : [],
+  "consumableProducts" : [],
+  "subscriptionGroups" : [
+    {
+      "id" : "leo.pro.group",
+      "name" : "LEO Pro",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "9.99",
+          "familyShareable" : true,
+          "groupNumber" : 1,
+          "internalID" : "leo.pro.monthly",
+          "introductoryOffer" : {
+            "duration" : "P7D",
+            "identifier" : "leo.trial.7days",
+            "paymentMode" : "FREE_TRIAL",
+            "price" : "0.00"
+          },
+          "localizations" : [
+            {
+              "description" : "Full access to all LEO features including real alarms, unlimited AI, habits, and weekly review.",
+              "displayName" : "Monthly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "leo.pro.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "LEO Pro Monthly",
+          "subscriptionGroupID" : "leo.pro.group",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "79.99",
+          "familyShareable" : true,
+          "groupNumber" : 2,
+          "internalID" : "leo.pro.yearly",
+          "introductoryOffer" : {
+            "duration" : "P7D",
+            "identifier" : "leo.trial.7days.yearly",
+            "paymentMode" : "FREE_TRIAL",
+            "price" : "0.00"
+          },
+          "localizations" : [
+            {
+              "description" : "Full access to all LEO features — save 33% vs monthly.",
+              "displayName" : "Yearly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "leo.pro.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "LEO Pro Yearly",
+          "subscriptionGroupID" : "leo.pro.group",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

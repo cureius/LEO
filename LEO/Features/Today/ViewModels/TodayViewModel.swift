@@ -2,7 +2,7 @@ import Foundation
 import Observation
 import OSLog
 
-private let logger = Logger(subsystem: "com.leo.app", category: "today")
+private let logger = Logger(subsystem: "com.theblueman.leo", category: "today")
 
 @MainActor
 @Observable
@@ -19,9 +19,25 @@ final class TodayViewModel {
 
     // MARK: - Dependencies
     private let itemRepository: ItemRepository
+    private var debounceTask: Task<Void, Never>? = nil
 
     init(itemRepository: ItemRepository) {
         self.itemRepository = itemRepository
+    }
+
+    // MARK: - Change observation
+
+    /// Call once after init. Listens for data-change notifications and reloads
+    /// with a 400 ms debounce so burst writes (e.g. seeding) cause only one reload.
+    func startObserving() async {
+        for await _ in NotificationCenter.default.notifications(named: .leoDataDidChange) {
+            debounceTask?.cancel()
+            debounceTask = Task { [weak self] in
+                try? await Task.sleep(for: .milliseconds(400))
+                guard !Task.isCancelled, let self else { return }
+                await self.loadItems()
+            }
+        }
     }
 
     // MARK: - Load

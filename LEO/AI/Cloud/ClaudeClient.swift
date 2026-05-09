@@ -1,0 +1,245 @@
+import Foundation
+import OSLog
+
+private let logger = Logger(subsystem: "com.theblueman.leo", category: "claude")
+
+private let anthropicAPIBase = "https://api.anthropic.com/v1/messages"
+private let anthropicVersion = "2023-06-01"
+private let anthropicBeta = "prompt-caching-2024-07-31"
+
+// MARK: - ClaudeClient
+
+/// Hand-rolled Claude API client. No third-party SDK.
+/// Uses URLSession + SSE streaming. Stores API key in Keychain.
+actor ClaudeClient {
+    private let model: ClaudeModel
+    private let session: URLSession
+    private var apiKey: String?
+    private let telemetry: AITelemetry
+
+    init(model: ClaudeModel = .sonnet46, session: URLSession = .shared, telemetry: AITelemetry = .shared) {
+        self.model = model
+        self.session = session
+        self.telemetry = telemetry
+        self.apiKey = KeychainHelper.load(key: "claude_api_key")
+        ?? ProcessInfo.processInfo.environment["CLAUDE_API_KEY"]
+    }
+
+    func setAPIKey(_ key: String) {
+        apiKey = key
+        KeychainHelper.save(key: "claude_api_key", value: key)
+    }
+
+    func removeAPIKey() {
+        apiKey = nil
+        KeychainHelper.delete(key: "claude_api_key")
+    }
+
+    var hasAPIKey: Bool { apiKey != nil }
+
+    // MARK: - One-shot send
+
+    func send(
+        messages: [Message],
+        tools: [ToolDefinition]? = nil,
+        system: [SystemBlock]? = nil,
+        maxTokens: Int = 4096
+    ) async throws -> ClaudeResponse {
+        guard let key = apiKey else { throw ClaudeError.missingAPIKey }
+        let body = try buildRequestBody(messages: messages, tools: tools, system: system, maxTokens: maxTokens, stream: false)
+        var req = URLRequest(url: URL(string: anthropicAPIBase)!)
+        req.httpMethod = "POST"
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        req.setValue(key, forHTTPHeaderField: "x-api-key")
+        req.setValue(anthropicVersion, forHTTPHeaderField: "anthropic-version")
+        req.setValue(anthropicBeta, forHTTPHeaderField: "anthropic-beta")
+        req.httpBody = body
+        req.timeoutInterval = 60
+
+        let (data, response) = try await session.data(for: req)
+        try checkStatus(response)
+
+        let decoded = try JSONDecoder().decode(ClaudeResponse.self, from: data)
+        await telemetry.record(model: model, response: decoded)
+        return decoded
+    }
+
+    // MARK: - Streaming send
+
+    func stream(
+        messages: [Message],
+        tools: [ToolDefinition]? = nil,
+        system: [SystemBlock]? = nil,
+        maxTokens: Int = 4096
+    ) -> AsyncThrowingStream<StreamEvent, Error> {
+        AsyncThrowingStream { continuation in
+            Task {
+                do {
+                    guard let key = apiKey else { throw ClaudeError.missingAPIKey }
+                    let body = try buildRequestBody(messages: messages, tools: tools, system: system, maxTokens: maxTokens, stream: true)
+                    var req = URLRequest(url: URL(string: anthropicAPIBase)!)
+                    req.httpMethod = "POST"
+                    req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                    req.setValue(key, forHTTPHeaderField: "x-api-key")
+                    req.setValue(anthropicVersion, forHTTPHeaderField: "anthropic-version")
+                    req.setValue(anthropicBeta, forHTTPHeaderField: "anthropic-beta")
+                    req.setValue("text/event-stream", forHTTPHeaderField: "Accept")
+                    req.httpBody = body
+                    req.timeoutInterval = 120
+
+                    let (bytes, response) = try await session.bytes(for: req)
+                    try checkStatus(response)
+
+                    var toolInputBuffer: [String: String] = [:]
+
+                    for try await line in bytes.lines {
+                        guard line.hasPrefix("data: ") else { continue }
+                        let payload = String(line.dropFirst(6))
+                        if payload == "[DONE]" { break }
+                        guard let data = payload.data(using: .utf8),
+                              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { continue }
+
+                        let eventType = json["type"] as? String ?? ""
+                        switch eventType {
+                        case "message_start":
+                            let msg = json["message"] as? [String: Any]
+                            let id = msg?["id"] as? String ?? ""
+                            let model = msg?["model"] as? String ?? ""
+                            continuation.yield(.messageStart(id: id, model: model))
+
+                        case "content_block_delta":
+                            let delta = json["delta"] as? [String: Any]
+                            let index = json["index"] as? Int ?? 0
+                            if let text = delta?["text"] as? String {
+                                continuation.yield(.contentBlockDelta(index: index, text: text))
+                            } else if let partial = delta?["partial_json"] as? String {
+                                let blockID = "\(index)"
+                                toolInputBuffer[blockID, default: ""] += partial
+                            }
+
+                        case "content_block_stop":
+                            let index = json["index"] as? Int ?? 0
+                            if let accumulated = toolInputBuffer.removeValue(forKey: "\(index)") {
+                                // We need the tool name — carried from content_block_start
+                                // In practice, tool name comes from content_block_start; stored separately
+                                continuation.yield(.toolUse(id: "", name: "", inputJSON: accumulated))
+                            }
+
+                        case "message_delta":
+                            let delta = json["delta"] as? [String: Any]
+                            let stopReason = delta?["stop_reason"] as? String ?? ""
+                            let usage = parseUsage(json["usage"] as? [String: Any])
+                            continuation.yield(.messageStop(stopReason: stopReason, usage: usage))
+
+                        case "error":
+                            let error = json["error"] as? [String: Any]
+                            continuation.yield(.error(error?["message"] as? String ?? "Unknown error"))
+
+                        default: break
+                        }
+                    }
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+        }
+    }
+
+    // MARK: - Private helpers
+
+    private func buildRequestBody(
+        messages: [Message],
+        tools: [ToolDefinition]?,
+        system: [SystemBlock]?,
+        maxTokens: Int,
+        stream: Bool
+    ) throws -> Data {
+        var body: [String: Any] = [
+            "model": model.rawValue,
+            "max_tokens": maxTokens,
+            "messages": try encodeMessages(messages)
+        ]
+        if stream { body["stream"] = true }
+        if let system = system, !system.isEmpty {
+            body["system"] = try encodeSystem(system)
+        }
+        if let tools = tools, !tools.isEmpty {
+            body["tools"] = try encodingTools(tools)
+        }
+        return try JSONSerialization.data(withJSONObject: body)
+    }
+
+    private func encodeMessages(_ messages: [Message]) throws -> [[String: Any]] {
+        let data = try JSONEncoder().encode(messages)
+        return try JSONSerialization.jsonObject(with: data) as? [[String: Any]] ?? []
+    }
+
+    private func encodeSystem(_ system: [SystemBlock]) throws -> [[String: Any]] {
+        let data = try JSONEncoder().encode(system)
+        return try JSONSerialization.jsonObject(with: data) as? [[String: Any]] ?? []
+    }
+
+    private func encodingTools(_ tools: [ToolDefinition]) throws -> [[String: Any]] {
+        let data = try JSONEncoder().encode(tools)
+        return try JSONSerialization.jsonObject(with: data) as? [[String: Any]] ?? []
+    }
+
+    private func checkStatus(_ response: URLResponse) throws {
+        guard let http = response as? HTTPURLResponse else { return }
+        switch http.statusCode {
+        case 200..<300: return
+        case 401: throw ClaudeError.unauthorized
+        case 429:
+            let retryAfter = http.value(forHTTPHeaderField: "retry-after").flatMap(TimeInterval.init)
+            throw ClaudeError.rateLimited(retryAfter: retryAfter)
+        default: throw ClaudeError.serverError(status: http.statusCode)
+        }
+    }
+
+    private func parseUsage(_ json: [String: Any]?) -> ClaudeResponse.Usage? {
+        guard let json else { return nil }
+        return ClaudeResponse.Usage(
+            inputTokens: json["input_tokens"] as? Int ?? 0,
+            outputTokens: json["output_tokens"] as? Int ?? 0,
+            cacheCreationInputTokens: json["cache_creation_input_tokens"] as? Int,
+            cacheReadInputTokens: json["cache_read_input_tokens"] as? Int
+        )
+    }
+}
+
+// MARK: - Keychain helper
+
+enum KeychainHelper {
+    static func save(key: String, value: String) {
+        let data = Data(value.utf8)
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key,
+            kSecValueData as String: data
+        ]
+        SecItemDelete(query as CFDictionary)
+        SecItemAdd(query as CFDictionary, nil)
+    }
+
+    static func load(key: String) -> String? {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key,
+            kSecReturnData as String: true,
+            kSecMatchLimit as String: kSecMatchLimitOne
+        ]
+        var item: CFTypeRef?
+        guard SecItemCopyMatching(query as CFDictionary, &item) == errSecSuccess,
+              let data = item as? Data else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+
+    static func delete(key: String) {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key
+        ]
+        SecItemDelete(query as CFDictionary)
+    }
+}

@@ -2,7 +2,7 @@ import MetricKit
 import Foundation
 import OSLog
 
-private let logger = Logger(subsystem: "com.leo.app", category: "metrics")
+private let logger = Logger(subsystem: "com.theblueman.leo", category: "metrics")
 
 #if DEBUG
 /// Subscribes to MetricKit payloads and persists them for the debug menu.
