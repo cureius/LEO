@@ -6,6 +6,7 @@ struct DebugMenu: View {
     @State private var seeding = false
     @State private var wiping = false
     @State private var showDesignSystem = false
+    @State private var showDBBrowser = false
     @State private var showConfirmWipe = false
     @State private var statusMessage: String? = nil
 
@@ -16,6 +17,7 @@ struct DebugMenu: View {
         NavigationStack {
             List {
                 buildInfoSection
+                databaseSection
                 dataSection
                 uiSection
                 metricsSection
@@ -46,9 +48,54 @@ struct DebugMenu: View {
     private var buildInfoSection: some View {
         Section("Build") {
             LabeledContent("Version", value: "\(appVersion) (\(buildNumber))")
-            LabeledContent("CloudKit Container", value: "iCloud.com.theblueman.leo")
+            LabeledContent("Bundle ID", value: Bundle.main.bundleIdentifier ?? "?")
             LabeledContent("iOS", value: UIDevice.current.systemVersion)
         }
+    }
+
+    private var databaseSection: some View {
+        Section("Database") {
+            // Show the path so you can find the file in Xcode's container download
+            if let dbURL = dbURL {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("SQLite path")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text(dbURL.path)
+                        .font(.system(size: 11, design: .monospaced))
+                        .foregroundStyle(.primary)
+                        .textSelection(.enabled)   // long-press to copy
+                }
+                .padding(.vertical, 4)
+
+                Button {
+                    UIPasteboard.general.string = dbURL.path
+                    statusMessage = "Path copied to clipboard"
+                } label: {
+                    Label("Copy path to clipboard", systemImage: "doc.on.doc")
+                }
+
+                LabeledContent("File exists", value: FileManager.default.fileExists(atPath: dbURL.path) ? "Yes" : "No")
+                if let size = dbFileSize(dbURL) {
+                    LabeledContent("File size", value: size)
+                }
+            } else {
+                Text("Database URL not found")
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    private var dbURL: URL? {
+        let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+        return appSupport?.appendingPathComponent("LEO.store")
+    }
+
+    private func dbFileSize(_ url: URL) -> String? {
+        guard let attrs = try? FileManager.default.attributesOfItem(atPath: url.path),
+              let bytes = attrs[.size] as? Int64 else { return nil }
+        let kb = Double(bytes) / 1024
+        return kb < 1024 ? String(format: "%.1f KB", kb) : String(format: "%.2f MB", kb / 1024)
     }
 
     private var dataSection: some View {
@@ -76,7 +123,14 @@ struct DebugMenu: View {
     }
 
     private var uiSection: some View {
-        Section("UI") {
+        Section("UI & Inspection") {
+            NavigationLink {
+                DatabaseBrowserView()
+                    .environment(appEnv)
+            } label: {
+                Label("Database browser", systemImage: "tablecells")
+            }
+
             Button { showDesignSystem = true } label: {
                 Label("Design system preview", systemImage: "paintbrush")
             }

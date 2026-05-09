@@ -57,6 +57,7 @@
 		5FA505C39C5B5042C2D753C5 /* WeeklyReviewGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B73C5AC3C754052763DED3 /* WeeklyReviewGenerator.swift */; };
 		64B1419945CB1FAD2CB73585 /* HabitMaterializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBFDEB12229919444F7C767 /* HabitMaterializer.swift */; };
 		6601B784011B9B015643480A /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1CA52756A27FB00E5D71C9 /* TodayViewModel.swift */; };
+		67FFDD1BC8B297E51D119DB6 /* DatabaseBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BD40D06E1422AE85434343 /* DatabaseBrowserView.swift */; };
 		685EE0497B3DCFED10833A1A /* TodayWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D287050AF673F35357060D27 /* TodayWidget.swift */; };
 		68EC22F26BB4EF28CD92AAEA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33976C4782FAA15815A4C211 /* Assets.xcassets */; };
 		69167540422257EC47C3BDF8 /* EventKitWriteBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AC95A0C5C159F9655F97A7 /* EventKitWriteBack.swift */; };
@@ -82,6 +83,7 @@
 		8EE6DE05E15DBEA26B66900D /* WeeklyReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C99C27C27206BA043B94E8 /* WeeklyReviewView.swift */; };
 		931FA540E72196DEBB234BA8 /* CompositeParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0276D25F013243348D98DA /* CompositeParser.swift */; };
 		93425393A1F77DA8A1858B67 /* StoredTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21234BD488E3902ADC96A0A /* StoredTask.swift */; };
+		947E2A03A1F1A95BCAEC2476 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D1E79D9169A72FB8606F2 /* HistoryView.swift */; };
 		957F6FD0C9CB9BC7B5657D8D /* SystemPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51516AEDB3A5FF10DB1162CB /* SystemPrompt.swift */; };
 		97C6D1E13E05833F7AEA2FE6 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4EE2E13B02ABF60D43FF5D /* PersistenceController.swift */; };
 		995870704743260F9C784A53 /* LEOUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD05EE81B197FF782C7B9D2 /* LEOUITests.swift */; };
@@ -192,6 +194,7 @@
 		1BD05EE81B197FF782C7B9D2 /* LEOUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOUITests.swift; sourceTree = "<group>"; };
 		1D81AA8A3EA006BAEB42DFF1 /* RecurrenceRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurrenceRule.swift; sourceTree = "<group>"; };
 		1D88E284E7D2B910CA9A1B12 /* Seeder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Seeder.swift; sourceTree = "<group>"; };
+		21BD40D06E1422AE85434343 /* DatabaseBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseBrowserView.swift; sourceTree = "<group>"; };
 		2292495090B859545EBA1C7A /* LEOApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOApp.swift; sourceTree = "<group>"; };
 		283FD1CE55A45448BCA0218F /* EventKitBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitBridge.swift; sourceTree = "<group>"; };
 		2AD6E59260E2071E54821C9B /* QuickAddWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAddWidget.swift; sourceTree = "<group>"; };
@@ -200,6 +203,7 @@
 		308021BC734D2C1D054ACF04 /* LocationReminderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationReminderManager.swift; sourceTree = "<group>"; };
 		33976C4782FAA15815A4C211 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		345761AFFCBA4899D1C3E2F9 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		355D1E79D9169A72FB8606F2 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		3A8F3FAE4B82C5E4459F8CCA /* AIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIRouter.swift; sourceTree = "<group>"; };
 		3CAB86FF90B3CF43D5111E3D /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		3E3F196CC8514C468D8EA8F2 /* StoredRecurrenceRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredRecurrenceRule.swift; sourceTree = "<group>"; };
@@ -551,6 +555,7 @@
 		428191B6C93A746735CC7F1F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				355D1E79D9169A72FB8606F2 /* HistoryView.swift */,
 				CE8071DDF7419990F8C22C6C /* TodayTabView.swift */,
 				8484854A0F226E8CED08BFDA /* TodayView.swift */,
 			);
@@ -812,6 +817,7 @@
 		8F5B5F1C38B538F5FF1E524F /* Dev */ = {
 			isa = PBXGroup;
 			children = (
+				21BD40D06E1422AE85434343 /* DatabaseBrowserView.swift */,
 				FD2F1B07EE649B091F6067A5 /* DebugMenu.swift */,
 				1D88E284E7D2B910CA9A1B12 /* Seeder.swift */,
 			);
@@ -1338,6 +1344,7 @@
 				1B54F17AA93FAD6A493E0D24 /* ClaudeModels.swift in Sources */,
 				E5F37D10A4703D29A7784061 /* Completion.swift in Sources */,
 				931FA540E72196DEBB234BA8 /* CompositeParser.swift in Sources */,
+				67FFDD1BC8B297E51D119DB6 /* DatabaseBrowserView.swift in Sources */,
 				1F16E1423661FF3DB5E75ED9 /* DebugMenu.swift in Sources */,
 				F23D8C9C61E8A1045156DED7 /* DesignSystemPreview.swift in Sources */,
 				E4A04BBDBCDDE64FDFE88479 /* DeterministicParser.swift in Sources */,
@@ -1354,6 +1361,7 @@
 				64B1419945CB1FAD2CB73585 /* HabitMaterializer.swift in Sources */,
 				ABF5024C1643AEBEAEA2E312 /* HabitRepository.swift in Sources */,
 				BCBBF62B60AF97406AE2BE66 /* HabitsView.swift in Sources */,
+				947E2A03A1F1A95BCAEC2476 /* HistoryView.swift in Sources */,
 				A45B6C80A108B5726BBF0CA0 /* Importance.swift in Sources */,
 				F01B390987DD7C5A1638DE22 /* InboxView.swift in Sources */,
 				A0BC3E991594CBFDC3813781 /* Item.swift in Sources */,

@@ -10,6 +10,7 @@ final class TodayViewModel {
     // MARK: - Published state
     private(set) var timedItems: [any Item] = []
     private(set) var untimedItems: [any Item] = []
+    private(set) var completedTodayItems: [any Item] = []
     private(set) var isLoading = false
     private(set) var error: String? = nil
 
@@ -53,8 +54,16 @@ final class TodayViewModel {
             timedItems = open.filter { !$0.anchor.isUntimed }.sorted {
                 ($0.anchor.sortDate ?? .distantFuture) < ($1.anchor.sortDate ?? .distantFuture)
             }
-            untimedItems = try await itemRepository.fetch(predicate: .untimed)
-                .filter { !$0.isCompleted }
+            // Untimed tasks belong to today's backlog only
+            if Calendar.current.isDateInToday(selectedDate) {
+                untimedItems = try await itemRepository.fetch(predicate: .untimed)
+                    .filter { !$0.isCompleted }
+            } else {
+                untimedItems = []
+            }
+            completedTodayItems = all.filter(\.isCompleted).sorted {
+                ($0.anchor.sortDate ?? .distantPast) < ($1.anchor.sortDate ?? .distantPast)
+            }
         } catch {
             self.error = error.localizedDescription
             logger.error("TodayViewModel load failed: \(error)")
