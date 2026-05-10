@@ -91,6 +91,7 @@ actor ClaudeClient {
                     try checkStatus(response)
 
                     var toolInputBuffer: [String: String] = [:]
+                    var toolBlockMeta: [String: (id: String, name: String)] = [:]
 
                     for try await line in bytes.lines {
                         guard line.hasPrefix("data: ") else { continue }
@@ -107,6 +108,15 @@ actor ClaudeClient {
                             let model = msg?["model"] as? String ?? ""
                             continuation.yield(.messageStart(id: id, model: model))
 
+                        case "content_block_start":
+                            let block = json["content_block"] as? [String: Any]
+                            let index = json["index"] as? Int ?? 0
+                            if let blockType = block?["type"] as? String, blockType == "tool_use" {
+                                let toolID = block?["id"] as? String ?? ""
+                                let toolName = block?["name"] as? String ?? ""
+                                toolBlockMeta["\(index)"] = (id: toolID, name: toolName)
+                            }
+
                         case "content_block_delta":
                             let delta = json["delta"] as? [String: Any]
                             let index = json["index"] as? Int ?? 0
@@ -119,10 +129,10 @@ actor ClaudeClient {
 
                         case "content_block_stop":
                             let index = json["index"] as? Int ?? 0
-                            if let accumulated = toolInputBuffer.removeValue(forKey: "\(index)") {
-                                // We need the tool name — carried from content_block_start
-                                // In practice, tool name comes from content_block_start; stored separately
-                                continuation.yield(.toolUse(id: "", name: "", inputJSON: accumulated))
+                            let key = "\(index)"
+                            if let accumulated = toolInputBuffer.removeValue(forKey: key),
+                               let meta = toolBlockMeta.removeValue(forKey: key) {
+                                continuation.yield(.toolUse(id: meta.id, name: meta.name, inputJSON: accumulated))
                             }
 
                         case "message_delta":

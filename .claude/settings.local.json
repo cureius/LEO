@@ -52,7 +52,16 @@
       "Bash(xargs ls)",
       "Bash(git checkout *)",
       "Bash(brew list *)",
-      "Bash(xcodegen --version)"
+      "Bash(xcodegen --version)",
+      "Bash(convert -version)",
+      "Bash(magick /tmp/leo_icon.svg -resize 1024x1024 /tmp/leo_icon_1024.png)",
+      "Bash(magick -list type)",
+      "Bash(magick /tmp/leo_icon_1024.png -resize 180x180 /tmp/leo_icon_60pt@3x.png)",
+      "Bash(magick /tmp/leo_lion_v5.png -resize 180x180 /tmp/leo_lion_60pt.png)",
+      "Bash(sed -n '5,35p' /Users/raj/Raj/personal/IOS/LEO/LEO/Persistence/SwiftData/Models/StoredTask.swift)",
+      "Bash(sed -n '1,35p' /Users/raj/Raj/personal/IOS/LEO/LEO/Persistence/SwiftData/Models/StoredEvent.swift)",
+      "Bash(sed -n '1,30p' /Users/raj/Raj/personal/IOS/LEO/LEO/Domain/Items/TaskItem.swift)",
+      "Bash(sed -n '1,25p' /Users/raj/Raj/personal/IOS/LEO/LEO/Domain/Items/EventItem.swift)"
     ]
   }
 }

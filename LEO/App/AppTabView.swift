@@ -4,9 +4,10 @@ import SwiftUI
 @MainActor
 struct AppTabView: View {
     @Environment(AppEnvironment.self) private var appEnv
+    @State private var selectedTab = 0
 
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             TodayTabView()
                 .tabItem { Label("Today", systemImage: "sun.max.fill") }
                 .tag(0)
@@ -19,11 +20,9 @@ struct AppTabView: View {
                 .tabItem { Label("Habits", systemImage: "repeat.circle.fill") }
                 .tag(2)
 
-            NavigationStack {
-                AssistantChatView(vm: makeAssistantVM())
-            }
-            .tabItem { Label("Ask LEO", systemImage: "sparkles") }
-            .tag(3)
+            AssistantChatView()
+                .tabItem { Label("Ask LEO", systemImage: "sparkles") }
+                .tag(3)
 
             NavigationStack {
                 SettingsRootView()
@@ -34,15 +33,6 @@ struct AppTabView: View {
         .tint(Theme.Color.accent)
     }
 
-    private func makeAssistantVM() -> AssistantChatViewModel {
-        let context = ToolContext(itemRepository: appEnv.itemRepository, calendar: .current)
-        let toolRuntime = ToolRuntime(context: context)
-        return AssistantChatViewModel(
-            client: appEnv.claudeClient,
-            toolRuntime: toolRuntime,
-            itemRepository: appEnv.itemRepository
-        )
-    }
 }
 
 #Preview {

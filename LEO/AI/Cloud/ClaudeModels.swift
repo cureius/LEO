@@ -44,6 +44,27 @@ public struct ToolUseBlock: Codable, Sendable {
     public let input: JSONValue
 }
 
+public struct ImageBlock: Codable, Sendable {
+    public let type: String       // "image"
+    public let source: ImageSource
+
+    public init(jpegData: Data) {
+        self.type = "image"
+        self.source = ImageSource(type: "base64", mediaType: "image/jpeg", data: jpegData.base64EncodedString())
+    }
+
+    public struct ImageSource: Codable, Sendable {
+        public let type: String         // "base64"
+        public let mediaType: String    // "image/jpeg"
+        public let data: String         // base64 string
+
+        enum CodingKeys: String, CodingKey {
+            case type, data
+            case mediaType = "media_type"
+        }
+    }
+}
+
 public struct ToolResultBlock: Codable, Sendable {
     public let type: String       // "tool_result"
     public let toolUseId: String
@@ -67,6 +88,7 @@ public struct ToolResultBlock: Codable, Sendable {
 
 public enum ContentBlock: Sendable {
     case text(TextBlock)
+    case image(ImageBlock)
     case toolUse(ToolUseBlock)
     case toolResult(ToolResultBlock)
 }
@@ -75,6 +97,7 @@ extension ContentBlock: Encodable {
     public func encode(to encoder: Encoder) throws {
         switch self {
         case .text(let b):       try b.encode(to: encoder)
+        case .image(let b):      try b.encode(to: encoder)
         case .toolUse(let b):    try b.encode(to: encoder)
         case .toolResult(let b): try b.encode(to: encoder)
         }
@@ -87,6 +110,7 @@ extension ContentBlock: Decodable {
         let type = try container.decode(String.self, forKey: .type)
         switch type {
         case "text":        self = .text(try TextBlock(from: decoder))
+        case "image":       self = .image(try ImageBlock(from: decoder))
         case "tool_use":    self = .toolUse(try ToolUseBlock(from: decoder))
         case "tool_result": self = .toolResult(try ToolResultBlock(from: decoder))
         default:            self = .text(TextBlock(text: ""))
@@ -193,13 +217,31 @@ public enum StreamEvent: Sendable {
 
 // MARK: - Errors
 
-public enum ClaudeError: Error, Sendable {
+public enum ClaudeError: Error, LocalizedError, Sendable {
     case unauthorized
     case rateLimited(retryAfter: TimeInterval?)
     case timeout
     case serverError(status: Int)
     case malformedResponse(String)
     case missingAPIKey
+
+    public var errorDescription: String? {
+        switch self {
+        case .missingAPIKey:
+            return "No Claude API key found. Go to Settings → AI → Add API key to enable Ask LEO."
+        case .unauthorized:
+            return "Invalid API key. Check your key in Settings → AI → Update API key."
+        case .rateLimited(let after):
+            if let after { return "Too many requests. Try again in \(Int(after))s." }
+            return "Too many requests. Please wait a moment and try again."
+        case .timeout:
+            return "Request timed out. Check your connection and try again."
+        case .serverError(let status):
+            return "Claude API error (HTTP \(status)). Try again in a moment."
+        case .malformedResponse(let detail):
+            return "Unexpected response from Claude: \(detail)"
+        }
+    }
 }
 
 // MARK: - JSONValue (generic JSON tree)

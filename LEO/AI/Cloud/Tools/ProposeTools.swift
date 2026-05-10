@@ -48,8 +48,9 @@ struct ProposeAddTool: LEOTool {
         struct NewItem: Decodable, Sendable {
             let title: String
             let type: String            // "task", "event", "reminder"
-            let start: String?
-            let end: String?
+            let start: String?          // ISO8601 datetime
+            let end: String?            // ISO8601 datetime (for events/blocks)
+            let notes: String?
         }
         let items: [NewItem]
         let rationale: String
@@ -58,11 +59,27 @@ struct ProposeAddTool: LEOTool {
 
     let definition = ToolDefinition(
         name: "propose_add",
-        description: "Propose adding one or more new items. Returns a Diff for user review — does NOT create items.",
+        description: "Propose adding one or more new tasks, events, or reminders. Returns a Diff for user review — does NOT create items immediately.",
         inputSchema: [
             "type": .string("object"),
             "properties": .object([
-                "items": .object(["type": .string("array")]),
+                "items": .object([
+                    "type": .string("array"),
+                    "items": .object([
+                        "type": .string("object"),
+                        "properties": .object([
+                            "title": .object(["type": .string("string")]),
+                            "type": .object([
+                                "type": .string("string"),
+                                "enum": .array([.string("task"), .string("event"), .string("reminder")])
+                            ]),
+                            "start": .object(["type": .string("string"), "description": .string("ISO8601 datetime, e.g. 2026-05-10T09:00:00")]),
+                            "end":   .object(["type": .string("string"), "description": .string("ISO8601 datetime for block/event end")]),
+                            "notes": .object(["type": .string("string")])
+                        ]),
+                        "required": .array([.string("title"), .string("type")])
+                    ])
+                ]),
                 "rationale": .object(["type": .string("string")])
             ]),
             "required": .array([.string("items"), .string("rationale")])
@@ -71,7 +88,19 @@ struct ProposeAddTool: LEOTool {
 
     func run(_ input: Input, context: ToolContext) async throws -> Output {
         let changes = input.items.map { item in
-            DiffChange(itemID: UUID().uuidString, kind: "add", field: "title", newValue: item.title)
+            DiffChange(
+                itemID: UUID().uuidString,
+                kind: "add",
+                field: "title",
+                newValue: item.title,
+                pendingItem: PendingNewItem(
+                    title: item.title,
+                    type: item.type,
+                    start: item.start,
+                    end: item.end,
+                    notes: item.notes
+                )
+            )
         }
         return Output(diff: DiffPayload(changes: changes, rationale: input.rationale))
     }
@@ -109,14 +138,24 @@ struct ProposeCancelTool: LEOTool {
 
 // MARK: - Diff payload (tool output)
 
-struct DiffPayload: Codable, Sendable {
+struct DiffPayload: Codable, Hashable, Sendable {
     let changes: [DiffChange]
     let rationale: String
 }
 
-struct DiffChange: Codable, Sendable {
+struct DiffChange: Codable, Hashable, Sendable {
     let itemID: String
-    let kind: String   // "add", "update", "delete"
+    let kind: String        // "add", "update", "delete"
     let field: String
     let newValue: String
+    var pendingItem: PendingNewItem?  // only for kind == "add"
+}
+
+/// Full data needed to create a new item when the user confirms an "add" diff.
+struct PendingNewItem: Codable, Hashable, Sendable {
+    let title: String
+    let type: String    // "task", "event", "reminder"
+    let start: String?  // ISO8601
+    let end: String?    // ISO8601
+    let notes: String?
 }

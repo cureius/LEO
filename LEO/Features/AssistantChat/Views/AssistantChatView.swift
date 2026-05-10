@@ -1,179 +1,114 @@
 import SwiftUI
 
+// MARK: - Entry point for the Ask LEO tab
+// Checks for API key synchronously at init so no NavigationStack swapping occurs.
+
 @MainActor
 struct AssistantChatView: View {
-    @State private var vm: AssistantChatViewModel
-    @State private var showDiffReview = false
-    @State private var selectedDiff: DiffPayload? = nil
-
-    init(vm: AssistantChatViewModel) {
-        _vm = State(wrappedValue: vm)
-    }
+    @Environment(AppEnvironment.self) private var appEnv
+    // Read from Keychain synchronously — avoids false→true flip that breaks tab navigation
+    @State private var hasAPIKey = KeychainHelper.load(key: "claude_api_key") != nil
+        || ProcessInfo.processInfo.environment["CLAUDE_API_KEY"] != nil
+    @State private var showAPIKeySetup = false
 
     var body: some View {
-        VStack(spacing: 0) {
-            // Messages
-            ScrollViewReader { proxy in
-                ScrollView {
-                    LazyVStack(spacing: 12) {
-                        if vm.messages.isEmpty {
-                            suggestionsView
-                        } else {
-                            ForEach(vm.messages) { msg in
-                                MessageBubble(message: msg) { diff in
-                                    selectedDiff = diff
-                                    showDiffReview = true
-                                }
-                                .id(msg.id)
-                            }
-                        }
-                    }
-                    .padding()
-                }
-                .onChange(of: vm.messages.count) { _, _ in
-                    if let last = vm.messages.last { proxy.scrollTo(last.id, anchor: .bottom) }
-                }
-            }
-
-            if let error = vm.errorMessage {
-                Text(error)
-                    .font(.caption)
-                    .foregroundStyle(Theme.Color.danger)
-                    .padding(.horizontal)
-            }
-
-            Divider()
-
-            // Input bar
-            HStack(spacing: 12) {
-                TextField("Ask LEO…", text: $vm.inputText, axis: .vertical)
-                    .lineLimit(1...5)
-                    .padding(10)
-                    .background(Theme.Color.surface)
-                    .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.md))
-                    .onSubmit { Task { await vm.send() } }
-
-                Button {
-                    Task { await vm.send() }
-                } label: {
-                    Image(systemName: vm.isSending ? "ellipsis.circle" : "arrow.up.circle.fill")
-                        .font(.title2)
-                        .foregroundStyle(vm.isSending ? Theme.Color.textSecondary : Theme.Color.accent)
-                }
-                .disabled(vm.isSending || vm.inputText.trimmingCharacters(in: .whitespaces).isEmpty)
-            }
-            .padding()
-        }
-        .navigationTitle("Ask LEO")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button("Clear") { vm.clearHistory() }
-                    .disabled(vm.messages.isEmpty)
+        // Single NavigationStack for the whole tab — never swapped, so tab bar stays stable
+        NavigationStack {
+            if hasAPIKey {
+                ChatHomeBody()
+            } else {
+                noAPIKeyContent
             }
         }
-        .sheet(isPresented: $showDiffReview) {
-            if let diff = selectedDiff {
-                DiffReviewSheet(diff: diff) { accepted in
-                    // TODO (M4-T03): apply accepted changes via repository
-                    _ = accepted
-                }
-            }
+        .sheet(isPresented: $showAPIKeySetup) {
+            APIKeySetupSheet { hasAPIKey = true }
+                .environment(appEnv)
         }
     }
 
-    // MARK: - Suggestions
+    // MARK: - No API key content (no NavigationStack — lives inside the one above)
 
-    private var suggestionsView: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "sparkles")
-                .font(.largeTitle)
-                .foregroundStyle(Theme.Color.accent)
-            Text("What would you like to plan?")
-                .font(Theme.Typography.headline)
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
-                ForEach(vm.suggestions, id: \.self) { s in
-                    Button(s) {
-                        Task { await vm.send(s) }
-                    }
-                    .font(.caption)
-                    .padding(10)
-                    .frame(maxWidth: .infinity)
-                    .background(Theme.Color.surface)
-                    .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.md))
-                }
+    private var noAPIKeyContent: some View {
+        VStack(spacing: 28) {
+            Spacer()
+
+            LEOAvatar(size: 64)
+
+            VStack(spacing: 10) {
+                Text("API Key Required")
+                    .font(.system(size: 22, weight: .bold))
+                    .foregroundStyle(Theme.Color.textPrimary)
+                Text("Ask LEO uses the Claude API.\nAdd your Anthropic API key to get started.")
+                    .font(.system(size: 15))
+                    .foregroundStyle(Theme.Color.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
             }
+
+            Button { showAPIKeySetup = true } label: {
+                Label("Add API Key", systemImage: "key.fill")
+                    .font(.system(size: 16, weight: .semibold))
+                    .padding(.horizontal, 28)
+                    .padding(.vertical, 13)
+                    .background(Theme.Color.accent)
+                    .foregroundStyle(.white)
+                    .clipShape(Capsule())
+            }
+
+            Link("Get a key at console.anthropic.com",
+                 destination: URL(string: "https://console.anthropic.com/")!)
+                .font(.system(size: 13))
+                .foregroundStyle(Theme.Color.accent)
+
+            Spacer()
         }
-        .padding(.top, 40)
+        .navigationTitle("Ask LEO")
     }
 }
 
-// MARK: - Message bubble
+// MARK: - API Key setup sheet
 
-private struct MessageBubble: View {
-    let message: ChatMessage
-    let onDiffTap: (DiffPayload) -> Void
+struct APIKeySetupSheet: View {
+    @Environment(AppEnvironment.self) private var appEnv
+    @State private var key = ""
+    let onSaved: () -> Void
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        HStack(alignment: .top, spacing: 8) {
-            if message.role == .assistant || message.role == .toolCall || message.role == .toolResult {
-                Image(systemName: "sparkles.square.filled.on.square")
-                    .foregroundStyle(Theme.Color.accent)
-                    .frame(width: 28)
-            } else {
-                Spacer()
+        NavigationStack {
+            Form {
+                Section {
+                    SecureField("sk-ant-api03-…", text: $key)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .font(.system(.body, design: .monospaced))
+                } header: {
+                    Text("Claude API Key")
+                } footer: {
+                    Text("Stored securely in the device Keychain. Only sent to Anthropic's servers.")
+                }
+                Section {
+                    Link("Get a key at console.anthropic.com",
+                         destination: URL(string: "https://console.anthropic.com/")!)
+                }
             }
-
-            VStack(alignment: message.role == .user ? .trailing : .leading, spacing: 4) {
-                Group {
-                    switch message.role {
-                    case .diffProposal:
-                        diffProposalBubble
-                    default:
-                        Text(message.text.isEmpty ? "…" : message.text)
-                            .padding(10)
-                            .background(bubbleColor)
-                            .foregroundStyle(message.role == .user ? .white : Theme.Color.textPrimary)
-                            .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.md))
+            .navigationTitle("Add API Key")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") {
+                        Task {
+                            await appEnv.claudeClient.setAPIKey(key.trimmingCharacters(in: .whitespaces))
+                            onSaved()
+                            dismiss()
+                        }
                     }
+                    .fontWeight(.semibold)
+                    .disabled(key.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
             }
-
-            if message.role == .user { Spacer() }
         }
-        .frame(maxWidth: .infinity, alignment: message.role == .user ? .trailing : .leading)
-    }
-
-    private var diffProposalBubble: some View {
-        Button {
-            if let diff = message.diff { onDiffTap(diff) }
-        } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "list.bullet.clipboard")
-                    .foregroundStyle(Theme.Color.accent)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Proposed changes")
-                        .font(.caption.bold())
-                    Text(message.text)
-                        .font(.caption)
-                        .lineLimit(2)
-                }
-                Image(systemName: "chevron.right")
-                    .font(.caption)
-                    .foregroundStyle(Theme.Color.textSecondary)
-            }
-            .padding(10)
-            .background(Theme.Color.accentMuted)
-            .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.md))
-        }
-        .buttonStyle(.plain)
-    }
-
-    private var bubbleColor: Color {
-        switch message.role {
-        case .user:        return Theme.Color.accent
-        case .toolCall, .toolResult: return Theme.Color.surface
-        default:           return Theme.Color.surfaceElevated
-        }
+        .presentationDetents([.medium])
     }
 }

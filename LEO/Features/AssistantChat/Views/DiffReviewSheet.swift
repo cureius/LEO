@@ -5,12 +5,12 @@ import SwiftUI
 @MainActor
 struct DiffReviewSheet: View {
     let diff: DiffPayload
-    let onApply: (Set<String>) -> Void  // accepted change itemIDs
+    let onApply: ([DiffChange]) -> Void  // accepted changes (full objects)
     @Environment(\.dismiss) private var dismiss
 
     @State private var accepted: Set<String>
 
-    init(diff: DiffPayload, onApply: @escaping (Set<String>) -> Void) {
+    init(diff: DiffPayload, onApply: @escaping ([DiffChange]) -> Void) {
         self.diff = diff
         self.onApply = onApply
         _accepted = State(initialValue: Set(diff.changes.map(\.itemID)))
@@ -53,11 +53,13 @@ struct DiffReviewSheet: View {
                 HStack(spacing: 12) {
                     Button("Cancel") { dismiss() }
                         .buttonStyle(.bordered)
-                    Button("Apply \(accepted.count) change\(accepted.count == 1 ? "" : "s")") {
-                        onApply(accepted)
+                    Button("Add \(accepted.count) item\(accepted.count == 1 ? "" : "s")") {
+                        let acceptedChanges = diff.changes.filter { accepted.contains($0.itemID) }
+                        onApply(acceptedChanges)
                         dismiss()
                     }
                     .buttonStyle(.borderedProminent)
+                    .tint(Theme.Color.accent)
                     .disabled(accepted.isEmpty)
                 }
                 .padding()
@@ -78,16 +80,24 @@ private struct DiffChangeRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: changeIcon)
-                .foregroundStyle(changeColor)
-                .frame(width: 24)
+            // Type icon
+            ZStack {
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(changeColor.opacity(0.12))
+                    .frame(width: 36, height: 36)
+                Image(systemName: changeIcon)
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundStyle(changeColor)
+            }
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text(changeDescription)
-                    .font(Theme.Typography.body)
-                if !change.newValue.isEmpty && change.kind != "delete" {
-                    Text(change.newValue)
-                        .font(.caption)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(title)
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundStyle(Theme.Color.textPrimary)
+                    .lineLimit(1)
+                if let sub = subtitle {
+                    Text(sub)
+                        .font(.system(size: 12))
                         .foregroundStyle(Theme.Color.textSecondary)
                         .lineLimit(1)
                 }
@@ -98,14 +108,45 @@ private struct DiffChangeRow: View {
             Toggle("", isOn: Binding(get: { isAccepted }, set: { _ in onToggle() }))
                 .labelsHidden()
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 6)
+        .opacity(isAccepted ? 1 : 0.45)
+    }
+
+    // MARK: - Computed display properties
+
+    private var title: String {
+        if change.kind == "add", let p = change.pendingItem { return p.title }
+        if change.kind == "delete" { return "Remove item" }
+        return change.newValue.isEmpty ? "Update \(change.field)" : change.newValue
+    }
+
+    private var subtitle: String? {
+        if change.kind == "add", let p = change.pendingItem {
+            var parts: [String] = [p.type.capitalized]
+            if let start = p.start {
+                let iso = ISO8601DateFormatter()
+                iso.formatOptions = [.withInternetDateTime, .withDashSeparatorInDate, .withColonSeparatorInTime]
+                if let date = iso.date(from: start) ?? ISO8601DateFormatter().date(from: start) {
+                    parts.append(date.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day().hour().minute()))
+                }
+            }
+            return parts.joined(separator: " · ")
+        }
+        return change.newValue.isEmpty ? nil : change.newValue
     }
 
     private var changeIcon: String {
+        if change.kind == "add", let p = change.pendingItem {
+            switch p.type {
+            case "event":    return "calendar.badge.plus"
+            case "reminder": return "bell.badge.plus"
+            default:         return "checklist"
+            }
+        }
         switch change.kind {
-        case "add":    return "plus.circle"
-        case "delete": return "trash.circle"
-        default:       return "pencil.circle"
+        case "add":    return "plus.circle.fill"
+        case "delete": return "trash.circle.fill"
+        default:       return "pencil.circle.fill"
         }
     }
 
@@ -114,14 +155,6 @@ private struct DiffChangeRow: View {
         case "add":    return Theme.Color.success
         case "delete": return Theme.Color.danger
         default:       return Theme.Color.accent
-        }
-    }
-
-    private var changeDescription: String {
-        switch change.kind {
-        case "add":    return "Add item"
-        case "delete": return "Remove item"
-        default:       return "Update \(change.field)"
         }
     }
 }

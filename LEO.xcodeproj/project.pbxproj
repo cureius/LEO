@@ -11,6 +11,7 @@
 		056FEE0B60E998CCA685F390 /* RecurrenceEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6C22CCB02772D9154B4420 /* RecurrenceEngine.swift */; };
 		06750B82F4D04F251A0FF050 /* AlarmEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90590BD4F93D377C8BCBFF9C /* AlarmEngine.swift */; };
 		07F51E20AE5316B7D0C8743B /* PersistenceControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E871CF4B3BFE1D9CCCDB51AD /* PersistenceControllerTests.swift */; };
+		0A6080A673F74CE660738310 /* ChatSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E2CE023B719376BDF0684E /* ChatSessionView.swift */; };
 		0CEFC143AE3DFA2202BCCCAF /* TravelTimePreReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCBA2DBD4366241F65EC816C /* TravelTimePreReminder.swift */; };
 		0F2FED36295FFDA014B96DCB /* RecurrenceBuilderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F4E5E38DAA6085002335F2 /* RecurrenceBuilderViewModel.swift */; };
 		181D657314E79558AE166B20 /* ErrorBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACAD4D8D551475C747D3AF0B /* ErrorBanner.swift */; };
@@ -48,9 +49,11 @@
 		4E237FD1CF02D117138B707E /* ReadTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4063A95DD050D6E564F2F27 /* ReadTools.swift */; };
 		4F9067EB7F4E1678DC3C27D1 /* LEOWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 81B0985B7D8A7894674C1139 /* LEOWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4FFA6DCF79BD77B73283786E /* LEOButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001F3FED1621B5F6212E81E3 /* LEOButton.swift */; };
+		500F3EF6735936FB5BC1983E /* ConversationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B596621F6F0FC4364E7980CF /* ConversationStore.swift */; };
 		583018DE3B726CEE879355C6 /* SettingsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FA5B4AFF834054CF306EDA /* SettingsRootView.swift */; };
 		5931D1AA73088DF28C81ECF2 /* ItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889794EB2C78D9A71D74EE49 /* ItemTests.swift */; };
 		5A16DBAFD9240067B35A8181 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CAB86FF90B3CF43D5111E3D /* WidgetKit.framework */; };
+		5B3FF350C7A725F79CF1703D /* ChatHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B10F1FF7FA59BECC85DF854 /* ChatHomeView.swift */; };
 		5BCA4868411AA5FC8BC2A387 /* EventKitBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283FD1CE55A45448BCA0218F /* EventKitBridge.swift */; };
 		5C2AD65F2B338D19B3B4F829 /* TodayTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8071DDF7419990F8C22C6C /* TodayTabView.swift */; };
 		5C2DB4B99A797772750F2F34 /* RecurrenceBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A74C919F8669220F81395E33 /* RecurrenceBuilderView.swift */; };
@@ -90,6 +93,7 @@
 		998394ABBE78E699C88D79B7 /* Environment+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70A711B26C01011C7A6F0BF /* Environment+Keys.swift */; };
 		9A62CD1EC25A63A801AC54DA /* TagRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAA17A0030150282CCF2F6B /* TagRepository.swift */; };
 		9CE778B906AE246D2CA53C89 /* Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F03B6485E20C09361D3AD7 /* Diff.swift */; };
+		9FFA29A3AB55A45609DE66DD /* ChatModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84A3107F8EC7C860CE903A0 /* ChatModels.swift */; };
 		A0BC3E991594CBFDC3813781 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF236AF1F0A83A7B3EFB8832 /* Item.swift */; };
 		A16CEFF04B5A6A1D8E401FDB /* AssistantChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5456F9B9E2192803094D592D /* AssistantChatView.swift */; };
 		A45B6C80A108B5726BBF0CA0 /* Importance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0CA0994C1118EE5A476C143 /* Importance.swift */; };
@@ -238,10 +242,12 @@
 		81B0985B7D8A7894674C1139 /* LEOWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = LEOWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		82F4E5E38DAA6085002335F2 /* RecurrenceBuilderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurrenceBuilderViewModel.swift; sourceTree = "<group>"; };
 		8484854A0F226E8CED08BFDA /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
+		84E2CE023B719376BDF0684E /* ChatSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSessionView.swift; sourceTree = "<group>"; };
 		85CACFCF1F6290BF663ACB6F /* ItemPatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemPatch.swift; sourceTree = "<group>"; };
 		86E8664A21024526487C667E /* AppTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabView.swift; sourceTree = "<group>"; };
 		889794EB2C78D9A71D74EE49 /* ItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTests.swift; sourceTree = "<group>"; };
 		8B0FD2FCDC0D78151BA9C0A9 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		8B10F1FF7FA59BECC85DF854 /* ChatHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatHomeView.swift; sourceTree = "<group>"; };
 		8EBFDEB12229919444F7C767 /* HabitMaterializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitMaterializer.swift; sourceTree = "<group>"; };
 		8FBAB409AFFB26C8F662240B /* DiffTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffTests.swift; sourceTree = "<group>"; };
 		90590BD4F93D377C8BCBFF9C /* AlarmEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmEngine.swift; sourceTree = "<group>"; };
@@ -261,8 +267,10 @@
 		ACAD4D8D551475C747D3AF0B /* ErrorBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorBanner.swift; sourceTree = "<group>"; };
 		B0CA0994C1118EE5A476C143 /* Importance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Importance.swift; sourceTree = "<group>"; };
 		B43ABC2B208D5C9B20C0E927 /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		B596621F6F0FC4364E7980CF /* ConversationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationStore.swift; sourceTree = "<group>"; };
 		B6703057FC03BE90004E6920 /* SchemaSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaSync.swift; sourceTree = "<group>"; };
 		B6AC95A0C5C159F9655F97A7 /* EventKitWriteBack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitWriteBack.swift; sourceTree = "<group>"; };
+		B84A3107F8EC7C860CE903A0 /* ChatModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModels.swift; sourceTree = "<group>"; };
 		BAE195EF7E836F49F119A2DB /* ClaudeClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeClient.swift; sourceTree = "<group>"; };
 		BAF40B82A48A2CBFCAECFF39 /* AlarmActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmActivity.swift; sourceTree = "<group>"; };
 		BDCF1AD178CAF77C45FAB66A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -496,6 +504,8 @@
 			isa = PBXGroup;
 			children = (
 				5456F9B9E2192803094D592D /* AssistantChatView.swift */,
+				8B10F1FF7FA59BECC85DF854 /* ChatHomeView.swift */,
+				84E2CE023B719376BDF0684E /* ChatSessionView.swift */,
 				5AC9ABFF81EEB6662BF6C326 /* DiffReviewSheet.swift */,
 			);
 			path = Views;
@@ -649,6 +659,14 @@
 				F7FA5B4AFF834054CF306EDA /* SettingsRootView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		60F9B1516382CCD563568332 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B596621F6F0FC4364E7980CF /* ConversationStore.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		66BF812F30DEF984937B4ACE /* Integrations */ = {
@@ -930,6 +948,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		B6E36D2A48457E05ABA83D1F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B84A3107F8EC7C860CE903A0 /* ChatModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		B757AFE9E740178E54191C49 /* Review */ = {
 			isa = PBXGroup;
 			children = (
@@ -1016,6 +1042,8 @@
 		CD7027D72D69AB520CD73922 /* AssistantChat */ = {
 			isa = PBXGroup;
 			children = (
+				B6E36D2A48457E05ABA83D1F /* Models */,
+				60F9B1516382CCD563568332 /* Services */,
 				3B3499F2C8B6526668098590 /* ViewModels */,
 				362D20DFB8AE586DB7507723 /* Views */,
 			);
@@ -1340,10 +1368,14 @@
 				A16CEFF04B5A6A1D8E401FDB /* AssistantChatView.swift in Sources */,
 				B4AA642AA8206EB6D74D779D /* AssistantChatViewModel.swift in Sources */,
 				C01D41CFD59D9256EBD30DF5 /* CalendarSettingsView.swift in Sources */,
+				5B3FF350C7A725F79CF1703D /* ChatHomeView.swift in Sources */,
+				9FFA29A3AB55A45609DE66DD /* ChatModels.swift in Sources */,
+				0A6080A673F74CE660738310 /* ChatSessionView.swift in Sources */,
 				3F423FCDFCC1822763943761 /* ClaudeClient.swift in Sources */,
 				1B54F17AA93FAD6A493E0D24 /* ClaudeModels.swift in Sources */,
 				E5F37D10A4703D29A7784061 /* Completion.swift in Sources */,
 				931FA540E72196DEBB234BA8 /* CompositeParser.swift in Sources */,
+				500F3EF6735936FB5BC1983E /* ConversationStore.swift in Sources */,
 				67FFDD1BC8B297E51D119DB6 /* DatabaseBrowserView.swift in Sources */,
 				1F16E1423661FF3DB5E75ED9 /* DebugMenu.swift in Sources */,
 				F23D8C9C61E8A1045156DED7 /* DesignSystemPreview.swift in Sources */,
