@@ -55,6 +55,15 @@ struct LEOApp: App {
                 }
 
                 scheduleAppRefresh()
+
+                // Re-sync notifications whenever an item changes in-app.
+                // Runs the whole body on @MainActor so no off-thread continuation surprise.
+                for await _ in NotificationCenter.default.notifications(named: .leoDataDidChange) {
+                    await MainActor.run { } // ensure we're back on main before the next hop
+                    guard let currentItems = try? await env.itemRepository.fetch() else { continue }
+                    logger.info("leoDataDidChange → re-syncing \(currentItems.count) items")
+                    await env.notificationManager.sync(for: currentItems)
+                }
             }
         }
         .backgroundTask(.appRefresh(bgRefreshID)) {

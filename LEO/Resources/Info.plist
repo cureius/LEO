@@ -31,12 +31,12 @@
 	<string>LEO syncs with your iOS calendars to show everything in one place.</string>
 	<key>NSCalendarsWriteOnlyAccessUsageDescription</key>
 	<string>LEO creates events in your iOS calendars.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>LEO uses the camera so you can photograph handwritten notes and convert them to tasks and events.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>LEO uses your location for location-based reminders even when the app is in the background.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>LEO uses your location for location-based reminders.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>LEO uses the camera so you can photograph handwritten notes and convert them to tasks and events.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>LEO uses the microphone for voice quick-add.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

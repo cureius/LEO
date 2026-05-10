@@ -46,7 +46,7 @@ final class AppEnvironment {
         self.alarmEngine = AlarmEngine(notificationManager: nm)
         self.alarmActivityManager = AlarmActivityManager()
 
-        let delegate = NotificationDelegate(itemRepository: itemRepository)
+        let delegate = NotificationDelegate(itemRepository: itemRepository, notificationManager: nm)
         self.notificationDelegate = delegate
         UNUserNotificationCenter.current().delegate = delegate
     }

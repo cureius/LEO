@@ -38,7 +38,7 @@ settings:
     MARKETING_VERSION: "1.0.0"
     CURRENT_PROJECT_VERSION: "1"
     PRODUCT_BUNDLE_IDENTIFIER: com.theblueman.leo
-    DEVELOPMENT_TEAM: ""
+    DEVELOPMENT_TEAM: ZT397U24CA
     CODE_SIGN_STYLE: Automatic
 
 configs:
@@ -104,7 +104,9 @@ targets:
         NSRemindersUsageDescription: "LEO syncs with your reminders to show everything in one place."
         NSLocationWhenInUseUsageDescription: "LEO uses your location for location-based reminders."
         NSLocationAlwaysAndWhenInUseUsageDescription: "LEO uses your location for location-based reminders even when the app is in the background."
+        NSCameraUsageDescription: "LEO uses the camera so you can photograph handwritten notes and convert them to tasks and events."
         NSMicrophoneUsageDescription: "LEO uses the microphone for voice quick-add."
+        NSPhotoLibraryUsageDescription: "LEO reads photos so you can convert handwritten notes into tasks and events."
         NSSpeechRecognitionUsageDescription: "LEO uses speech recognition to convert your voice to captured items."
         NSUserTrackingUsageDescription: "LEO does not track you. This entry is required by iOS."
 

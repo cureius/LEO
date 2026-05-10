@@ -9,9 +9,11 @@ private let logger = Logger(subsystem: "com.theblueman.leo", category: "notif-de
 /// taps/actions into the app via async tasks.
 final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate, Sendable {
     private let itemRepository: ItemRepository
+    private let notificationManager: NotificationManager
 
-    init(itemRepository: ItemRepository) {
+    init(itemRepository: ItemRepository, notificationManager: NotificationManager) {
         self.itemRepository = itemRepository
+        self.notificationManager = notificationManager
     }
 
     // MARK: - Foreground presentation
@@ -41,19 +43,34 @@ final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate, Se
 
         let action = response.actionIdentifier
         let repo = itemRepository
+        let nm = notificationManager
+        let info = response.notification.request.content.userInfo
+        let itemTitle = info["itemTitle"] as? String ?? ""
+        let itemDueDate = (info["itemDueDate"] as? Double).map { Date(timeIntervalSince1970: $0) }
 
-        Task {
+        // Use a detached task so we never inherit a stale actor context from the system.
+        // Call completion() on the main thread — UNUserNotificationCenter expects it there.
+        Task.detached {
+            await nm.cancelAll(for: itemID)
+
             switch action {
             case NotificationAction.complete:
-                await markCompleted(id: itemID, repo: repo)
+                await self.markCompleted(id: itemID, repo: repo)
+
             case NotificationAction.snooze10m:
-                await snooze(id: itemID, by: 10 * 60, repo: repo)
+                await self.snooze(id: itemID, by: 10 * 60, repo: repo, nm: nm)
+
             case NotificationAction.snooze1h:
-                await snooze(id: itemID, by: 3600, repo: repo)
+                await self.snooze(id: itemID, by: 3600, repo: repo, nm: nm)
+
             default:
-                break
+                let alert = PendingReminderAlert(id: itemID, title: itemTitle, dueDate: itemDueDate)
+                await MainActor.run {
+                    NotificationCenter.default.post(name: .leoReminderTapped, object: alert)
+                }
             }
-            completion()
+
+            await MainActor.run { completion() }
         }
     }
 
@@ -71,14 +88,19 @@ final class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate, Se
         }
     }
 
-    private func snooze(id: UUID, by seconds: TimeInterval, repo: ItemRepository) async {
+    private func snooze(id: UUID, by seconds: TimeInterval,
+                        repo: ItemRepository, nm: NotificationManager) async {
         do {
             let items = try await repo.fetch(predicate: .byID(id))
             guard var item = items.first else { return }
             let snoozeDate = Date.now.addingTimeInterval(seconds)
             item.anchor = .point(snoozeDate)
             try await repo.update(item)
-            logger.info("Snoozed item \(id) by \(Int(seconds))s")
+            // Re-sync schedules a fresh burst at the new snooze time
+            if let all = try? await repo.fetch() {
+                await nm.sync(for: all)
+            }
+            logger.info("Snoozed item \(id) by \(Int(seconds))s → \(snoozeDate)")
         } catch {
             logger.error("Failed to snooze item \(id): \(error)")
         }

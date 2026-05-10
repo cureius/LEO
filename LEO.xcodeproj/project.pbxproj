@@ -29,6 +29,7 @@
 		2A2F3383C073169C89BB1E1B /* ShakeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A322426DEEA913AB5705AB /* ShakeDetector.swift */; };
 		2BDF195C4D2A0220C6B4CC06 /* QuickAddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF78E2FC288EDC80B0B8A198 /* QuickAddViewModel.swift */; };
 		2C0864E0F997C76BB22752AB /* WidgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9277166E6950652AD179AA27 /* WidgetSnapshot.swift */; };
+		2C72792649B498D0FBD51A99 /* ReminderActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190470FDE5BD768C95EF781B /* ReminderActionSheet.swift */; };
 		2CD250367C134C28AA8BFFA9 /* LocationReminderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308021BC734D2C1D054ACF04 /* LocationReminderManager.swift */; };
 		2D268335A587DF2E68116041 /* Seeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D88E284E7D2B910CA9A1B12 /* Seeder.swift */; };
 		302CF3FF68A248AA495E3605 /* ItemMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = C786385EA62125C8C828BD8A /* ItemMapping.swift */; };
@@ -110,6 +111,7 @@
 		BCBBF62B60AF97406AE2BE66 /* HabitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA78D895C326F49AB9786F4 /* HabitsView.swift */; };
 		BE32AAD5EB55F4668D421E59 /* WidgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DC63E139DCDA53796C3A5C /* WidgetSnapshot.swift */; };
 		C01D41CFD59D9256EBD30DF5 /* CalendarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18E3C14F2FC147B39FB7101 /* CalendarSettingsView.swift */; };
+		C05A2A5E99E787B6E85B5B34 /* leo_alarm.caf in Resources */ = {isa = PBXBuildFile; fileRef = 41907E328C91F86B6CD008CB /* leo_alarm.caf */; };
 		C32E8B1219288B81FBD71CAC /* ItemDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44670BE3D33ED517CA05AB /* ItemDetailSheet.swift */; };
 		C9E687878EEE528E7104F964 /* EventItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85430CE926F736F473A8262 /* EventItem.swift */; };
 		CB29CB77146D16900351B1FA /* StreakEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89A682998BADFC95D871524 /* StreakEngine.swift */; };
@@ -193,6 +195,7 @@
 		0FF775267C4742345B2B77BA /* StoredHabitInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredHabitInstance.swift; sourceTree = "<group>"; };
 		1139EA23D3DEF38B50402D16 /* WidgetModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetModels.swift; sourceTree = "<group>"; };
 		14FF1DBB1CCE4FEB0E8FF169 /* LEOUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LEOUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		190470FDE5BD768C95EF781B /* ReminderActionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderActionSheet.swift; sourceTree = "<group>"; };
 		197DA7CB48DB56BD3218C81B /* Anchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Anchor.swift; sourceTree = "<group>"; };
 		1A0C8A1FBA75CDFB0F91DD5F /* ItemChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemChange.swift; sourceTree = "<group>"; };
 		1BD05EE81B197FF782C7B9D2 /* LEOUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOUITests.swift; sourceTree = "<group>"; };
@@ -214,6 +217,7 @@
 		3EE1E20B2CB95C9744D43BC0 /* StoreClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreClient.swift; sourceTree = "<group>"; };
 		3FC7D73A213F9F0DECBF532B /* LocationTrigger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTrigger.swift; sourceTree = "<group>"; };
 		4133C5CDC309F75FC5D374B1 /* ReminderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderItem.swift; sourceTree = "<group>"; };
+		41907E328C91F86B6CD008CB /* leo_alarm.caf */ = {isa = PBXFileReference; path = leo_alarm.caf; sourceTree = "<group>"; };
 		41EB22DC22016F5BD68B326D /* LEOSkeleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOSkeleton.swift; sourceTree = "<group>"; };
 		49B748C21D917DB88313909F /* LEOTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOTextField.swift; sourceTree = "<group>"; };
 		4AA78D895C326F49AB9786F4 /* HabitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsView.swift; sourceTree = "<group>"; };
@@ -422,6 +426,7 @@
 				308021BC734D2C1D054ACF04 /* LocationReminderManager.swift */,
 				CF3CD4968E3E54ED82FAFD54 /* NotificationDelegate.swift */,
 				700F6AC59B59926330C9238B /* NotificationManager.swift */,
+				190470FDE5BD768C95EF781B /* ReminderActionSheet.swift */,
 				CCBA2DBD4366241F65EC816C /* TravelTimePreReminder.swift */,
 			);
 			path = Notifications;
@@ -533,6 +538,7 @@
 			children = (
 				33976C4782FAA15815A4C211 /* Assets.xcassets */,
 				0C3B4FA4BB1720F75A300E1C /* Info.plist */,
+				41907E328C91F86B6CD008CB /* leo_alarm.caf */,
 				FB23ED12231CDA96B883BF5B /* LEO-debug.entitlements */,
 				ED6DF7DDD0C69A8C1CF5003D /* LEO.entitlements */,
 				6BAD57FA2B264C1A656D1852 /* LEO.storekit */,
@@ -1299,20 +1305,20 @@
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					277743A9F4DB58FA86DF4F50 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = ZT397U24CA;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 6E45B50C9DFF491D1347F67A;
 					};
 					542E11682A464580B8C76063 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = ZT397U24CA;
 						ProvisioningStyle = Automatic;
 					};
 					6E45B50C9DFF491D1347F67A = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = ZT397U24CA;
 						ProvisioningStyle = Automatic;
 					};
 					C7E0A14DAB2B10BCFFEB97B8 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = ZT397U24CA;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1347,6 +1353,7 @@
 				68EC22F26BB4EF28CD92AAEA /* Assets.xcassets in Resources */,
 				F36063E9E71A88AF3FE9D2BC /* LEO.storekit in Resources */,
 				E58A982BC06EE03E37ADF0C4 /* Theme.xcassets in Resources */,
+				C05A2A5E99E787B6E85B5B34 /* leo_alarm.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1437,6 +1444,7 @@
 				056FEE0B60E998CCA685F390 /* RecurrenceEngine.swift in Sources */,
 				82CFDA2AE55D26D90F0E0D6A /* RecurrenceFormatter.swift in Sources */,
 				E6E0DAC84F4B70B4E75244EA /* RecurrenceRule.swift in Sources */,
+				2C72792649B498D0FBD51A99 /* ReminderActionSheet.swift in Sources */,
 				AAC9D01D54C1F1D527A4FD3C /* ReminderItem.swift in Sources */,
 				31134E795D3B8465B7E9EDE1 /* RootView.swift in Sources */,
 				1A72AD8D68E313A7BE585B13 /* SchemaSync.swift in Sources */,

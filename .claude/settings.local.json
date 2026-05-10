@@ -61,7 +61,12 @@
       "Bash(sed -n '5,35p' /Users/raj/Raj/personal/IOS/LEO/LEO/Persistence/SwiftData/Models/StoredTask.swift)",
       "Bash(sed -n '1,35p' /Users/raj/Raj/personal/IOS/LEO/LEO/Persistence/SwiftData/Models/StoredEvent.swift)",
       "Bash(sed -n '1,30p' /Users/raj/Raj/personal/IOS/LEO/LEO/Domain/Items/TaskItem.swift)",
-      "Bash(sed -n '1,25p' /Users/raj/Raj/personal/IOS/LEO/LEO/Domain/Items/EventItem.swift)"
+      "Bash(sed -n '1,25p' /Users/raj/Raj/personal/IOS/LEO/LEO/Domain/Items/EventItem.swift)",
+      "Bash(afconvert /tmp/leo_alarm.wav -o /Users/raj/Raj/personal/IOS/LEO/LEO/Resources/leo_alarm.caf -d LEI16 -f caff -c 1)",
+      "Bash(afconvert /tmp/leo_alarm_short.wav -o /Users/raj/Raj/personal/IOS/LEO/LEO/Resources/leo_alarm.caf -d aac -f caff -c 1 -b 64000)",
+      "Bash(afinfo /Users/raj/Raj/personal/IOS/LEO/LEO/Resources/leo_alarm.caf)",
+      "Bash(git -C /Users/raj/Raj/personal/IOS/LEO log --all --oneline)",
+      "Bash(git -C /Users/raj/Raj/personal/IOS/LEO show HEAD~3:LEO.xcodeproj/project.pbxproj)"
     ]
   }
 }
