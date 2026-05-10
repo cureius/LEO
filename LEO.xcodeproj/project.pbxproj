@@ -122,6 +122,7 @@
 		D679BA4C1DFA048687FE98AB /* StoredAlarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F0E1008D54E3CC84304AEB /* StoredAlarm.swift */; };
 		D7AD7D0F9233E8E1D2D6C99B /* LEOItemEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B472C83673EC259F6561193 /* LEOItemEntity.swift */; };
 		DC5812ACE0F1972294E7160F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDCF1AD178CAF77C45FAB66A /* SwiftUI.framework */; };
+		E1AE9BEAF59E796B3F017D44 /* VisionOCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40FA35411FD4B6D7E8E9DC96 /* VisionOCRService.swift */; };
 		E1FAA9FD56A5551D5AF3E9A4 /* LEOWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E8A5798F002D4869949506 /* LEOWidgetBundle.swift */; };
 		E3B0F00D4CD7274FD3650937 /* StoredRecurrenceRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F196CC8514C468D8EA8F2 /* StoredRecurrenceRule.swift */; };
 		E4A04BBDBCDDE64FDFE88479 /* DeterministicParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86D061374805775FE7FE37E /* DeterministicParser.swift */; };
@@ -216,6 +217,7 @@
 		3E3F196CC8514C468D8EA8F2 /* StoredRecurrenceRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredRecurrenceRule.swift; sourceTree = "<group>"; };
 		3EE1E20B2CB95C9744D43BC0 /* StoreClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreClient.swift; sourceTree = "<group>"; };
 		3FC7D73A213F9F0DECBF532B /* LocationTrigger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTrigger.swift; sourceTree = "<group>"; };
+		40FA35411FD4B6D7E8E9DC96 /* VisionOCRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionOCRService.swift; sourceTree = "<group>"; };
 		4133C5CDC309F75FC5D374B1 /* ReminderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderItem.swift; sourceTree = "<group>"; };
 		41907E328C91F86B6CD008CB /* leo_alarm.caf */ = {isa = PBXFileReference; path = leo_alarm.caf; sourceTree = "<group>"; };
 		41EB22DC22016F5BD68B326D /* LEOSkeleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOSkeleton.swift; sourceTree = "<group>"; };
@@ -564,6 +566,7 @@
 				735AE281F33E525C3D701BF0 /* Prompts */,
 				4411733D4CB79D378A5AC6B3 /* Review */,
 				75C0110D67296CC8312635C6 /* Routing */,
+				F9F0D0FBBB7F7EF315C1A393 /* Vision */,
 			);
 			path = AI;
 			sourceTree = "<group>";
@@ -1211,6 +1214,14 @@
 			tabWidth = 4;
 			usesTabs = 0;
 		};
+		F9F0D0FBBB7F7EF315C1A393 /* Vision */ = {
+			isa = PBXGroup;
+			children = (
+				40FA35411FD4B6D7E8E9DC96 /* VisionOCRService.swift */,
+			);
+			path = Vision;
+			sourceTree = "<group>";
+		};
 		FA07404CFA13456A744CBB13 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -1476,6 +1487,7 @@
 				23305A809A45D57AE276D319 /* ToolRuntime.swift in Sources */,
 				0CEFC143AE3DFA2202BCCCAF /* TravelTimePreReminder.swift in Sources */,
 				F4278DC0A986A487D41994EE /* USFederalHolidays.swift in Sources */,
+				E1AE9BEAF59E796B3F017D44 /* VisionOCRService.swift in Sources */,
 				5FA505C39C5B5042C2D753C5 /* WeeklyReviewGenerator.swift in Sources */,
 				8EE6DE05E15DBEA26B66900D /* WeeklyReviewView.swift in Sources */,
 				2C0864E0F997C76BB22752AB /* WidgetSnapshot.swift in Sources */,

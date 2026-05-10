@@ -13,12 +13,14 @@ struct ChatMessage: Identifiable, Sendable {
     var text: String
     var isStreaming: Bool
     var diff: DiffPayload?
-    var isApplied: Bool = false // true once the proposal was confirmed by the user
-    var imageData: Data?        // JPEG thumbnail for display (user messages only)
+    var isApplied: Bool = false  // true once the proposal was confirmed by the user
+    var imageData: Data?         // JPEG thumbnail for display (user messages only)
+    var ocrText: String? = nil   // text extracted on-device; nil when image was sent to Claude
     let timestamp: Date
 
-    static func user(_ text: String, imageData: Data? = nil) -> ChatMessage {
-        ChatMessage(id: UUID(), role: .user, text: text, isStreaming: false, imageData: imageData, timestamp: .now)
+    static func user(_ text: String, imageData: Data? = nil, ocrText: String? = nil) -> ChatMessage {
+        ChatMessage(id: UUID(), role: .user, text: text, isStreaming: false,
+                    imageData: imageData, ocrText: ocrText, timestamp: .now)
     }
     static func assistant(_ text: String = "", streaming: Bool = false) -> ChatMessage {
         ChatMessage(id: UUID(), role: .assistant, text: text, isStreaming: streaming, timestamp: .now)
@@ -117,19 +119,49 @@ final class AssistantChatViewModel {
         isSending = true
         errorMessage = nil
 
-        // Append user message to display + history
-        let userMsg = ChatMessage.user(prompt, imageData: imageData)
-        messages.append(userMsg)
-
-        // Build API message content — include image block when present
+        // ── Hybrid OCR: run on-device Vision first; only send text (not pixels) to Claude ──
         var userContent: [ContentBlock] = []
+        var displayOCRText: String? = nil
+
+        // Build the display message — shown immediately while OCR processes
+        var displayMsg = ChatMessage.user(prompt, imageData: imageData)
+        messages.append(displayMsg)
+
         if let jpeg = imageData {
-            userContent.append(.image(ImageBlock(jpegData: jpeg)))
+            let extracted = await VisionOCRService.shared.recognizeText(from: jpeg)
+
+            if let text = extracted {
+                // ✅ OCR succeeded — only the extracted text goes to Claude (no image tokens)
+                displayOCRText = text
+                let fullPrompt = """
+                I photographed some handwritten notes. Here is the text extracted on-device:
+
+                ---
+                \(text)
+                ---
+
+                \(prompt)
+                """
+                userContent.append(.text(TextBlock(text: fullPrompt)))
+            } else {
+                // ⚠️ OCR found nothing readable — fall back to Claude Vision (image sent to API)
+                displayOCRText = "Could not read locally — sending to Claude Vision instead."
+                userContent.append(.image(ImageBlock(jpegData: jpeg)))
+                userContent.append(.text(TextBlock(text: prompt)))
+            }
+
+            // Update the display bubble with the OCR outcome
+            if let idx = messages.firstIndex(where: { $0.id == displayMsg.id }) {
+                messages[idx].ocrText = displayOCRText
+                displayMsg = messages[idx]
+            }
+        } else {
+            userContent.append(.text(TextBlock(text: prompt)))
         }
-        userContent.append(.text(TextBlock(text: prompt)))
+
         conversationHistory.append(Message(role: .user, content: userContent))
         await store.appendMessage(
-            PersistedMessage(id: userMsg.id, role: .user, text: prompt, timestamp: userMsg.timestamp),
+            PersistedMessage(id: displayMsg.id, role: .user, text: prompt, timestamp: displayMsg.timestamp),
             to: sessionID
         )
 

@@ -375,7 +375,8 @@ private struct UserMessageRow: View {
         HStack {
             Spacer(minLength: 48)
             VStack(alignment: .trailing, spacing: 6) {
-                // Image thumbnail (if attached)
+
+                // Image thumbnail
                 if let jpeg = message.imageData, let uiImage = UIImage(data: jpeg) {
                     Image(uiImage: uiImage)
                         .resizable()
@@ -385,8 +386,33 @@ private struct UserMessageRow: View {
                             topLeadingRadius: 18, bottomLeadingRadius: 18,
                             bottomTrailingRadius: 4, topTrailingRadius: 18
                         ))
+
+                    // OCR result card shown below the thumbnail
+                    if let ocr = message.ocrText {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Label("Read from photo", systemImage: "text.viewfinder")
+                                .font(.system(size: 11, weight: .semibold))
+                                .foregroundStyle(.white.opacity(0.75))
+
+                            Text(ocr)
+                                .font(.system(size: 13, design: .monospaced))
+                                .foregroundStyle(.white.opacity(0.9))
+                                .lineLimit(6)
+                                .truncationMode(.tail)
+                                .textSelection(.enabled)
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 9)
+                        .frame(maxWidth: 220, alignment: .leading)
+                        .background(.white.opacity(0.15))
+                        .clipShape(UnevenRoundedRectangle(
+                            topLeadingRadius: 10, bottomLeadingRadius: 10,
+                            bottomTrailingRadius: 4, topTrailingRadius: 10
+                        ))
+                    }
                 }
-                // Text bubble (hidden when empty — image-only messages)
+
+                // User prompt text bubble
                 if !message.text.isEmpty {
                     Text(message.text)
                         .font(.system(size: 15))

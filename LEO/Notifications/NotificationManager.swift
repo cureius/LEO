@@ -126,6 +126,7 @@ actor NotificationManager {
         content.categoryIdentifier = categoryIdentifier
         content.userInfo = userInfo
         content.interruptionLevel = .timeSensitive
+        applyIcon(to: content)
 
         let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
@@ -222,6 +223,15 @@ actor NotificationManager {
 
     private static let alarmSound = UNNotificationSound(named: UNNotificationSoundName("leo_alarm.caf"))
 
+    // Attach the lion icon to every notification so it appears in the banner
+    private func applyIcon(to content: UNMutableNotificationContent) {
+        guard let url = Bundle.main.url(forResource: "NotificationIcon_3x", withExtension: "png",
+                                        subdirectory: "NotificationIcon.imageset"),
+              let attachment = try? UNNotificationAttachment(identifier: "icon", url: url, options: nil)
+        else { return }
+        content.attachments = [attachment]
+    }
+
     private func makeRequest(for item: any Item, at date: Date,
                              suffix: String, isFollowUp: Bool = false) -> UNNotificationRequest {
         // Use alarm sound + time-sensitive level for any timed point/due-date item
@@ -244,6 +254,7 @@ actor NotificationManager {
         ]
         content.categoryIdentifier = categoryID(for: item)
         content.interruptionLevel = isTimed ? .timeSensitive : .active
+        applyIcon(to: content)
 
         let comps = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
         let trigger = UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)
