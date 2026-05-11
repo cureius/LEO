@@ -33,10 +33,6 @@
 	<string>LEO creates events in your iOS calendars.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>LEO uses the camera so you can photograph handwritten notes and convert them to tasks and events.</string>
-	<key>NSHealthShareUsageDescription</key>
-	<string>LEO reads your weight and body metrics to personalize your fitness plan.</string>
-	<key>NSHealthUpdateUsageDescription</key>
-	<string>LEO writes completed workouts and meals to Apple Health to keep your rings updated.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>LEO uses your location for location-based reminders even when the app is in the background.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>

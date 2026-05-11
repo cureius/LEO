@@ -1,16 +1,12 @@
 import SwiftUI
-import HealthKit
 
 /// Skippable gym companion onboarding page. Inserted between calendar step and completion.
 struct OnboardingPageGym: View {
     let bodyProfileRepository: BodyProfileRepository
-    let healthKitBridge: HealthKitBridge
     let onDone: () -> Void
 
     @State private var showProfileForm = false
     @State private var profile: UserBodyProfile = UserBodyProfile()
-    @State private var healthKitGranted = false
-    @State private var isSaving = false
     @State private var hasSetupProfile = false
 
     var body: some View {
@@ -26,12 +22,11 @@ struct OnboardingPageGym: View {
                     .font(.system(size: 28, weight: .bold))
                     .multilineTextAlignment(.center)
 
-                Text("LEO can generate personalized workout and meal plans, track your calories, and sync with Apple Health — all optional.")
+                Text("LEO can generate personalized workout and meal plans and track your daily calorie balance — all optional.")
                     .font(Theme.Typography.body)
                     .foregroundStyle(Theme.Color.textSecondary)
                     .multilineTextAlignment(.center)
 
-                // Quick stats card if profile was just set
                 if hasSetupProfile {
                     let kcal = Int(BodyMath.dailyKcalTarget(profile: profile).dailyKcal)
                     VStack(spacing: 8) {
@@ -50,7 +45,6 @@ struct OnboardingPageGym: View {
                     .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.md))
                 }
 
-                // Set up profile button
                 Button {
                     showProfileForm = true
                 } label: {
@@ -62,33 +56,6 @@ struct OnboardingPageGym: View {
                     .padding(.vertical, 4)
                 }
                 .buttonStyle(.bordered)
-
-                // HealthKit permission
-                Button {
-                    Task {
-                        guard healthKitBridge.isAvailable else {
-                            healthKitGranted = false
-                            return
-                        }
-                        let outcome = await healthKitBridge.requestAccess()
-                        if case .granted = outcome {
-                            let status = await healthKitBridge.authorizationStatus()
-                            healthKitGranted = (status == .sharingAuthorized)
-                        } else {
-                            healthKitGranted = false
-                        }
-                    }
-                } label: {
-                    HStack {
-                        Image(systemName: healthKitGranted ? "heart.fill" : "heart")
-                            .foregroundStyle(healthKitGranted ? .red : Theme.Color.accent)
-                        Text(healthKitGranted ? "Apple Health connected" : "Connect Apple Health")
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 4)
-                }
-                .buttonStyle(.bordered)
-                .disabled(healthKitGranted)
 
                 Divider()
 

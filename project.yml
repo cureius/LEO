@@ -74,7 +74,6 @@ targets:
     dependencies:
       - target: LEOWidgets
         embed: true
-      - sdk: HealthKit.framework
     info:
       path: LEO/Resources/Info.plist
       properties:
@@ -110,8 +109,6 @@ targets:
         NSPhotoLibraryUsageDescription: "LEO reads photos so you can convert handwritten notes into tasks and events."
         NSSpeechRecognitionUsageDescription: "LEO uses speech recognition to convert your voice to captured items."
         NSUserTrackingUsageDescription: "LEO does not track you. This entry is required by iOS."
-        NSHealthShareUsageDescription: "LEO reads your weight and body metrics to personalize your fitness plan."
-        NSHealthUpdateUsageDescription: "LEO writes completed workouts and meals to Apple Health to keep your rings updated."
 
   LEOWidgets:
     type: app-extension

@@ -109,7 +109,6 @@
 		995870704743260F9C784A53 /* LEOUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD05EE81B197FF782C7B9D2 /* LEOUITests.swift */; };
 		998394ABBE78E699C88D79B7 /* Environment+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70A711B26C01011C7A6F0BF /* Environment+Keys.swift */; };
 		9A62CD1EC25A63A801AC54DA /* TagRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAA17A0030150282CCF2F6B /* TagRepository.swift */; };
-		9AEBAE14FA52BDC3EF84950F /* HealthKitBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B4C1266F9FAA9B2E63ACCB /* HealthKitBridge.swift */; };
 		9C06F07C0E64EC350496E076 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0D002EC30F436BD1EE4798 /* Exercise.swift */; };
 		9CE778B906AE246D2CA53C89 /* Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F03B6485E20C09361D3AD7 /* Diff.swift */; };
 		9EFFF82875EE531FF401BDF7 /* MeasurementsChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8743C50F7B57786EB42DE4C /* MeasurementsChartView.swift */; };
@@ -167,7 +166,6 @@
 		F23D8C9C61E8A1045156DED7 /* DesignSystemPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCA97C9CD13F23AF6940D464 /* DesignSystemPreview.swift */; };
 		F26F2B1364FA93A5C1D4AD83 /* QuickAddWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD6E59260E2071E54821C9B /* QuickAddWidget.swift */; };
 		F36063E9E71A88AF3FE9D2BC /* LEO.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 6BAD57FA2B264C1A656D1852 /* LEO.storekit */; };
-		F4179F4ADD57DDE5465B61E0 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D14235D2566398F53D56C385 /* HealthKit.framework */; };
 		F4278DC0A986A487D41994EE /* USFederalHolidays.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BEBB98EBB5B605CAC1EB38 /* USFederalHolidays.swift */; };
 		F4BAA26428606D4E0AF707F1 /* AppTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E8664A21024526487C667E /* AppTabView.swift */; };
 		F4D3A01E0BB96D0AB77AC158 /* recipes.json in Resources */ = {isa = PBXBuildFile; fileRef = 5AF69A7441D9FA7733469CB1 /* recipes.json */; };
@@ -282,7 +280,6 @@
 		5AF69A7441D9FA7733469CB1 /* recipes.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = recipes.json; sourceTree = "<group>"; };
 		5CDF0E5595AC99ABC020890E /* Theme.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Theme.xcassets; sourceTree = "<group>"; };
 		629CBDFCEA7CF631BCC45E37 /* HabitRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRepository.swift; sourceTree = "<group>"; };
-		65B4C1266F9FAA9B2E63ACCB /* HealthKitBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitBridge.swift; sourceTree = "<group>"; };
 		68D1A64A910E20679CD1B10D /* HabitRingWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitRingWidget.swift; sourceTree = "<group>"; };
 		6A9EF78DEEB8AF960521D417 /* AlarmItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmItem.swift; sourceTree = "<group>"; };
 		6BAD57FA2B264C1A656D1852 /* LEO.storekit */ = {isa = PBXFileReference; path = LEO.storekit; sourceTree = "<group>"; };
@@ -351,7 +348,6 @@
 		CCCF9B8C6AB6B4695C0BF1B4 /* LEOIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOIntents.swift; sourceTree = "<group>"; };
 		CE8071DDF7419990F8C22C6C /* TodayTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayTabView.swift; sourceTree = "<group>"; };
 		CF3CD4968E3E54ED82FAFD54 /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
-		D14235D2566398F53D56C385 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		D1B73C5AC3C754052763DED3 /* WeeklyReviewGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReviewGenerator.swift; sourceTree = "<group>"; };
 		D21234BD488E3902ADC96A0A /* StoredTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredTask.swift; sourceTree = "<group>"; };
 		D287050AF673F35357060D27 /* TodayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidget.swift; sourceTree = "<group>"; };
@@ -399,14 +395,6 @@
 			files = (
 				5A16DBAFD9240067B35A8181 /* WidgetKit.framework in Frameworks */,
 				DC5812ACE0F1972294E7160F /* SwiftUI.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AF25FFCEEC5D83FE14E3AFE1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F4179F4ADD57DDE5465B61E0 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -595,7 +583,6 @@
 		3885CAA788DC428ABD34ED8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D14235D2566398F53D56C385 /* HealthKit.framework */,
 				BDCF1AD178CAF77C45FAB66A /* SwiftUI.framework */,
 				3CAB86FF90B3CF43D5111E3D /* WidgetKit.framework */,
 			);
@@ -705,14 +692,6 @@
 				482F0FDD9EEEB496394FF5C8 /* WorkoutItem.swift */,
 			);
 			path = Items;
-			sourceTree = "<group>";
-		};
-		4919090A8150C5F945869BF5 /* HealthKit */ = {
-			isa = PBXGroup;
-			children = (
-				65B4C1266F9FAA9B2E63ACCB /* HealthKitBridge.swift */,
-			);
-			path = HealthKit;
 			sourceTree = "<group>";
 		};
 		4986E49AFA94B16CC6C75231 /* Monetization */ = {
@@ -1062,7 +1041,6 @@
 			children = (
 				939F499ABA177478C869BC1B /* CloudKit */,
 				6F1FB4F9DDBE8ACBEAFE411D /* EventKit */,
-				4919090A8150C5F945869BF5 /* HealthKit */,
 				F2AFEFD03F5C423D615DC811 /* Mapping */,
 				2744168A2F5987E4EBFC72B0 /* Repositories */,
 				0E419E36534B3656B72B7D86 /* SwiftData */,
@@ -1450,7 +1428,6 @@
 			buildPhases = (
 				1BF749834C03C99753F5AA1A /* Sources */,
 				04FCBD7EDC19ED83E23C38E0 /* Resources */,
-				AF25FFCEEC5D83FE14E3AFE1 /* Frameworks */,
 				8275AEDFBA1A36F6BD752EC2 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -1601,7 +1578,6 @@
 				64B1419945CB1FAD2CB73585 /* HabitMaterializer.swift in Sources */,
 				ABF5024C1643AEBEAEA2E312 /* HabitRepository.swift in Sources */,
 				BCBBF62B60AF97406AE2BE66 /* HabitsView.swift in Sources */,
-				9AEBAE14FA52BDC3EF84950F /* HealthKitBridge.swift in Sources */,
 				947E2A03A1F1A95BCAEC2476 /* HistoryView.swift in Sources */,
 				A45B6C80A108B5726BBF0CA0 /* Importance.swift in Sources */,
 				F01B390987DD7C5A1638DE22 /* InboxView.swift in Sources */,

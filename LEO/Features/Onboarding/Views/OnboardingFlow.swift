@@ -16,7 +16,6 @@ struct OnboardingFlow: View {
             OnboardingPage4(onNext: { page = 4 }).tag(3)
             OnboardingPageGym(
                 bodyProfileRepository: appEnv.bodyProfileRepository,
-                healthKitBridge: appEnv.healthKitBridge,
                 onDone: {
                     UserDefaults.standard.set(true, forKey: onboardingDoneKey)
                     onComplete()
