@@ -30,7 +30,7 @@ struct GeneratePlanFlowView: View {
                         }
                     }
                 }
-                .alert("Couldn't activate plan", isPresented: Binding(
+                .alert("Plan", isPresented: Binding(
                     get: { errorMessage != nil },
                     set: { if !$0 { errorMessage = nil } }
                 )) {
@@ -81,6 +81,13 @@ struct GeneratePlanFlowView: View {
         defer { isGenerating = false }
         let generator = FitnessPlanGenerator(bodyProfileRepository: appEnv.bodyProfileRepository)
         let result = await generator.generate(preferences: preferences)
+
+        // Empty result → tell the user why and stay on preferences
+        if result.workouts.isEmpty && result.meals.isEmpty {
+            errorMessage = "We couldn't build a plan with these preferences. Try selecting more equipment options or different diet settings in your body profile."
+            return
+        }
+
         self.plan = result
         includedWorkouts = Set(result.workouts.map(\.id))
         includedMeals = Set(result.meals.map(\.id))

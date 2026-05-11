@@ -61,15 +61,20 @@ actor FitnessLibrary {
     }
 
     private static func decode<T: Decodable>(_ type: T.Type, resource: String, ext: String) -> T? {
-        guard let url = Bundle.main.url(forResource: resource, withExtension: ext, subdirectory: "Fitness") else {
-            logger.error("Missing bundle resource: Fitness/\(resource).\(ext)")
+        // xcodegen flattens the Resources/Fitness/ folder into the bundle root,
+        // so the file ends up at LEO.app/<resource>.<ext> rather than
+        // LEO.app/Fitness/<resource>.<ext>. Try both locations.
+        let url = Bundle.main.url(forResource: resource, withExtension: ext, subdirectory: "Fitness")
+            ?? Bundle.main.url(forResource: resource, withExtension: ext)
+        guard let url else {
+            logger.error("Missing bundle resource: \(resource).\(ext) (searched Fitness/ and bundle root)")
             return nil
         }
         do {
             let data = try Data(contentsOf: url)
             return try JSONDecoder().decode(type, from: data)
         } catch {
-            logger.error("Decode error for \(resource): \(error)")
+            logger.error("Decode error for \(resource).\(ext): \(error)")
             return nil
         }
     }
