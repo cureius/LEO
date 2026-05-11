@@ -90,6 +90,7 @@
 		947E2A03A1F1A95BCAEC2476 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D1E79D9169A72FB8606F2 /* HistoryView.swift */; };
 		957F6FD0C9CB9BC7B5657D8D /* SystemPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51516AEDB3A5FF10DB1162CB /* SystemPrompt.swift */; };
 		97C6D1E13E05833F7AEA2FE6 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4EE2E13B02ABF60D43FF5D /* PersistenceController.swift */; };
+		9877E1CE41AA70BD38F4FF9C /* CalendarSyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FABB1A42F22728190BEE61 /* CalendarSyncCoordinator.swift */; };
 		995870704743260F9C784A53 /* LEOUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD05EE81B197FF782C7B9D2 /* LEOUITests.swift */; };
 		998394ABBE78E699C88D79B7 /* Environment+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70A711B26C01011C7A6F0BF /* Environment+Keys.swift */; };
 		9A62CD1EC25A63A801AC54DA /* TagRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAA17A0030150282CCF2F6B /* TagRepository.swift */; };
@@ -265,6 +266,7 @@
 		99778E63993070879442F89F /* LEOTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LEOTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B472C83673EC259F6561193 /* LEOItemEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOItemEntity.swift; sourceTree = "<group>"; };
 		A2C30F6A20889E761FCA74F8 /* LEOCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOCard.swift; sourceTree = "<group>"; };
+		A4FABB1A42F22728190BEE61 /* CalendarSyncCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSyncCoordinator.swift; sourceTree = "<group>"; };
 		A70A711B26C01011C7A6F0BF /* Environment+Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+Keys.swift"; sourceTree = "<group>"; };
 		A74C919F8669220F81395E33 /* RecurrenceBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurrenceBuilderView.swift; sourceTree = "<group>"; };
 		A7EFB3730D32FD59A4EA0171 /* StoredTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredTag.swift; sourceTree = "<group>"; };
@@ -709,6 +711,7 @@
 		6F1FB4F9DDBE8ACBEAFE411D /* EventKit */ = {
 			isa = PBXGroup;
 			children = (
+				A4FABB1A42F22728190BEE61 /* CalendarSyncCoordinator.swift */,
 				283FD1CE55A45448BCA0218F /* EventKitBridge.swift */,
 				B6AC95A0C5C159F9655F97A7 /* EventKitWriteBack.swift */,
 			);
@@ -1386,6 +1389,7 @@
 				A16CEFF04B5A6A1D8E401FDB /* AssistantChatView.swift in Sources */,
 				B4AA642AA8206EB6D74D779D /* AssistantChatViewModel.swift in Sources */,
 				C01D41CFD59D9256EBD30DF5 /* CalendarSettingsView.swift in Sources */,
+				9877E1CE41AA70BD38F4FF9C /* CalendarSyncCoordinator.swift in Sources */,
 				5B3FF350C7A725F79CF1703D /* ChatHomeView.swift in Sources */,
 				9FFA29A3AB55A45609DE66DD /* ChatModels.swift in Sources */,
 				0A6080A673F74CE660738310 /* ChatSessionView.swift in Sources */,

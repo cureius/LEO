@@ -191,31 +191,60 @@ private struct OnboardingPage4: View {
     let onDone: () -> Void
 
     var body: some View {
-        VStack(spacing: 32) {
-            Spacer()
-            Image(systemName: "calendar.badge.plus")
-                .font(.system(size: 80))
-                .foregroundStyle(Theme.Color.accent)
-            Text("Connect your calendars")
-                .font(.system(size: 28, weight: .bold))
-                .multilineTextAlignment(.center)
-            Text("LEO can mirror your iOS calendars so everything is in one place.")
-                .font(Theme.Typography.body)
-                .foregroundStyle(Theme.Color.textSecondary)
-                .multilineTextAlignment(.center)
-            Text("You can configure this in Settings → Calendars & Reminders at any time.")
-                .font(.caption)
-                .foregroundStyle(Theme.Color.textSecondary)
-                .multilineTextAlignment(.center)
-
-            VStack(spacing: 12) {
-                Button("Get started") { onDone() }
-                    .buttonStyle(.borderedProminent)
-                Button("Skip for now") { onDone() }
+        ScrollView {
+            VStack(spacing: 24) {
+                Image(systemName: "calendar.badge.plus")
+                    .font(.system(size: 72))
+                    .foregroundStyle(Theme.Color.accent)
+                Text("Connect your calendars")
+                    .font(.system(size: 28, weight: .bold))
+                    .multilineTextAlignment(.center)
+                Text("LEO mirrors any calendar you've added to iOS — iCloud, Gmail, Google Workspace, Exchange.")
+                    .font(Theme.Typography.body)
                     .foregroundStyle(Theme.Color.textSecondary)
+                    .multilineTextAlignment(.center)
+
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Have multiple Google accounts?")
+                        .font(Theme.Typography.body.weight(.semibold))
+                    Text("Add each one in **iOS Settings → Calendar → Accounts → Add Account → Google**. LEO will see all of them.")
+                        .font(.caption)
+                        .foregroundStyle(Theme.Color.textSecondary)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding()
+                .background(Theme.Color.surface)
+                .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.md))
+
+                Button {
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        UIApplication.shared.open(url)
+                    }
+                } label: {
+                    HStack {
+                        Image(systemName: "arrow.up.right.square")
+                        Text("Open iOS Settings")
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 6)
+                }
+                .buttonStyle(.bordered)
+
+                Text("You'll pick which calendars to sync in Settings → Calendars & Reminders.")
+                    .font(.caption)
+                    .foregroundStyle(Theme.Color.textSecondary)
+                    .multilineTextAlignment(.center)
+
+                VStack(spacing: 10) {
+                    Button("Get started") { onDone() }
+                        .buttonStyle(.borderedProminent)
+                        .frame(maxWidth: .infinity)
+                    Button("Skip for now") { onDone() }
+                        .foregroundStyle(Theme.Color.textSecondary)
+                }
+                .padding(.top, 4)
             }
-            Spacer()
+            .padding(32)
         }
-        .padding(32)
     }
 }

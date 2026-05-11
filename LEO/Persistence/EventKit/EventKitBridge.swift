@@ -70,6 +70,35 @@ actor EventKitBridge {
         store.calendars(for: .reminder)
     }
 
+    /// Calendars grouped by their EKSource (one row per Google account / iCloud / Exchange / local).
+    /// Sorted so iCloud comes first, then external accounts alphabetically.
+    func calendarsGroupedBySource() -> [(source: EKSource, calendars: [EKCalendar])] {
+        let calendars = store.calendars(for: .event)
+        let grouped = Dictionary(grouping: calendars, by: { $0.source.sourceIdentifier })
+        return grouped
+            .compactMap { (_, cals) -> (EKSource, [EKCalendar])? in
+                guard let first = cals.first else { return nil }
+                let sorted = cals.sorted { $0.title.localizedCompare($1.title) == .orderedAscending }
+                return (first.source, sorted)
+            }
+            .sorted { lhs, rhs in
+                // iCloud first, then by source title
+                if lhs.0.sourceType == .calDAV && lhs.0.title.localizedCaseInsensitiveContains("icloud") { return true }
+                if rhs.0.sourceType == .calDAV && rhs.0.title.localizedCaseInsensitiveContains("icloud") { return false }
+                return lhs.0.title.localizedCompare(rhs.0.title) == .orderedAscending
+            }
+    }
+
+    /// Asks iOS to pull the latest from remote sources (CalDAV/Exchange) before we re-read.
+    /// Safe to call frequently — iOS rate-limits internally.
+    func refreshSources() async {
+        store.refreshSourcesIfNecessary()
+    }
+
+    /// The current subscription set — used by callers that want to drive sync without re-reading UserDefaults.
+    var subscribedCalendars: Set<String> { subscribedCalendarIDs }
+    var subscribedReminderLists: Set<String> { subscribedReminderListIDs }
+
     // MARK: - Subscription management
 
     func subscribe(calendarIDs: Set<String>, reminderListIDs: Set<String>) {

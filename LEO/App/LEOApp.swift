@@ -9,6 +9,7 @@ private let bgRefreshID = "com.theblueman.leo.refresh"
 
 @main
 struct LEOApp: App {
+    @Environment(\.scenePhase) private var scenePhase
     @State private var appEnvironment: AppEnvironment? = nil
     // Created on main thread after appEnvironment is ready
     @State private var locationReminderManager: LocationReminderManager? = nil
@@ -56,6 +57,11 @@ struct LEOApp: App {
 
                 scheduleAppRefresh()
 
+                // Begin observing EKEventStoreChanged so external edits (Google/iCloud)
+                // flow into LEO without a manual sync.
+                await env.calendarSyncCoordinator.start()
+                await env.calendarSyncCoordinator.syncOnForeground()
+
                 // Re-sync notifications whenever an item changes in-app.
                 // Runs the whole body on @MainActor so no off-thread continuation surprise.
                 for await _ in NotificationCenter.default.notifications(named: .leoDataDidChange) {
@@ -65,10 +71,15 @@ struct LEOApp: App {
                     await env.notificationManager.sync(for: currentItems)
                 }
             }
+            .onChange(of: scenePhase) { _, newPhase in
+                guard newPhase == .active, let env = appEnvironment else { return }
+                Task { await env.calendarSyncCoordinator.syncOnForeground() }
+            }
         }
         .backgroundTask(.appRefresh(bgRefreshID)) {
             guard let env = appEnvironment else { return }
-            logger.info("BGAppRefresh fired — topping up notification window")
+            logger.info("BGAppRefresh fired — calendar sync + notification top-up")
+            await env.calendarSyncCoordinator.syncForBackgroundTask()
             if let items = try? await env.itemRepository.fetch() {
                 await env.notificationManager.sync(for: items)
             }
@@ -79,12 +90,15 @@ struct LEOApp: App {
 
 // MARK: - Background task scheduling
 
+/// 15 min is the iOS-suggested earliest window for BGAppRefreshTask. The system
+/// decides the actual cadence (typically 30–120 min in real conditions); 15 min
+/// is the hint for "as soon as reasonable" and is what we want for calendar sync.
 private func scheduleAppRefresh() {
     let request = BGAppRefreshTaskRequest(identifier: bgRefreshID)
-    request.earliestBeginDate = Date(timeIntervalSinceNow: 24 * 3600)
+    request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60)
     do {
         try BGTaskScheduler.shared.submit(request)
-        logger.info("BGAppRefresh scheduled for ~24h from now")
+        logger.info("BGAppRefresh scheduled for ~15m from now")
     } catch {
         logger.warning("BGAppRefresh scheduling failed: \(error)")
     }

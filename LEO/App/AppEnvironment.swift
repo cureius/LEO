@@ -16,6 +16,7 @@ final class AppEnvironment {
     let travelTimePreReminder: TravelTimePreReminder
     let eventKitBridge: EventKitBridge
     let eventKitWriteBack: EventKitWriteBack
+    let calendarSyncCoordinator: CalendarSyncCoordinator
     let claudeClient: ClaudeClient
     let weeklyReviewGenerator: WeeklyReviewGenerator
     let alarmEngine: AlarmEngine
@@ -34,8 +35,10 @@ final class AppEnvironment {
         let nm = NotificationManager()
         self.notificationManager = nm
         self.travelTimePreReminder = TravelTimePreReminder(notificationManager: nm)
-        self.eventKitBridge = EventKitBridge(itemRepository: itemRepository)
+        let bridge = EventKitBridge(itemRepository: itemRepository)
+        self.eventKitBridge = bridge
         self.eventKitWriteBack = EventKitWriteBack()
+        self.calendarSyncCoordinator = CalendarSyncCoordinator(bridge: bridge)
         let claude = ClaudeClient()
         self.claudeClient = claude
         self.weeklyReviewGenerator = WeeklyReviewGenerator(
