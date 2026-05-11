@@ -16,11 +16,6 @@ enum SchemaV1: VersionedSchema {
             StoredTag.self,
             StoredRecurrenceRule.self,
             StoredOverride.self,
-            // M8: Gym Companion
-            StoredBodyProfile.self,
-            StoredMeasurement.self,
-            StoredWorkoutItem.self,
-            StoredMealItem.self,
         ]
     }
 }

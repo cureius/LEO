@@ -6,48 +6,78 @@ private let logger = Logger(subsystem: "com.theblueman.leo", category: "persiste
 
 /// Central SwiftData container.
 ///
-/// CloudKit integration is deferred to M3. Until then, all configurations use
-/// `.cloudKitDatabase(.none)` to bypass CloudKit schema validation — which
-/// requires all attributes to be optional and all relationships to have inverses.
-/// When M3 arrives, the @Model types will be made CloudKit-compliant and this
-/// will switch to `.cloudKitDatabase(.private("iCloud.com.theblueman.leo"))`.
+/// Current schema: SchemaV2 (adds Gym Companion models).
+/// Migration plan: V1 → V2 via lightweight migration (new tables only).
+/// CloudKit deferred to M3; all configs use `.cloudKitDatabase(.none)`.
 final class PersistenceController {
     let container: ModelContainer
 
     init(useInMemory: Bool = false) {
-        logger.info("PersistenceController init start (inMemory=\(useInMemory))")
-        let schema = Schema(SchemaV1.models)
+        logger.info("PersistenceController init (inMemory=\(useInMemory))")
+        // Always use V2 schema (the latest) when building the container.
+        let schema = Schema(SchemaV2.models)
 
         do {
-            let config: ModelConfiguration
-            if useInMemory {
-                // In-memory: use /dev/null path with explicit .none to skip CloudKit validation
-                config = ModelConfiguration(
-                    "LEO-inMemory",
-                    schema: schema,
-                    url: URL(fileURLWithPath: "/dev/null"),
-                    cloudKitDatabase: .none
-                )
-            } else {
-                // On-disk: explicit .none until M3 CloudKit work
-                config = ModelConfiguration(
-                    "LEO",
-                    schema: schema,
-                    cloudKitDatabase: .none
-                )
-            }
-
-            container = try ModelContainer(
-                for: schema,
-                migrationPlan: MigrationPlanV1.self,
-                configurations: config
-            )
-            logger.info("PersistenceController initialized OK (inMemory=\(useInMemory))")
+            container = try Self.makeContainer(schema: schema, useInMemory: useInMemory)
+            logger.info("PersistenceController ready")
         } catch {
-            logger.fault("ModelContainer init failed: \(error)")
-            fatalError("Cannot create ModelContainer: \(error)")
+            // Migration failed (can happen when a beta build's store is corrupted or
+            // has an incompatible shape). Attempt recovery by deleting the on-disk
+            // store and starting fresh — acceptable in development; data is lost but
+            // the app doesn't crash.
+            logger.fault("ModelContainer init failed: \(error) — attempting store reset")
+            do {
+                try Self.deleteOnDiskStore()
+                container = try Self.makeContainer(schema: schema, useInMemory: false)
+                logger.warning("Store was reset after migration failure")
+            } catch {
+                // Absolute last resort: in-memory store so the app stays alive
+                logger.fault("Store reset also failed: \(error) — falling back to in-memory")
+                container = try! Self.makeContainer(schema: schema, useInMemory: true)
+            }
         }
     }
+
+    // MARK: - Private helpers
+
+    private static func makeContainer(schema: Schema, useInMemory: Bool) throws -> ModelContainer {
+        let config: ModelConfiguration
+        if useInMemory {
+            config = ModelConfiguration(
+                "LEO-inMemory",
+                schema: schema,
+                url: URL(fileURLWithPath: "/dev/null"),
+                cloudKitDatabase: .none
+            )
+        } else {
+            config = ModelConfiguration(
+                "LEO",
+                schema: schema,
+                cloudKitDatabase: .none
+            )
+        }
+        return try ModelContainer(
+            for: schema,
+            migrationPlan: MigrationPlanV1.self,
+            configurations: config
+        )
+    }
+
+    private static func deleteOnDiskStore() throws {
+        let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+        let storeURL = appSupport.appendingPathComponent("LEO.store")
+        let candidates = [
+            storeURL,
+            storeURL.appendingPathExtension("shm"),
+            storeURL.appendingPathExtension("wal"),
+        ]
+        for url in candidates where FileManager.default.fileExists(atPath: url.path) {
+            try FileManager.default.removeItem(at: url)
+            logger.warning("Deleted store file: \(url.lastPathComponent)")
+        }
+    }
+
+    // MARK: - Contexts
 
     @MainActor
     var mainContext: ModelContext { container.mainContext }

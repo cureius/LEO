@@ -80,6 +80,7 @@
 		6CFD9C930804077B5AE587E4 /* AITelemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717EF1B846ADC3D7D086789E /* AITelemetry.swift */; };
 		6F2DC2857AB88BCB31215AE5 /* UserBodyProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A66B7BD3B9E0FC7919166CD /* UserBodyProfile.swift */; };
 		6FADDDCA98E356532FA64A8A /* LEOEmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D8F4FACA95C9DEFB869472 /* LEOEmptyState.swift */; };
+		70EF6E3A2D7E78EBD8801937 /* SchemaV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9A3945E100823F761B25A9 /* SchemaV2.swift */; };
 		71E5CEB4A19865FA5343A9C9 /* RRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8075555115B124CB289D094A /* RRule.swift */; };
 		742D683957E2F7CA03C74397 /* MetricsSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51441558C209AB484755FD01 /* MetricsSubscriber.swift */; };
 		7670D1EC5CCAAB58197292FB /* SeriesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C596A584A0D5E9ADCB45F128 /* SeriesRepository.swift */; };
@@ -375,6 +376,7 @@
 		EC98C8417F14CF9B93F4766F /* GetBodyProfileTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetBodyProfileTool.swift; sourceTree = "<group>"; };
 		ED44670BE3D33ED517CA05AB /* ItemDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailSheet.swift; sourceTree = "<group>"; };
 		ED6DF7DDD0C69A8C1CF5003D /* LEO.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LEO.entitlements; sourceTree = "<group>"; };
+		ED9A3945E100823F761B25A9 /* SchemaV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaV2.swift; sourceTree = "<group>"; };
 		EF0276D25F013243348D98DA /* CompositeParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeParser.swift; sourceTree = "<group>"; };
 		EF236AF1F0A83A7B3EFB8832 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		F0479C03D6F6721E436D383B /* StoredMeasurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredMeasurement.swift; sourceTree = "<group>"; };
@@ -1138,6 +1140,7 @@
 			isa = PBXGroup;
 			children = (
 				2F9DC13418DC210C3B371410 /* SchemaV1.swift */,
+				ED9A3945E100823F761B25A9 /* SchemaV2.swift */,
 			);
 			path = Schema;
 			sourceTree = "<group>";
@@ -1656,6 +1659,7 @@
 				31134E795D3B8465B7E9EDE1 /* RootView.swift in Sources */,
 				1A72AD8D68E313A7BE585B13 /* SchemaSync.swift in Sources */,
 				8CA0D5968FE46432024CF3B3 /* SchemaV1.swift in Sources */,
+				70EF6E3A2D7E78EBD8801937 /* SchemaV2.swift in Sources */,
 				2D268335A587DF2E68116041 /* Seeder.swift in Sources */,
 				85D5C364705A0A7C4C4787A8 /* Series.swift in Sources */,
 				7670D1EC5CCAAB58197292FB /* SeriesRepository.swift in Sources */,

@@ -31,8 +31,8 @@ actor HealthKitBridge {
         for id in quantityIDs {
             if let t = HKObjectType.quantityType(forIdentifier: id) { types.insert(t) }
         }
-        types.insert(HKObjectType.characteristicType(forIdentifier: .dateOfBirth)!)
-        types.insert(HKObjectType.characteristicType(forIdentifier: .biologicalSex)!)
+        if let dob = HKObjectType.characteristicType(forIdentifier: .dateOfBirth) { types.insert(dob) }
+        if let sex = HKObjectType.characteristicType(forIdentifier: .biologicalSex) { types.insert(sex) }
         types.insert(HKObjectType.workoutType())
         if let correlation = HKObjectType.correlationType(forIdentifier: .food) { types.insert(correlation) }
         return types
