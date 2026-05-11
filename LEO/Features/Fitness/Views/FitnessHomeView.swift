@@ -9,6 +9,7 @@ struct FitnessHomeView: View {
     @State private var showMealDetail: MealItem?
     @State private var showMeasurements = false
     @State private var showAddMeasurement = false
+    @State private var showGeneratePlan = false
 
     var body: some View {
         NavigationStack {
@@ -23,6 +24,13 @@ struct FitnessHomeView: View {
             .navigationTitle("Fitness")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        showGeneratePlan = true
+                    } label: {
+                        Label("New plan", systemImage: "sparkles")
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showAddMeasurement = true
@@ -65,6 +73,10 @@ struct FitnessHomeView: View {
                     showAddMeasurement = true
                 })
             }
+        }
+        .sheet(isPresented: $showGeneratePlan) {
+            GeneratePlanFlowView()
+                .environment(appEnv)
         }
     }
 
@@ -186,21 +198,29 @@ struct FitnessHomeView: View {
     }
 
     private var emptyWorkoutCard: some View {
-        LEOCard {
-            HStack {
-                Image(systemName: "figure.strengthtraining.traditional")
-                    .font(.title2)
-                    .foregroundStyle(Theme.Color.textSecondary)
-                VStack(alignment: .leading) {
-                    Text("No workout today")
-                        .font(Theme.Typography.body.bold())
-                    Text("Generate a plan with Ask LEO")
-                        .font(.caption)
-                        .foregroundStyle(Theme.Color.textSecondary)
+        Button {
+            showGeneratePlan = true
+        } label: {
+            LEOCard {
+                HStack {
+                    Image(systemName: "figure.strengthtraining.traditional")
+                        .font(.title2)
+                        .foregroundStyle(Theme.Color.accent)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("No workout today")
+                            .font(Theme.Typography.body.bold())
+                            .foregroundStyle(Theme.Color.textPrimary)
+                        Text("Tap to generate a personalized plan")
+                            .font(.caption)
+                            .foregroundStyle(Theme.Color.textSecondary)
+                    }
+                    Spacer()
+                    Image(systemName: "sparkles")
+                        .foregroundStyle(Theme.Color.accent)
                 }
-                Spacer()
             }
         }
+        .buttonStyle(.plain)
     }
 
     private func mealStrip(_ meals: [MealItem], vm: FitnessHomeViewModel) -> some View {

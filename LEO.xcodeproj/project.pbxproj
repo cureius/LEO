@@ -121,6 +121,7 @@
 		A9113E45A60D7113C37B29EE /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF3CD4968E3E54ED82FAFD54 /* NotificationDelegate.swift */; };
 		A96AD4935C252FB31147A354 /* ProposeTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525957691A457BD8A9E0A319 /* ProposeTools.swift */; };
 		AAC9D01D54C1F1D527A4FD3C /* ReminderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4133C5CDC309F75FC5D374B1 /* ReminderItem.swift */; };
+		ABDC986AD56C9210CD58EF81 /* GeneratePlanFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF784267058127C1D53FED27 /* GeneratePlanFlowView.swift */; };
 		ABF5024C1643AEBEAEA2E312 /* HabitRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 629CBDFCEA7CF631BCC45E37 /* HabitRepository.swift */; };
 		AC97201B934380D5F54307E3 /* NextEventActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 908EB3440D4CC10080BEB62B /* NextEventActivity.swift */; };
 		B3F2ED615FE1353B18684572 /* DiffReviewSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC9ABFF81EEB6662BF6C326 /* DiffReviewSheet.swift */; };
@@ -131,6 +132,7 @@
 		BE32AAD5EB55F4668D421E59 /* WidgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DC63E139DCDA53796C3A5C /* WidgetSnapshot.swift */; };
 		C01D41CFD59D9256EBD30DF5 /* CalendarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18E3C14F2FC147B39FB7101 /* CalendarSettingsView.swift */; };
 		C05A2A5E99E787B6E85B5B34 /* leo_alarm.caf in Resources */ = {isa = PBXBuildFile; fileRef = 41907E328C91F86B6CD008CB /* leo_alarm.caf */; };
+		C07FB2479DD1EED96AF78E73 /* FitnessPlanGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44C7DBF427EA177E6287ACB /* FitnessPlanGenerator.swift */; };
 		C2D9321E9B41B734F6C2DF84 /* WorkoutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482F0FDD9EEEB496394FF5C8 /* WorkoutItem.swift */; };
 		C32E8B1219288B81FBD71CAC /* ItemDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED44670BE3D33ED517CA05AB /* ItemDetailSheet.swift */; };
 		C9E687878EEE528E7104F964 /* EventItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85430CE926F736F473A8262 /* EventItem.swift */; };
@@ -138,6 +140,7 @@
 		CD40A4A694699646DDCBFD2B /* LEOTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B748C21D917DB88313909F /* LEOTextField.swift */; };
 		CD5EF3131E07C9C107B53AAC /* AdjustPlanTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A08F4168090B597D2FCACE /* AdjustPlanTool.swift */; };
 		CE0146AFB5D59944445DAA0C /* ItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFA34FE5C3B327992410995 /* ItemDetailViewModel.swift */; };
+		D06A4C2A0B83D7580FDB84F5 /* PlanPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4C8566C3E572267358696 /* PlanPreferences.swift */; };
 		D143568BAAF1048512B47071 /* StoredHabit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05130DA0786473EDF89E9BB6 /* StoredHabit.swift */; };
 		D1EE4D3384CECFF83DBCE059 /* StoreClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE1E20B2CB95C9744D43BC0 /* StoreClient.swift */; };
 		D679BA4C1DFA048687FE98AB /* StoredAlarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F0E1008D54E3CC84304AEB /* StoredAlarm.swift */; };
@@ -335,6 +338,7 @@
 		B8743C50F7B57786EB42DE4C /* MeasurementsChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementsChartView.swift; sourceTree = "<group>"; };
 		BAE195EF7E836F49F119A2DB /* ClaudeClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeClient.swift; sourceTree = "<group>"; };
 		BAF40B82A48A2CBFCAECFF39 /* AlarmActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmActivity.swift; sourceTree = "<group>"; };
+		BBE4C8566C3E572267358696 /* PlanPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanPreferences.swift; sourceTree = "<group>"; };
 		BDCF1AD178CAF77C45FAB66A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		C18E3C14F2FC147B39FB7101 /* CalendarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSettingsView.swift; sourceTree = "<group>"; };
 		C4063A95DD050D6E564F2F27 /* ReadTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadTools.swift; sourceTree = "<group>"; };
@@ -348,9 +352,11 @@
 		CCCF9B8C6AB6B4695C0BF1B4 /* LEOIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOIntents.swift; sourceTree = "<group>"; };
 		CE8071DDF7419990F8C22C6C /* TodayTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayTabView.swift; sourceTree = "<group>"; };
 		CF3CD4968E3E54ED82FAFD54 /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
+		CF784267058127C1D53FED27 /* GeneratePlanFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePlanFlowView.swift; sourceTree = "<group>"; };
 		D1B73C5AC3C754052763DED3 /* WeeklyReviewGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReviewGenerator.swift; sourceTree = "<group>"; };
 		D21234BD488E3902ADC96A0A /* StoredTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredTask.swift; sourceTree = "<group>"; };
 		D287050AF673F35357060D27 /* TodayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidget.swift; sourceTree = "<group>"; };
+		D44C7DBF427EA177E6287ACB /* FitnessPlanGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessPlanGenerator.swift; sourceTree = "<group>"; };
 		D86D061374805775FE7FE37E /* DeterministicParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeterministicParser.swift; sourceTree = "<group>"; };
 		D8BEBB98EBB5B605CAC1EB38 /* USFederalHolidays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = USFederalHolidays.swift; sourceTree = "<group>"; };
 		D8DC63E139DCDA53796C3A5C /* WidgetSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSnapshot.swift; sourceTree = "<group>"; };
@@ -733,6 +739,7 @@
 			isa = PBXGroup;
 			children = (
 				FC02E4A4E83658A9DFC5152D /* FitnessHomeView.swift */,
+				CF784267058127C1D53FED27 /* GeneratePlanFlowView.swift */,
 				51C73DD6C614CF220EE194BF /* MealDetailSheet.swift */,
 				B8743C50F7B57786EB42DE4C /* MeasurementsChartView.swift */,
 				A302E4337FA9BC3AD40AA525 /* WorkoutDetailSheet.swift */,
@@ -881,6 +888,14 @@
 			path = Diff;
 			sourceTree = "<group>";
 		};
+		79C1DC81F94713C2B055C5D0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BBE4C8566C3E572267358696 /* PlanPreferences.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		7DA09D82FABA6FDD2CAD85BB /* Scheduling */ = {
 			isa = PBXGroup;
 			children = (
@@ -1018,6 +1033,14 @@
 				889794EB2C78D9A71D74EE49 /* ItemTests.swift */,
 			);
 			path = Items;
+			sourceTree = "<group>";
+		};
+		A269F34740F76D88DD829CBD /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				D44C7DBF427EA177E6287ACB /* FitnessPlanGenerator.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		A6BE7FFCF450763AAC2C48B3 /* Views */ = {
@@ -1272,7 +1295,9 @@
 		E60E417912EE0CBB58D52228 /* Fitness */ = {
 			isa = PBXGroup;
 			children = (
+				79C1DC81F94713C2B055C5D0 /* Models */,
 				B0CCAA959104DA444E528042 /* Onboarding */,
+				A269F34740F76D88DD829CBD /* Services */,
 				91B399C3DD58C994B04861BC /* ViewModels */,
 				537C3106C3A6B1E0BFB93B4B /* Views */,
 			);
@@ -1571,7 +1596,9 @@
 				349AD2BE47CE318FF61272CB /* FitnessHomeViewModel.swift in Sources */,
 				6A3DDBA70C9999C5669DE4A1 /* FitnessLibrary.swift in Sources */,
 				E7AB4BCCE851EE3508DB7E41 /* FitnessMapping.swift in Sources */,
+				C07FB2479DD1EED96AF78E73 /* FitnessPlanGenerator.swift in Sources */,
 				2E662827178EBAEBB651C045 /* FitnessSettingsView.swift in Sources */,
+				ABDC986AD56C9210CD58EF81 /* GeneratePlanFlowView.swift in Sources */,
 				574B3257B5E8220CAD4F6930 /* GetBodyProfileTool.swift in Sources */,
 				E9154D966F390622256F4A6E /* Habit.swift in Sources */,
 				46CF2717F6562F91F25DE6B0 /* HabitInstanceItem.swift in Sources */,
@@ -1615,6 +1642,7 @@
 				7AE59F7E31A5B6C357176C03 /* OnboardingPageGym.swift in Sources */,
 				4985F959B9C4AECEB7685C31 /* PaywallView.swift in Sources */,
 				97C6D1E13E05833F7AEA2FE6 /* PersistenceController.swift in Sources */,
+				D06A4C2A0B83D7580FDB84F5 /* PlanPreferences.swift in Sources */,
 				8A4E6E8A185FD34A29182CA8 /* ProGate.swift in Sources */,
 				3F04798B2F307CA8DAA79D2C /* ProposeMealPlanTool.swift in Sources */,
 				A96AD4935C252FB31147A354 /* ProposeTools.swift in Sources */,

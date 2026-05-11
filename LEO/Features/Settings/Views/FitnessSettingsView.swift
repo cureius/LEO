@@ -10,6 +10,7 @@ struct FitnessSettingsView: View {
     @State private var errorMessage: String? = nil
     /// Prevents onChange from firing when loadProfile sets the unit picker programmatically.
     @State private var isLoadingProfile = true
+    @State private var showGeneratePlan = false
 
     var body: some View {
         List {
@@ -37,11 +38,22 @@ struct FitnessSettingsView: View {
             }
 
             Section("Actions") {
-                NavigationLink("Generate new plan") {
-                    generatePlanView
-                }
-                Button("View measurements chart") {
-                    // Navigate via parent
+                Button {
+                    if profile != nil {
+                        showGeneratePlan = true
+                    } else {
+                        errorMessage = "Set up your body profile first so we can pick the right calorie target and diet."
+                    }
+                } label: {
+                    HStack {
+                        Image(systemName: "sparkles")
+                        Text("Generate new plan")
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundStyle(Theme.Color.textSecondary)
+                    }
+                    .foregroundStyle(Theme.Color.textPrimary)
                 }
             }
 
@@ -67,6 +79,10 @@ struct FitnessSettingsView: View {
                 Task { await saveProfile(updated) }
             }
         }
+        .sheet(isPresented: $showGeneratePlan) {
+            GeneratePlanFlowView()
+                .environment(appEnv)
+        }
     }
 
     // MARK: - Profile summary
@@ -81,26 +97,6 @@ struct FitnessSettingsView: View {
             LabeledContent("Goal", value: p.goalPhysique.displayName)
             LabeledContent("Diet", value: p.dietType.displayName)
         }
-    }
-
-    // MARK: - Generate plan view (stub entry point)
-
-    private var generatePlanView: some View {
-        VStack(spacing: 24) {
-            Spacer()
-            Image(systemName: "sparkles")
-                .font(.system(size: 64))
-                .foregroundStyle(Theme.Color.accent)
-            Text("Generate a fitness plan")
-                .font(.title2.bold())
-            Text("Go to Ask LEO and say:\n\"Generate a 4-week workout and meal plan\"")
-                .font(Theme.Typography.body)
-                .foregroundStyle(Theme.Color.textSecondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
-            Spacer()
-        }
-        .navigationTitle("Generate plan")
     }
 
     // MARK: - Loaders
