@@ -4,6 +4,7 @@ import HealthKit
 /// Skippable gym companion onboarding page. Inserted between calendar step and completion.
 struct OnboardingPageGym: View {
     let bodyProfileRepository: BodyProfileRepository
+    let healthKitBridge: HealthKitBridge
     let onDone: () -> Void
 
     @State private var showProfileForm = false
@@ -65,12 +66,12 @@ struct OnboardingPageGym: View {
                 // HealthKit permission
                 Button {
                     Task {
-                        let store = HKHealthStore()
-                        if HKHealthStore.isHealthDataAvailable() {
-                            let types: Set<HKSampleType> = [HKObjectType.workoutType()]
-                            try? await store.requestAuthorization(toShare: types, read: types)
-                            healthKitGranted = true
+                        guard healthKitBridge.isAvailable else {
+                            healthKitGranted = false
+                            return
                         }
+                        let status = await healthKitBridge.requestAccess()
+                        healthKitGranted = (status == .sharingAuthorized)
                     }
                 } label: {
                     HStack {

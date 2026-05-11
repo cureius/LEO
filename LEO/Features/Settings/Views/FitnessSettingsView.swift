@@ -9,6 +9,8 @@ struct FitnessSettingsView: View {
     @State private var healthKitEnabled = false
     @State private var isSaving = false
     @State private var errorMessage: String? = nil
+    /// Prevents onChange from firing when loadProfile sets the toggle programmatically.
+    @State private var isLoadingProfile = true
 
     var body: some View {
         List {
@@ -36,14 +38,20 @@ struct FitnessSettingsView: View {
             }
 
             Section("HealthKit") {
-                Toggle("Sync with Apple Health", isOn: $healthKitEnabled)
-                    .onChange(of: healthKitEnabled) { _, enabled in
-                        if enabled {
-                            Task {
-                                _ = await appEnv.healthKitBridge.requestAccess()
+                if appEnv.healthKitBridge.isAvailable {
+                    Toggle("Sync with Apple Health", isOn: $healthKitEnabled)
+                        .onChange(of: healthKitEnabled) { _, enabled in
+                            // Guard: skip when the toggle is set programmatically during load
+                            guard !isLoadingProfile else { return }
+                            if enabled {
+                                Task { await requestHealthKitAccess() }
                             }
                         }
-                    }
+                } else {
+                    Label("Apple Health not available on this device", systemImage: "heart.slash")
+                        .foregroundStyle(Theme.Color.textSecondary)
+                        .font(.caption)
+                }
                 Text("When enabled, LEO writes completed workouts and meals to Apple Health and reads your weight automatically.")
                     .font(.caption)
                     .foregroundStyle(Theme.Color.textSecondary)
@@ -67,6 +75,19 @@ struct FitnessSettingsView: View {
         .navigationTitle("Fitness")
         .navigationBarTitleDisplayMode(.inline)
         .task { await loadProfile() }
+        .alert("Health Access", isPresented: Binding(
+            get: { errorMessage != nil },
+            set: { if !$0 { errorMessage = nil } }
+        )) {
+            Button("Open Settings") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text(errorMessage ?? "")
+        }
         .sheet(isPresented: $showProfileEdit) {
             BodyProfileFormView(profile: profile ?? UserBodyProfile()) { updated in
                 Task { await saveProfile(updated) }
@@ -111,10 +132,29 @@ struct FitnessSettingsView: View {
     // MARK: - Loaders
 
     private func loadProfile() async {
+        isLoadingProfile = true
         profile = await appEnv.bodyProfileRepository.load()
         unitPreference = profile?.unitPreference ?? .metric
-        let status = await appEnv.healthKitBridge.authorizationStatus()
-        healthKitEnabled = (status == .sharingAuthorized)
+        if appEnv.healthKitBridge.isAvailable {
+            let status = await appEnv.healthKitBridge.authorizationStatus()
+            healthKitEnabled = (status == .sharingAuthorized)
+        }
+        isLoadingProfile = false
+    }
+
+    private func requestHealthKitAccess() async {
+        let status = await appEnv.healthKitBridge.requestAccess()
+        // Sync the toggle back to reflect the actual granted status
+        let granted = (status == .sharingAuthorized)
+        if healthKitEnabled != granted {
+            isLoadingProfile = true
+            healthKitEnabled = granted
+            isLoadingProfile = false
+        }
+        if !granted && status != .notDetermined {
+            // Permission denied — direct user to Settings
+            errorMessage = "HealthKit access was denied. Enable it in iOS Settings → Privacy & Security → Health → LEO."
+        }
     }
 
     private func saveProfile(_ p: UserBodyProfile) async {

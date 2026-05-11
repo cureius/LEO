@@ -16,7 +16,7 @@ actor HealthKitBridge {
     private let store = HKHealthStore()
     private var observerQueryTask: Task<Void, Never>?
 
-    var isAvailable: Bool { HKHealthStore.isHealthDataAvailable() }
+    nonisolated var isAvailable: Bool { HKHealthStore.isHealthDataAvailable() }
 
     // MARK: - Read types
 
@@ -56,15 +56,43 @@ actor HealthKitBridge {
     // MARK: - Authorization
 
     func requestAccess() async -> HKAuthorizationStatus {
-        guard isAvailable else { return .notDetermined }
-        do {
-            try await store.requestAuthorization(toShare: writeTypes, read: readTypes)
-            logger.info("HealthKit authorization requested")
-            return .sharingAuthorized
-        } catch {
-            logger.error("HealthKit auth error: \(error)")
+        guard isAvailable else {
+            logger.info("HealthKit not available on this device")
             return .notDetermined
         }
+        // Snapshot actor-isolated values before spawning a detached task
+        let shareTypes = self.writeTypes
+        let readTypes  = self.readTypes
+        let hkStore    = self.store
+
+        // Race the authorization call against a 30 s timeout so the toggle
+        // never hangs if the entitlement is missing or the HK daemon stalls.
+        let authTask = Task.detached {
+            do {
+                try await hkStore.requestAuthorization(toShare: shareTypes, read: readTypes)
+                return HKAuthorizationStatus.sharingAuthorized
+            } catch {
+                return HKAuthorizationStatus.notDetermined
+            }
+        }
+        let timeoutTask = Task.detached {
+            try? await Task.sleep(nanoseconds: 30_000_000_000)
+        }
+
+        let result: HKAuthorizationStatus = await withTaskGroup(of: HKAuthorizationStatus.self) { group in
+            group.addTask { await authTask.value }
+            group.addTask {
+                await timeoutTask.value
+                return .notDetermined
+            }
+            let first = await group.next() ?? .notDetermined
+            group.cancelAll()
+            authTask.cancel()
+            timeoutTask.cancel()
+            return first
+        }
+        logger.info("HealthKit auth result: \(result.rawValue)")
+        return result
     }
 
     func authorizationStatus() async -> HKAuthorizationStatus {

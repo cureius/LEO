@@ -14,10 +14,14 @@ struct OnboardingFlow: View {
             OnboardingPage2().tag(1)
             OnboardingPage3(onNext: { page = 3 }).tag(2)
             OnboardingPage4(onNext: { page = 4 }).tag(3)
-            OnboardingPageGym(bodyProfileRepository: appEnv.bodyProfileRepository, onDone: {
-                UserDefaults.standard.set(true, forKey: onboardingDoneKey)
-                onComplete()
-            }).tag(4)
+            OnboardingPageGym(
+                bodyProfileRepository: appEnv.bodyProfileRepository,
+                healthKitBridge: appEnv.healthKitBridge,
+                onDone: {
+                    UserDefaults.standard.set(true, forKey: onboardingDoneKey)
+                    onComplete()
+                }
+            ).tag(4)
         }
         .tabViewStyle(.page(indexDisplayMode: .always))
         .indexViewStyle(.page(backgroundDisplayMode: .always))
