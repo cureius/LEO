@@ -23,6 +23,9 @@ final class AppEnvironment {
     let alarmActivityManager: AlarmActivityManager
     // Strong reference so delegate isn't deallocated
     let notificationDelegate: NotificationDelegate
+    // M8: Gym Companion
+    let bodyProfileRepository: BodyProfileRepository
+    let healthKitBridge: HealthKitBridge
 
     init(useInMemory: Bool = false) {
         let controller = PersistenceController(useInMemory: useInMemory)
@@ -31,6 +34,8 @@ final class AppEnvironment {
         self.habitRepository = HabitRepository(controller: controller)
         self.tagRepository = TagRepository(controller: controller)
         self.seriesRepository = SeriesRepository(controller: controller)
+        self.bodyProfileRepository = BodyProfileRepository(controller: controller)
+        self.healthKitBridge = HealthKitBridge()
 
         let nm = NotificationManager()
         self.notificationManager = nm

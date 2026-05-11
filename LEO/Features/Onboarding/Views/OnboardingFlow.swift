@@ -5,6 +5,7 @@ private let onboardingDoneKey = "onboarding_complete"
 
 struct OnboardingFlow: View {
     let onComplete: () -> Void
+    @Environment(AppEnvironment.self) private var appEnv
     @State private var page = 0
 
     var body: some View {
@@ -12,10 +13,11 @@ struct OnboardingFlow: View {
             OnboardingPage1().tag(0)
             OnboardingPage2().tag(1)
             OnboardingPage3(onNext: { page = 3 }).tag(2)
-            OnboardingPage4(onDone: {
+            OnboardingPage4(onNext: { page = 4 }).tag(3)
+            OnboardingPageGym(bodyProfileRepository: appEnv.bodyProfileRepository, onDone: {
                 UserDefaults.standard.set(true, forKey: onboardingDoneKey)
                 onComplete()
-            }).tag(3)
+            }).tag(4)
         }
         .tabViewStyle(.page(indexDisplayMode: .always))
         .indexViewStyle(.page(backgroundDisplayMode: .always))
@@ -188,7 +190,8 @@ private struct PermissionRow: View {
 // MARK: - Page 4: Connect calendars
 
 private struct OnboardingPage4: View {
-    let onDone: () -> Void
+    let onNext: () -> Void
+    var onDone: (() -> Void)? = nil
 
     var body: some View {
         ScrollView {
@@ -236,11 +239,9 @@ private struct OnboardingPage4: View {
                     .multilineTextAlignment(.center)
 
                 VStack(spacing: 10) {
-                    Button("Get started") { onDone() }
+                    Button("Continue") { onNext() }
                         .buttonStyle(.borderedProminent)
                         .frame(maxWidth: .infinity)
-                    Button("Skip for now") { onDone() }
-                        .foregroundStyle(Theme.Color.textSecondary)
                 }
                 .padding(.top, 4)
             }

@@ -9,6 +9,7 @@ private let logger = Logger(subsystem: "com.theblueman.leo", category: "tool-run
 struct ToolContext: Sendable {
     let itemRepository: ItemRepository
     let calendar: Calendar
+    let bodyProfileRepository: BodyProfileRepository?
 }
 
 // MARK: - Erasure protocol
@@ -53,6 +54,13 @@ actor ToolRuntime {
         register(ProposeRescheduleTool())
         register(ProposeAddTool())
         register(ProposeCancelTool())
+        // M8: Gym Companion tools
+        if let bodyProfileRepo = context.bodyProfileRepository {
+            register(GetBodyProfileTool(bodyProfileRepository: bodyProfileRepo))
+            register(ProposeWorkoutPlanTool(bodyProfileRepository: bodyProfileRepo))
+            register(ProposeMealPlanTool(bodyProfileRepository: bodyProfileRepo))
+            register(AdjustPlanTool())
+        }
     }
 
     func register(_ tool: some AnyTool) {

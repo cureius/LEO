@@ -215,7 +215,38 @@ Dates are *targets*, not promises. The discipline is hitting the **exit criteria
 
 ---
 
-## M8 — App Store launch (Weeks 20–21 · target 2026-10-01)
+## M8 — Gym Companion (Weeks 20–22 · target 2026-10-08)
+
+**Goal:** A personalized fitness layer — body profile, AI-generated workout routines and meal plans, HealthKit two-way sync — included in v1.0.
+
+**Ships:**
+- Body profile capture (height, weight, body fat %, goal weight, goal physique, diet type, allergies, medical flags).
+- AI-generated workout routines and meal plans, surfaced as a Diff the user accepts.
+- Bundled exercise (~150) and recipe (~80) library; AI selects from these to prevent hallucinated exercises.
+- `WorkoutItem` and `MealItem` flow through the Today timeline like every other Item.
+- HealthKit two-way sync: read body metrics + active energy; write completed workouts (`HKWorkout`) and logged meals (dietary energy + macros).
+- Tap-to-complete workouts/meals with optional "Log actuals" detail sheet.
+- Measurements chart (weight + body-fat trend).
+- Onboarding step for body profile (skippable).
+
+**Builds:**
+- `Domain/Fitness/`: `UserBodyProfile`, `BodyMath` (BMI/BMR/TDEE), `Exercise`, `Recipe`.
+- `Persistence/HealthKit/HealthKitBridge.swift` actor.
+- New AI tools: `GetBodyProfile`, `ProposeWorkoutPlan`, `ProposeMealPlan`, `AdjustPlan`.
+
+**Exit criteria:**
+- Five canonical fitness prompts work end-to-end.
+- HealthKit two-way sync verified on a real device with Apple Watch.
+- Medical disclaimer present in onboarding and settings.
+- All M8 tasks done or accepted via the cut line.
+
+**Cut line:** in order — HealthKit write-back → custom workout/meal notification actions → "Log actuals" + swap-meal + measurements chart. T01/T02/T03/T05/T07 are non-cuttable.
+
+See [`plans/M8-gym-companion.md`](plans/M8-gym-companion.md).
+
+---
+
+## M9 — App Store launch (Weeks 23–24 · target 2026-10-22)
 
 **Goal:** v1.0 in the store.
 
@@ -238,6 +269,7 @@ Dates are *targets*, not promises. The discipline is hitting the **exit criteria
 
 **v1.1 (≈ 4–6 weeks post-launch):**
 - Whatever the most-requested cut item is.
+- Anything cut from M8 via the Gym Companion cut line (likely HealthKit write-back, custom workout/meal notification actions, "Log actuals" / swap-meal / measurements chart).
 - Apple Watch full sync (if not in v1).
 - iPad-optimized layout.
 - Voice-first "Talk to LEO" mode.
@@ -280,10 +312,11 @@ Dates are *targets*, not promises. The discipline is hitting the **exit criteria
 | M5 — Habits & weekly review | 2026-08-20 | 2 |
 | M6 — Alarms, Watch, polish | 2026-09-03 | 2 |
 | M7 — Beta & monetization | 2026-09-17 | 2 |
-| M8 — App Store launch | 2026-10-01 | 2 |
-| **v1.0 in the store** | **2026-10-01** | **21 weeks (~5 months)** |
+| M8 — Gym Companion | 2026-10-08 | 3 |
+| M9 — App Store launch | 2026-10-22 | 2 |
+| **v1.0 in the store** | **2026-10-22** | **24 weeks (~5.5 months)** |
 
-That's the optimistic path. Build a realistic 1.4× buffer in your head — **most likely launch window: late October to mid-November 2026.**
+That's the optimistic path. Build a realistic 1.4× buffer in your head — **most likely launch window: mid-November to early December 2026.**
 
 ---
 

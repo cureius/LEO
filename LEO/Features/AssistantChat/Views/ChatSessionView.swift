@@ -26,7 +26,7 @@ struct ChatSessionView: View {
     init(session: ChatSession, appEnv: AppEnvironment) {
         self.session = session
         self.appEnv = appEnv
-        let context = ToolContext(itemRepository: appEnv.itemRepository, calendar: .current)
+        let context = ToolContext(itemRepository: appEnv.itemRepository, calendar: .current, bodyProfileRepository: appEnv.bodyProfileRepository)
         let runtime = ToolRuntime(context: context)
         _vm = State(wrappedValue: AssistantChatViewModel(
             sessionID: session.id,
@@ -113,6 +113,11 @@ struct ChatSessionView: View {
                 switch p.type {
                 case "event":
                     try await appEnv.itemRepository.add(EventItem(title: p.title, notes: p.notes, anchor: anchor))
+                case "workout":
+                    try await appEnv.itemRepository.add(WorkoutItem(title: p.title, notes: p.notes, anchor: anchor))
+                case "meal":
+                    let recipeID = UUID().uuidString // placeholder; real ID comes from plan proposals
+                    try await appEnv.itemRepository.add(MealItem(title: p.title, notes: p.notes, anchor: anchor, recipeID: recipeID))
                 default: // "task", "reminder", anything else
                     try await appEnv.itemRepository.add(TaskItem(title: p.title, notes: p.notes, anchor: anchor))
                 }

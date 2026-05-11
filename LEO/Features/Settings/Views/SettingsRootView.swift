@@ -22,6 +22,12 @@ struct SettingsRootView: View {
                 }
             }
 
+            Section("Fitness") {
+                NavigationLink("Gym Companion") {
+                    FitnessSettingsView()
+                }
+            }
+
             Section("AI") {
                 NavigationLink("AI Usage") {
                     AIUsageView()

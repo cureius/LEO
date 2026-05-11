@@ -1,26 +1,26 @@
-# M8 — App Store Launch
+# M9 — App Store Launch
 
-**Goal of this milestone:** v1.0 in the App Store, marketing site live, launch posts published.
+**Goal of this milestone:** v1.0 in the App Store, marketing site live, launch posts published. Runs after M8 (Gym Companion) so all v1.0 surfaces ship together.
 
-**Target ship:** 2026-10-01 (2 weeks).
+**Target ship:** 2026-10-22 (2 weeks).
 
-**Read before starting:** [`PRD.md`](../PRD.md), [`ROADMAP.md`](../ROADMAP.md) M8.
+**Read before starting:** [`PRD.md`](../PRD.md), [`ROADMAP.md`](../ROADMAP.md) M9.
 
-**Prerequisites:** M7 beta active and stable. P0/P1 bugs resolved.
+**Prerequisites:** M8 complete (Gym Companion). M7 beta stable. P0/P1 bugs resolved. Marketing copy, screenshots, and preview video updated to reflect Gym Companion.
 
 ---
 
 ## Task summary
 
-- [ ] M8-T01 — App Store Connect submission package
-- [ ] M8-T02 — Marketing site (one page)
-- [ ] M8-T03 — Privacy Policy + Terms
-- [ ] M8-T04 — Launch posts
-- [ ] M8-T05 — Day-1 monitoring + hot-fix readiness
+- [ ] M9-T01 — App Store Connect submission package
+- [ ] M9-T02 — Marketing site (one page)
+- [ ] M9-T03 — Privacy Policy + Terms
+- [ ] M9-T04 — Launch posts
+- [ ] M9-T05 — Day-1 monitoring + hot-fix readiness
 
 ---
 
-### M8-T01 — App Store Connect submission package
+### M9-T01 — App Store Connect submission package
 - **Status:** TODO
 - **Depends on:** M7 complete
 - **Estimated effort:** M
@@ -56,9 +56,9 @@ A submission Apple approves.
 
 ---
 
-### M8-T02 — Marketing site (one page)
+### M9-T02 — Marketing site (one page)
 - **Status:** TODO
-- **Depends on:** M8-T01
+- **Depends on:** M9-T01
 - **Estimated effort:** M
 
 **Goal**
@@ -84,7 +84,7 @@ A simple, fast page at `leo.app` (or chosen domain) that converts visitors to Ap
 
 ---
 
-### M8-T03 — Privacy Policy + Terms
+### M9-T03 — Privacy Policy + Terms
 - **Status:** TODO
 - **Depends on:** —
 - **Estimated effort:** S
@@ -108,9 +108,9 @@ Real Privacy Policy + Terms hosted at stable URLs (referenced by App Store Conne
 
 ---
 
-### M8-T04 — Launch posts
+### M9-T04 — Launch posts
 - **Status:** TODO
-- **Depends on:** M8-T01, M8-T02
+- **Depends on:** M9-T01, M9-T02
 - **Estimated effort:** M
 
 **Goal**
@@ -138,9 +138,9 @@ Coordinated launch across the channels that matter.
 
 ---
 
-### M8-T05 — Day-1 monitoring + hot-fix readiness
+### M9-T05 — Day-1 monitoring + hot-fix readiness
 - **Status:** TODO
-- **Depends on:** M8-T01
+- **Depends on:** M9-T01
 - **Estimated effort:** S
 
 **Goal**
@@ -165,7 +165,7 @@ A clear plan for the first 72 hours post-launch: what to watch, when to ship a h
 
 ---
 
-## Exit criteria for M8
+## Exit criteria for M9
 
 - [ ] All five tasks `DONE`.
 - [ ] LEO live on App Store.

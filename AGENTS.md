@@ -70,7 +70,8 @@ LEO/
 │   ├── M5-habits-review.md
 │   ├── M6-alarms-watch-polish.md
 │   ├── M7-beta-monetization.md
-│   └── M8-launch.md
+│   ├── M8-gym-companion.md
+│   └── M9-launch.md
 └── (Xcode project will live alongside, created in M0-T01)
 ```
 

@@ -34,13 +34,18 @@ enum NotificationCategory {
     static let reminder = "LEO_REMINDER"
     static let alarm    = "LEO_ALARM"
     static let event    = "LEO_EVENT"
+    static let workout  = "LEO_WORKOUT"
+    static let meal     = "LEO_MEAL"
 }
 
 enum NotificationAction {
-    static let complete  = "COMPLETE"
-    static let snooze10m = "SNOOZE_10M"
-    static let snooze1h  = "SNOOZE_1H"
-    static let open      = "OPEN"
+    static let complete   = "COMPLETE"
+    static let snooze10m  = "SNOOZE_10M"
+    static let snooze1h   = "SNOOZE_1H"
+    static let open       = "OPEN"
+    static let logEaten   = "LOG_EATEN"
+    static let startWkt   = "START_WORKOUT"
+    static let skipWkt    = "SKIP_WORKOUT"
 }
 
 // MARK: - NotificationManager
@@ -267,6 +272,8 @@ actor NotificationManager {
         case is AlarmItem:    return NotificationCategory.alarm
         case is ReminderItem: return NotificationCategory.reminder
         case is EventItem:    return NotificationCategory.event
+        case is WorkoutItem:  return NotificationCategory.workout
+        case is MealItem:     return NotificationCategory.meal
         default:              return NotificationCategory.reminder
         }
     }
@@ -309,6 +316,21 @@ actor NotificationManager {
             options: [.customDismissAction]
         )
 
-        center.setNotificationCategories([reminderCategory, eventCategory, alarmCategory])
+        // M8: Workout + meal categories
+        let startWkt = UNNotificationAction(identifier: NotificationAction.startWkt, title: "Start workout", options: [])
+        let skipWkt  = UNNotificationAction(identifier: NotificationAction.skipWkt,  title: "Skip", options: [])
+        let logEaten = UNNotificationAction(identifier: NotificationAction.logEaten,  title: "Log eaten", options: [.authenticationRequired])
+        let workoutCategory = UNNotificationCategory(
+            identifier: NotificationCategory.workout,
+            actions: [startWkt, snooze10, skipWkt],
+            intentIdentifiers: [], options: []
+        )
+        let mealCategory = UNNotificationCategory(
+            identifier: NotificationCategory.meal,
+            actions: [logEaten, snooze10],
+            intentIdentifiers: [], options: []
+        )
+
+        center.setNotificationCategories([reminderCategory, eventCategory, alarmCategory, workoutCategory, mealCategory])
     }
 }

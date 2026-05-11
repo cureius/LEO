@@ -65,10 +65,11 @@ See [`AGENTS.md`](AGENTS.md) — re-read every session. They are not rephrased h
 
 ## Status tracker (the live state)
 
-**Current milestone:** M8 — Launch
-**Currently-in-progress task:** `M8-T01` (BLOCKED — requires App Store Connect submission by user)
-**Last completed task:** `M7-T06`
-**Next eligible task:** `M8-T01` (user action required)
+**Current milestone:** M9 — Launch
+**Currently-in-progress task:** none
+**Last completed task:** `M8-T08`
+**Next eligible task:** `M9-T01`
+**M9 status:** Held until M8 exits. M9-T01 remains BLOCKED on App Store Connect submission; M9 marketing assets (T02 site, screenshots/preview video referenced in M7-T05) must be updated to reflect Gym Companion before M9-T01.
 
 ### Milestone progress
 
@@ -82,7 +83,8 @@ See [`AGENTS.md`](AGENTS.md) — re-read every session. They are not rephrased h
 | M5 — Habits & Review | [`plans/M5-habits-review.md`](plans/M5-habits-review.md) | Done | 6 / 6 | HabitMaterializer, StreakEngine, HabitsView, WeeklyReview |
 | M6 — Alarms, Watch, Polish | [`plans/M6-alarms-watch-polish.md`](plans/M6-alarms-watch-polish.md) | In Progress | 6 / 7 | Watch app deferred to v1.1 |
 | M7 — Beta & Monetization | [`plans/M7-beta-monetization.md`](plans/M7-beta-monetization.md) | In Progress | 5 / 6 | T04 (TestFlight) BLOCKED — requires App Store Connect submission |
-| M8 — Launch | [`plans/M8-launch.md`](plans/M8-launch.md) | In Progress | 2 / 5 | T01/T04 BLOCKED — App Store Connect submission; T02 (marketing site) needs hosting |
+| M8 — Gym Companion | [`plans/M8-gym-companion.md`](plans/M8-gym-companion.md) | Done | 8 / 8 | Body profile + AI-generated workout/meal plans + HealthKit two-way sync. Build succeeds. All 13 BodyMath tests pass. |
+| M9 — Launch | [`plans/M9-launch.md`](plans/M9-launch.md) | In Progress | 2 / 5 | Held until M8 exits. T01/T04 BLOCKED — App Store Connect submission; T02 (marketing site) needs hosting. Marketing copy/screenshots must include Gym Companion before T01. |
 
 ### How to update this tracker
 
@@ -123,6 +125,10 @@ When the user (or the agent, with user approval) makes a decision that overrides
 | 2026-05-11 | `DiffPayload` / `DiffChange` must be `Hashable` + serialized in `PersistedMessage` | Proposals disappeared on session reload. Fix: added `diff: DiffPayload?` and `isApplied: Bool` to `PersistedMessage`, `Hashable` to `DiffPayload`/`DiffChange`/`PendingNewItem`, and a `.diffProposal` case to `PersistedRole`. Proposals are persisted immediately after the tool call in `send()`. |
 | 2026-05-11 | `leoReminderTapped` + `PendingReminderAlert` for decoupled in-app snooze/done UI | `NotificationDelegate` posts to `NotificationCenter` when the user taps a reminder notification body. `AppTabView` observes via `.onReceive` and presents `ReminderActionSheet`. This keeps the delegate free of SwiftUI dependencies and avoids threading issues from presenting UI directly in the delegate. |
 | 2026-05-11 | App icon uses exact reference image with 8-point flood-fill background removal | Source PNG had near-white gray (#E1E1E1, ~12% from white) background, not transparent. Simple `-transparent white` failed. 8-point flood-fill (4 corners + 4 edge midpoints) at 13% fuzz correctly removed the background without eating into logo colors. Composited onto dark navy radial gradient (#0F2A3A→#04101A). |
+| 2026-05-11 | Multi-account calendar sync delegated to iOS, not direct Google Calendar API | iOS handles Google OAuth/refresh/push when accounts are added via Settings → Calendar → Accounts. LEO consumes via existing `EventKitBridge` — aggregates all `EKSource`s. Avoids new deps (GoogleSignIn-iOS, GTLR) and a 3-way conflict policy. Polish: source grouping in settings, `EKEventStoreChanged` observer with 2 s debounce in new `CalendarSyncCoordinator`, BG refresh cadence dropped from 24 h → 15 min. |
+| 2026-05-11 | Gym Companion scoped to v1.1 (M9), not v1.0 | A 3-week feature pre-launch would slip M8 and broaden "the calendar that thinks" positioning into a fitness app. Architecture reuses `Item`/`EventItem`/recurrence/habits/Diff-review — only genuinely new layers are body profile, calorie math, exercise+recipe library, and HealthKit. Plan in [`plans/M8-gym-companion.md`](plans/M8-gym-companion.md) (file later renamed; see 2026-05-11 rename entry below). |
+| 2026-05-11 | Gym Companion moved into v1.0 (M9 inserted between M7 and M8) — reverses prior decision | User decision: Gym Companion is part of the headline v1.0 launch, not a v1.1 add-on. M9 now precedes M8. Mitigations: (1) M9 has a 3-week budget with an explicit cut line (HealthKit write → notification actions → measurements chart, in that cut order); (2) M8 marketing copy, screenshots, and preview video must be updated to reflect fitness before M8-T01 submission; (3) PRD §1/§4 positioning may need a refresh — flagged but not auto-updated. |
+| 2026-05-11 | Renumbered: Gym Companion is M8, Launch is M9 (file rename `plans/M8-launch.md` → `plans/M9-launch.md`, `plans/M9-gym-companion.md` → `plans/M8-gym-companion.md`) | Milestone numbers follow execution order. Since Gym Companion now runs before Launch, it must be the lower number. Task IDs flipped accordingly inside both files (M8-T0X for fitness tasks, M9-T0X for launch tasks). Historical decision-log entries above retain their original wording referencing the pre-rename numbering — read in date order. |
 
 ---
 

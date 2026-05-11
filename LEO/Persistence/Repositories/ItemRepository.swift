@@ -26,6 +26,8 @@ actor ItemRepository {
             results += try fetchReminders(predicate: predicate, context: context)
             results += try fetchAlarms(predicate: predicate, context: context)
             results += try fetchHabitInstances(predicate: predicate, context: context)
+            results += try fetchWorkouts(predicate: predicate, context: context)
+            results += try fetchMeals(predicate: predicate, context: context)
         }
 
         return results.sorted { ($0.anchor.sortDate ?? .distantFuture) < ($1.anchor.sortDate ?? .distantFuture) }
@@ -100,11 +102,29 @@ actor ItemRepository {
 
     private func symbolName(for item: any Item) -> String {
         switch item {
-        case is EventItem:    return "calendar"
-        case is ReminderItem: return "bell"
-        case is AlarmItem:    return "alarm"
+        case is EventItem:         return "calendar"
+        case is ReminderItem:      return "bell"
+        case is AlarmItem:         return "alarm"
         case is HabitInstanceItem: return "repeat.circle"
-        default:              return "checklist"
+        case is WorkoutItem:       return "figure.strengthtraining.traditional"
+        case is MealItem:          return "fork.knife"
+        default:                   return "checklist"
+        }
+    }
+
+    private func fetchWorkouts(predicate: ItemPredicate, context: ModelContext) throws -> [any Item] {
+        let stored = try context.fetch(FetchDescriptor<StoredWorkoutItem>())
+        return try stored.compactMap { s -> WorkoutItem? in
+            let item = try WorkoutItem.from(s)
+            return matches(item, predicate: predicate) ? item : nil
+        }
+    }
+
+    private func fetchMeals(predicate: ItemPredicate, context: ModelContext) throws -> [any Item] {
+        let stored = try context.fetch(FetchDescriptor<StoredMealItem>())
+        return try stored.compactMap { s -> MealItem? in
+            let item = try MealItem.from(s)
+            return matches(item, predicate: predicate) ? item : nil
         }
     }
 
@@ -192,6 +212,10 @@ actor ItemRepository {
             context.insert(try StoredReminder(from: r))
         } else if let a = item as? AlarmItem {
             context.insert(try StoredAlarm(from: a))
+        } else if let w = item as? WorkoutItem {
+            context.insert(try StoredWorkoutItem(from: w))
+        } else if let m = item as? MealItem {
+            context.insert(try StoredMealItem(from: m))
         } else if item is HabitInstanceItem {
             // HabitInstances are managed by HabitRepository
         } else {
@@ -210,5 +234,9 @@ actor ItemRepository {
         alarms.filter { $0.id == id }.forEach { context.delete($0) }
         let instances = try context.fetch(FetchDescriptor<StoredHabitInstance>())
         instances.filter { $0.id == id }.forEach { context.delete($0) }
+        let workouts = try context.fetch(FetchDescriptor<StoredWorkoutItem>())
+        workouts.filter { $0.id == id }.forEach { context.delete($0) }
+        let meals = try context.fetch(FetchDescriptor<StoredMealItem>())
+        meals.filter { $0.id == id }.forEach { context.delete($0) }
     }
 }

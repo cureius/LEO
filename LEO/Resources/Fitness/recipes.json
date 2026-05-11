@@ -1,0 +1,1915 @@
+[
+  {
+    "id": "r001",
+    "name": "Overnight Oats",
+    "dietTags": [
+      "omnivore",
+      "vegetarian",
+      "vegan",
+      "pescatarian",
+      "mediterranean"
+    ],
+    "allergens": [
+      "gluten",
+      "oats"
+    ],
+    "kcalPerServing": 380,
+    "macros": {
+      "proteinG": 14,
+      "carbG": 58,
+      "fatG": 9
+    },
+    "ingredients": [
+      {
+        "name": "Rolled oats",
+        "amount": "80g"
+      },
+      {
+        "name": "Almond milk",
+        "amount": "200ml"
+      },
+      {
+        "name": "Chia seeds",
+        "amount": "1 tbsp"
+      },
+      {
+        "name": "Banana",
+        "amount": "1 medium"
+      },
+      {
+        "name": "Honey",
+        "amount": "1 tsp"
+      }
+    ],
+    "instructions": "Mix oats, milk and chia. Refrigerate overnight. Top with sliced banana and honey.",
+    "prepMin": 5,
+    "tags": [
+      "breakfast"
+    ]
+  },
+  {
+    "id": "r002",
+    "name": "Greek Yogurt Parfait",
+    "dietTags": [
+      "omnivore",
+      "vegetarian",
+      "mediterranean"
+    ],
+    "allergens": [
+      "dairy"
+    ],
+    "kcalPerServing": 320,
+    "macros": {
+      "proteinG": 22,
+      "carbG": 38,
+      "fatG": 9
+    },
+    "ingredients": [
+      {
+        "name": "Greek yogurt",
+        "amount": "200g"
+      },
+      {
+        "name": "Mixed berries",
+        "amount": "100g"
+      },
+      {
+        "name": "Granola",
+        "amount": "30g"
+      },
+      {
+        "name": "Honey",
+        "amount": "1 tsp"
+      }
+    ],
+    "instructions": "Layer yogurt, berries and granola in a bowl. Drizzle honey.",
+    "prepMin": 5,
+    "tags": [
+      "breakfast",
+      "snack"
+    ]
+  },
+  {
+    "id": "r003",
+    "name": "Scrambled Eggs & Toast",
+    "dietTags": [
+      "omnivore",
+      "vegetarian",
+      "mediterranean"
+    ],
+    "allergens": [
+      "eggs",
+      "gluten"
+    ],
+    "kcalPerServing": 420,
+    "macros": {
+      "proteinG": 26,
+      "carbG": 40,
+      "fatG": 18
+    },
+    "ingredients": [
+      {
+        "name": "Eggs",
+        "amount": "3 large"
+      },
+      {
+        "name": "Whole grain toast",
+        "amount": "2 slices"
+      },
+      {
+        "name": "Milk",
+        "amount": "2 tbsp"
+      },
+      {
+        "name": "Olive oil",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Salt & pepper",
+        "amount": "to taste"
+      }
+    ],
+    "instructions": "Whisk eggs with milk. Cook in oiled pan on low heat, stirring gently. Serve on toast.",
+    "prepMin": 10,
+    "tags": [
+      "breakfast"
+    ]
+  },
+  {
+    "id": "r004",
+    "name": "Protein Smoothie",
+    "dietTags": [
+      "omnivore",
+      "vegetarian",
+      "vegan",
+      "pescatarian",
+      "mediterranean"
+    ],
+    "allergens": [
+      "nuts"
+    ],
+    "kcalPerServing": 340,
+    "macros": {
+      "proteinG": 28,
+      "carbG": 42,
+      "fatG": 6
+    },
+    "ingredients": [
+      {
+        "name": "Banana",
+        "amount": "1 large"
+      },
+      {
+        "name": "Protein powder",
+        "amount": "30g"
+      },
+      {
+        "name": "Almond butter",
+        "amount": "1 tbsp"
+      },
+      {
+        "name": "Oat milk",
+        "amount": "250ml"
+      },
+      {
+        "name": "Spinach",
+        "amount": "handful"
+      }
+    ],
+    "instructions": "Blend all ingredients until smooth. Drink immediately.",
+    "prepMin": 3,
+    "tags": [
+      "breakfast",
+      "preworkout",
+      "postworkout"
+    ]
+  },
+  {
+    "id": "r005",
+    "name": "Chicken & Quinoa Bowl",
+    "dietTags": [
+      "omnivore",
+      "mediterranean"
+    ],
+    "allergens": [],
+    "kcalPerServing": 520,
+    "macros": {
+      "proteinG": 48,
+      "carbG": 48,
+      "fatG": 15
+    },
+    "ingredients": [
+      {
+        "name": "Chicken breast",
+        "amount": "150g"
+      },
+      {
+        "name": "Quinoa",
+        "amount": "80g dry"
+      },
+      {
+        "name": "Roasted vegetables",
+        "amount": "150g"
+      },
+      {
+        "name": "Olive oil",
+        "amount": "1 tbsp"
+      },
+      {
+        "name": "Lemon",
+        "amount": "half"
+      }
+    ],
+    "instructions": "Cook quinoa per package. Grill chicken. Roast veg at 200C 20 min. Assemble bowl, drizzle lemon oil.",
+    "prepMin": 25,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "r006",
+    "name": "Lentil Soup",
+    "dietTags": [
+      "omnivore",
+      "vegetarian",
+      "vegan",
+      "pescatarian",
+      "mediterranean",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [],
+    "kcalPerServing": 380,
+    "macros": {
+      "proteinG": 22,
+      "carbG": 60,
+      "fatG": 6
+    },
+    "ingredients": [
+      {
+        "name": "Red lentils",
+        "amount": "150g"
+      },
+      {
+        "name": "Tomatoes",
+        "amount": "2 large"
+      },
+      {
+        "name": "Onion",
+        "amount": "1"
+      },
+      {
+        "name": "Garlic",
+        "amount": "2 cloves"
+      },
+      {
+        "name": "Cumin",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Olive oil",
+        "amount": "1 tbsp"
+      }
+    ],
+    "instructions": "Sauté onion and garlic. Add lentils, tomatoes, water, cumin. Simmer 20 min.",
+    "prepMin": 30,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "r007",
+    "name": "Tuna Avocado Wrap",
+    "dietTags": [
+      "omnivore",
+      "pescatarian",
+      "mediterranean"
+    ],
+    "allergens": [
+      "gluten",
+      "fish"
+    ],
+    "kcalPerServing": 440,
+    "macros": {
+      "proteinG": 36,
+      "carbG": 38,
+      "fatG": 14
+    },
+    "ingredients": [
+      {
+        "name": "Canned tuna",
+        "amount": "150g drained"
+      },
+      {
+        "name": "Avocado",
+        "amount": "half"
+      },
+      {
+        "name": "Whole wheat wrap",
+        "amount": "1 large"
+      },
+      {
+        "name": "Romaine lettuce",
+        "amount": "2 leaves"
+      },
+      {
+        "name": "Lemon juice",
+        "amount": "1 tsp"
+      }
+    ],
+    "instructions": "Mix tuna with mashed avocado and lemon. Fill wrap with lettuce and tuna mix. Roll tight.",
+    "prepMin": 10,
+    "tags": [
+      "lunch"
+    ]
+  },
+  {
+    "id": "r008",
+    "name": "Tofu Stir-Fry",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "soy"
+    ],
+    "kcalPerServing": 420,
+    "macros": {
+      "proteinG": 26,
+      "carbG": 44,
+      "fatG": 16
+    },
+    "ingredients": [
+      {
+        "name": "Firm tofu",
+        "amount": "200g"
+      },
+      {
+        "name": "Mixed vegetables",
+        "amount": "200g"
+      },
+      {
+        "name": "Brown rice",
+        "amount": "80g dry"
+      },
+      {
+        "name": "Soy sauce",
+        "amount": "2 tbsp"
+      },
+      {
+        "name": "Sesame oil",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Ginger",
+        "amount": "1 tsp"
+      }
+    ],
+    "instructions": "Press tofu, cube and pan-fry until golden. Stir-fry veg, add tofu, soy sauce, ginger. Serve on rice.",
+    "prepMin": 20,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "r009",
+    "name": "Salmon & Sweet Potato",
+    "dietTags": [
+      "omnivore",
+      "pescatarian",
+      "mediterranean",
+      "paleo",
+      "halal"
+    ],
+    "allergens": [
+      "fish"
+    ],
+    "kcalPerServing": 560,
+    "macros": {
+      "proteinG": 42,
+      "carbG": 44,
+      "fatG": 24
+    },
+    "ingredients": [
+      {
+        "name": "Salmon fillet",
+        "amount": "180g"
+      },
+      {
+        "name": "Sweet potato",
+        "amount": "1 medium"
+      },
+      {
+        "name": "Asparagus",
+        "amount": "100g"
+      },
+      {
+        "name": "Olive oil",
+        "amount": "1 tbsp"
+      },
+      {
+        "name": "Lemon",
+        "amount": "half"
+      },
+      {
+        "name": "Herbs",
+        "amount": "to taste"
+      }
+    ],
+    "instructions": "Bake sweet potato 35 min 200C. Season salmon, pan-fry 4 min each side. Steam asparagus. Plate with lemon.",
+    "prepMin": 40,
+    "tags": [
+      "dinner",
+      "postworkout"
+    ]
+  },
+  {
+    "id": "r010",
+    "name": "Black Bean Tacos",
+    "dietTags": [
+      "omnivore",
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "kcalPerServing": 480,
+    "macros": {
+      "proteinG": 20,
+      "carbG": 72,
+      "fatG": 10
+    },
+    "ingredients": [
+      {
+        "name": "Black beans",
+        "amount": "200g canned"
+      },
+      {
+        "name": "Corn tortillas",
+        "amount": "3"
+      },
+      {
+        "name": "Avocado",
+        "amount": "half"
+      },
+      {
+        "name": "Salsa",
+        "amount": "4 tbsp"
+      },
+      {
+        "name": "Lime",
+        "amount": "half"
+      },
+      {
+        "name": "Cilantro",
+        "amount": "handful"
+      }
+    ],
+    "instructions": "Heat beans with cumin. Warm tortillas. Fill with beans, avocado, salsa, cilantro, lime.",
+    "prepMin": 15,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "r011",
+    "name": "Cottage Cheese Bowl",
+    "dietTags": [
+      "omnivore",
+      "vegetarian"
+    ],
+    "allergens": [
+      "dairy"
+    ],
+    "kcalPerServing": 290,
+    "macros": {
+      "proteinG": 28,
+      "carbG": 22,
+      "fatG": 10
+    },
+    "ingredients": [
+      {
+        "name": "Cottage cheese",
+        "amount": "200g"
+      },
+      {
+        "name": "Berries",
+        "amount": "100g"
+      },
+      {
+        "name": "Walnuts",
+        "amount": "20g"
+      },
+      {
+        "name": "Cinnamon",
+        "amount": "pinch"
+      }
+    ],
+    "instructions": "Spoon cottage cheese into bowl. Top with berries, walnuts and cinnamon.",
+    "prepMin": 3,
+    "tags": [
+      "breakfast",
+      "snack",
+      "postworkout"
+    ]
+  },
+  {
+    "id": "r012",
+    "name": "Chickpea Salad",
+    "dietTags": [
+      "omnivore",
+      "vegetarian",
+      "vegan",
+      "pescatarian",
+      "mediterranean",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [],
+    "kcalPerServing": 380,
+    "macros": {
+      "proteinG": 18,
+      "carbG": 52,
+      "fatG": 10
+    },
+    "ingredients": [
+      {
+        "name": "Chickpeas",
+        "amount": "200g canned"
+      },
+      {
+        "name": "Cucumber",
+        "amount": "1"
+      },
+      {
+        "name": "Cherry tomatoes",
+        "amount": "150g"
+      },
+      {
+        "name": "Red onion",
+        "amount": "half"
+      },
+      {
+        "name": "Olive oil",
+        "amount": "2 tbsp"
+      },
+      {
+        "name": "Lemon juice",
+        "amount": "2 tbsp"
+      },
+      {
+        "name": "Fresh parsley",
+        "amount": "handful"
+      }
+    ],
+    "instructions": "Rinse chickpeas. Dice veg. Toss all with oil, lemon, and parsley. Season.",
+    "prepMin": 10,
+    "tags": [
+      "lunch",
+      "snack"
+    ]
+  },
+  {
+    "id": "r013",
+    "name": "Turkey Meatballs & Pasta",
+    "dietTags": [
+      "omnivore"
+    ],
+    "allergens": [
+      "gluten",
+      "eggs"
+    ],
+    "kcalPerServing": 580,
+    "macros": {
+      "proteinG": 48,
+      "carbG": 62,
+      "fatG": 16
+    },
+    "ingredients": [
+      {
+        "name": "Turkey mince",
+        "amount": "200g"
+      },
+      {
+        "name": "Whole wheat pasta",
+        "amount": "80g dry"
+      },
+      {
+        "name": "Tomato sauce",
+        "amount": "150ml"
+      },
+      {
+        "name": "Egg",
+        "amount": "1"
+      },
+      {
+        "name": "Garlic powder",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Italian herbs",
+        "amount": "1 tsp"
+      }
+    ],
+    "instructions": "Mix turkey, egg, herbs, form balls. Pan-fry 8 min. Cook pasta. Simmer sauce, add meatballs, toss pasta.",
+    "prepMin": 30,
+    "tags": [
+      "dinner"
+    ]
+  },
+  {
+    "id": "r014",
+    "name": "Edamame & Brown Rice",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "soy"
+    ],
+    "kcalPerServing": 400,
+    "macros": {
+      "proteinG": 22,
+      "carbG": 58,
+      "fatG": 8
+    },
+    "ingredients": [
+      {
+        "name": "Edamame (shelled)",
+        "amount": "150g"
+      },
+      {
+        "name": "Brown rice",
+        "amount": "80g dry"
+      },
+      {
+        "name": "Soy sauce",
+        "amount": "1 tbsp"
+      },
+      {
+        "name": "Sesame seeds",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Spring onions",
+        "amount": "2"
+      }
+    ],
+    "instructions": "Cook rice. Steam edamame. Combine, drizzle soy, top with sesame and spring onion.",
+    "prepMin": 25,
+    "tags": [
+      "lunch",
+      "dinner",
+      "postworkout"
+    ]
+  },
+  {
+    "id": "r015",
+    "name": "Hard-Boiled Eggs & Fruit",
+    "dietTags": [
+      "omnivore",
+      "vegetarian",
+      "pescatarian",
+      "paleo",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "eggs"
+    ],
+    "kcalPerServing": 240,
+    "macros": {
+      "proteinG": 14,
+      "carbG": 22,
+      "fatG": 10
+    },
+    "ingredients": [
+      {
+        "name": "Eggs",
+        "amount": "2"
+      },
+      {
+        "name": "Apple",
+        "amount": "1"
+      },
+      {
+        "name": "Orange",
+        "amount": "1"
+      }
+    ],
+    "instructions": "Boil eggs 10 min. Peel. Serve with sliced fruit.",
+    "prepMin": 12,
+    "tags": [
+      "breakfast",
+      "snack",
+      "preworkout"
+    ]
+  },
+  {
+    "id": "r016",
+    "name": "Beef & Broccoli",
+    "dietTags": [
+      "omnivore",
+      "halal"
+    ],
+    "allergens": [
+      "soy"
+    ],
+    "kcalPerServing": 520,
+    "macros": {
+      "proteinG": 44,
+      "carbG": 32,
+      "fatG": 24
+    },
+    "ingredients": [
+      {
+        "name": "Sirloin steak",
+        "amount": "180g"
+      },
+      {
+        "name": "Broccoli",
+        "amount": "200g"
+      },
+      {
+        "name": "Garlic",
+        "amount": "2 cloves"
+      },
+      {
+        "name": "Soy sauce",
+        "amount": "2 tbsp"
+      },
+      {
+        "name": "Oyster sauce",
+        "amount": "1 tbsp"
+      },
+      {
+        "name": "Sesame oil",
+        "amount": "1 tsp"
+      }
+    ],
+    "instructions": "Slice beef thin. Stir-fry on high heat 2 min. Remove. Fry garlic, add broccoli, sauces. Add beef back.",
+    "prepMin": 20,
+    "tags": [
+      "dinner",
+      "postworkout"
+    ]
+  },
+  {
+    "id": "r017",
+    "name": "Avocado Toast",
+    "dietTags": [
+      "omnivore",
+      "vegetarian",
+      "vegan",
+      "pescatarian",
+      "mediterranean",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "gluten"
+    ],
+    "kcalPerServing": 360,
+    "macros": {
+      "proteinG": 10,
+      "carbG": 40,
+      "fatG": 18
+    },
+    "ingredients": [
+      {
+        "name": "Whole grain bread",
+        "amount": "2 slices"
+      },
+      {
+        "name": "Avocado",
+        "amount": "1"
+      },
+      {
+        "name": "Lemon juice",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Red pepper flakes",
+        "amount": "pinch"
+      },
+      {
+        "name": "Salt",
+        "amount": "to taste"
+      }
+    ],
+    "instructions": "Toast bread. Mash avocado with lemon, salt, chili. Spread on toast.",
+    "prepMin": 5,
+    "tags": [
+      "breakfast",
+      "snack"
+    ]
+  },
+  {
+    "id": "r018",
+    "name": "Veggie Omelette",
+    "dietTags": [
+      "omnivore",
+      "vegetarian",
+      "mediterranean",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "eggs",
+      "dairy"
+    ],
+    "kcalPerServing": 340,
+    "macros": {
+      "proteinG": 24,
+      "carbG": 12,
+      "fatG": 20
+    },
+    "ingredients": [
+      {
+        "name": "Eggs",
+        "amount": "3"
+      },
+      {
+        "name": "Bell pepper",
+        "amount": "half"
+      },
+      {
+        "name": "Mushrooms",
+        "amount": "80g"
+      },
+      {
+        "name": "Spinach",
+        "amount": "handful"
+      },
+      {
+        "name": "Feta cheese",
+        "amount": "30g"
+      },
+      {
+        "name": "Olive oil",
+        "amount": "1 tsp"
+      }
+    ],
+    "instructions": "Whisk eggs. Sauté veg in oil. Pour eggs over veg, cook edges then fold. Top with feta.",
+    "prepMin": 15,
+    "tags": [
+      "breakfast",
+      "lunch"
+    ]
+  },
+  {
+    "id": "r019",
+    "name": "Peanut Butter Banana Rice Cakes",
+    "dietTags": [
+      "omnivore",
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "nuts",
+      "gluten"
+    ],
+    "kcalPerServing": 280,
+    "macros": {
+      "proteinG": 8,
+      "carbG": 42,
+      "fatG": 9
+    },
+    "ingredients": [
+      {
+        "name": "Rice cakes",
+        "amount": "3"
+      },
+      {
+        "name": "Peanut butter",
+        "amount": "2 tbsp"
+      },
+      {
+        "name": "Banana",
+        "amount": "1"
+      }
+    ],
+    "instructions": "Spread peanut butter on rice cakes. Top with sliced banana.",
+    "prepMin": 3,
+    "tags": [
+      "breakfast",
+      "snack",
+      "preworkout"
+    ]
+  },
+  {
+    "id": "r020",
+    "name": "Chicken Caesar Salad",
+    "dietTags": [
+      "omnivore",
+      "mediterranean"
+    ],
+    "allergens": [
+      "gluten",
+      "dairy",
+      "eggs",
+      "fish"
+    ],
+    "kcalPerServing": 480,
+    "macros": {
+      "proteinG": 42,
+      "carbG": 22,
+      "fatG": 25
+    },
+    "ingredients": [
+      {
+        "name": "Chicken breast",
+        "amount": "150g"
+      },
+      {
+        "name": "Romaine lettuce",
+        "amount": "150g"
+      },
+      {
+        "name": "Parmesan",
+        "amount": "20g"
+      },
+      {
+        "name": "Croutons",
+        "amount": "30g"
+      },
+      {
+        "name": "Caesar dressing",
+        "amount": "3 tbsp"
+      }
+    ],
+    "instructions": "Grill chicken, slice. Toss lettuce with dressing. Add croutons, parmesan, chicken.",
+    "prepMin": 15,
+    "tags": [
+      "lunch"
+    ]
+  },
+  {
+    "id": "r021",
+    "name": "Keto Egg Cups",
+    "dietTags": [
+      "omnivore",
+      "vegetarian",
+      "keto",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "eggs",
+      "dairy"
+    ],
+    "kcalPerServing": 320,
+    "macros": {
+      "proteinG": 22,
+      "carbG": 4,
+      "fatG": 24
+    },
+    "ingredients": [
+      {
+        "name": "Eggs",
+        "amount": "4"
+      },
+      {
+        "name": "Cheddar cheese",
+        "amount": "40g"
+      },
+      {
+        "name": "Bacon",
+        "amount": "2 strips"
+      },
+      {
+        "name": "Spinach",
+        "amount": "handful"
+      },
+      {
+        "name": "Salt & pepper",
+        "amount": "to taste"
+      }
+    ],
+    "instructions": "Preheat 180C. Layer bacon in muffin tin. Add spinach, crack egg over. Top with cheese. Bake 15 min.",
+    "prepMin": 20,
+    "tags": [
+      "breakfast",
+      "snack"
+    ]
+  },
+  {
+    "id": "r022",
+    "name": "Keto Avocado Chicken Salad",
+    "dietTags": [
+      "omnivore",
+      "keto",
+      "paleo"
+    ],
+    "allergens": [],
+    "kcalPerServing": 480,
+    "macros": {
+      "proteinG": 38,
+      "carbG": 8,
+      "fatG": 32
+    },
+    "ingredients": [
+      {
+        "name": "Chicken breast",
+        "amount": "150g"
+      },
+      {
+        "name": "Avocado",
+        "amount": "1"
+      },
+      {
+        "name": "Celery",
+        "amount": "2 stalks"
+      },
+      {
+        "name": "Mayonnaise",
+        "amount": "2 tbsp"
+      },
+      {
+        "name": "Lemon juice",
+        "amount": "1 tsp"
+      }
+    ],
+    "instructions": "Cube cooked chicken. Mash avocado. Mix with mayo, celery, lemon. Combine with chicken.",
+    "prepMin": 15,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "r023",
+    "name": "Steak & Eggs",
+    "dietTags": [
+      "omnivore",
+      "keto",
+      "paleo",
+      "halal"
+    ],
+    "allergens": [
+      "eggs"
+    ],
+    "kcalPerServing": 560,
+    "macros": {
+      "proteinG": 52,
+      "carbG": 2,
+      "fatG": 38
+    },
+    "ingredients": [
+      {
+        "name": "Sirloin steak",
+        "amount": "180g"
+      },
+      {
+        "name": "Eggs",
+        "amount": "2"
+      },
+      {
+        "name": "Butter",
+        "amount": "1 tbsp"
+      },
+      {
+        "name": "Salt & pepper",
+        "amount": "to taste"
+      }
+    ],
+    "instructions": "Season steak. Cook in hot cast iron 3-4 min per side. Rest. Fry eggs in butter.",
+    "prepMin": 15,
+    "tags": [
+      "breakfast",
+      "dinner"
+    ]
+  },
+  {
+    "id": "r024",
+    "name": "Paleo Turkey Bowl",
+    "dietTags": [
+      "omnivore",
+      "paleo",
+      "halal"
+    ],
+    "allergens": [],
+    "kcalPerServing": 500,
+    "macros": {
+      "proteinG": 44,
+      "carbG": 32,
+      "fatG": 22
+    },
+    "ingredients": [
+      {
+        "name": "Turkey mince",
+        "amount": "180g"
+      },
+      {
+        "name": "Sweet potato",
+        "amount": "1 medium"
+      },
+      {
+        "name": "Kale",
+        "amount": "80g"
+      },
+      {
+        "name": "Olive oil",
+        "amount": "1 tbsp"
+      },
+      {
+        "name": "Garlic",
+        "amount": "2 cloves"
+      }
+    ],
+    "instructions": "Roast sweet potato cubes 25 min 200C. Cook turkey with garlic until browned. Sauté kale. Assemble bowl.",
+    "prepMin": 35,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "r025",
+    "name": "Mediterranean Hummus Plate",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "mediterranean",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "sesame"
+    ],
+    "kcalPerServing": 360,
+    "macros": {
+      "proteinG": 16,
+      "carbG": 42,
+      "fatG": 14
+    },
+    "ingredients": [
+      {
+        "name": "Hummus",
+        "amount": "150g"
+      },
+      {
+        "name": "Pita bread",
+        "amount": "1"
+      },
+      {
+        "name": "Cucumber",
+        "amount": "1"
+      },
+      {
+        "name": "Cherry tomatoes",
+        "amount": "100g"
+      },
+      {
+        "name": "Olives",
+        "amount": "20g"
+      },
+      {
+        "name": "Olive oil",
+        "amount": "1 tsp"
+      }
+    ],
+    "instructions": "Arrange hummus, sliced veg, olives on a plate. Drizzle olive oil. Serve with pita.",
+    "prepMin": 5,
+    "tags": [
+      "lunch",
+      "snack"
+    ]
+  },
+  {
+    "id": "r026",
+    "name": "Post-Workout Protein Shake",
+    "dietTags": [
+      "omnivore",
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "nuts"
+    ],
+    "kcalPerServing": 300,
+    "macros": {
+      "proteinG": 32,
+      "carbG": 34,
+      "fatG": 5
+    },
+    "ingredients": [
+      {
+        "name": "Protein powder",
+        "amount": "30g"
+      },
+      {
+        "name": "Banana",
+        "amount": "1"
+      },
+      {
+        "name": "Oat milk",
+        "amount": "250ml"
+      },
+      {
+        "name": "Ice",
+        "amount": "handful"
+      }
+    ],
+    "instructions": "Blend all. Drink within 30 min of training.",
+    "prepMin": 3,
+    "tags": [
+      "postworkout",
+      "snack"
+    ]
+  },
+  {
+    "id": "r027",
+    "name": "Vegan Buddha Bowl",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher",
+      "mediterranean"
+    ],
+    "allergens": [
+      "sesame",
+      "soy"
+    ],
+    "kcalPerServing": 480,
+    "macros": {
+      "proteinG": 20,
+      "carbG": 64,
+      "fatG": 14
+    },
+    "ingredients": [
+      {
+        "name": "Roasted chickpeas",
+        "amount": "150g"
+      },
+      {
+        "name": "Brown rice",
+        "amount": "80g dry"
+      },
+      {
+        "name": "Roasted sweet potato",
+        "amount": "1 medium"
+      },
+      {
+        "name": "Kale",
+        "amount": "60g"
+      },
+      {
+        "name": "Tahini dressing",
+        "amount": "2 tbsp"
+      }
+    ],
+    "instructions": "Cook rice. Roast chickpeas and sweet potato 200C 25 min. Massage kale with oil. Assemble, drizzle tahini.",
+    "prepMin": 35,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "r028",
+    "name": "Cottage Cheese Pancakes",
+    "dietTags": [
+      "omnivore",
+      "vegetarian"
+    ],
+    "allergens": [
+      "eggs",
+      "dairy",
+      "gluten"
+    ],
+    "kcalPerServing": 360,
+    "macros": {
+      "proteinG": 28,
+      "carbG": 34,
+      "fatG": 13
+    },
+    "ingredients": [
+      {
+        "name": "Cottage cheese",
+        "amount": "150g"
+      },
+      {
+        "name": "Eggs",
+        "amount": "2"
+      },
+      {
+        "name": "Oat flour",
+        "amount": "40g"
+      },
+      {
+        "name": "Vanilla extract",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Maple syrup",
+        "amount": "1 tsp"
+      }
+    ],
+    "instructions": "Blend all ingredients. Cook small pancakes in non-stick pan 2-3 min each side. Serve with berries.",
+    "prepMin": 15,
+    "tags": [
+      "breakfast",
+      "postworkout"
+    ]
+  },
+  {
+    "id": "r029",
+    "name": "Shrimp & Zucchini Noodles",
+    "dietTags": [
+      "omnivore",
+      "pescatarian",
+      "keto",
+      "paleo",
+      "halal"
+    ],
+    "allergens": [
+      "shellfish"
+    ],
+    "kcalPerServing": 320,
+    "macros": {
+      "proteinG": 32,
+      "carbG": 14,
+      "fatG": 14
+    },
+    "ingredients": [
+      {
+        "name": "Shrimp",
+        "amount": "180g"
+      },
+      {
+        "name": "Zucchini",
+        "amount": "2 large"
+      },
+      {
+        "name": "Garlic",
+        "amount": "3 cloves"
+      },
+      {
+        "name": "Cherry tomatoes",
+        "amount": "100g"
+      },
+      {
+        "name": "Olive oil",
+        "amount": "1 tbsp"
+      },
+      {
+        "name": "Basil",
+        "amount": "handful"
+      }
+    ],
+    "instructions": "Spiralize zucchini. Sauté garlic, add shrimp 3 min. Add tomatoes, zoodles 2 min. Top with basil.",
+    "prepMin": 20,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "r030",
+    "name": "Halal Lamb Kofta Bowl",
+    "dietTags": [
+      "omnivore",
+      "halal",
+      "mediterranean"
+    ],
+    "allergens": [],
+    "kcalPerServing": 560,
+    "macros": {
+      "proteinG": 42,
+      "carbG": 44,
+      "fatG": 22
+    },
+    "ingredients": [
+      {
+        "name": "Lamb mince",
+        "amount": "200g"
+      },
+      {
+        "name": "Bulgur wheat",
+        "amount": "80g dry"
+      },
+      {
+        "name": "Onion",
+        "amount": "half"
+      },
+      {
+        "name": "Cumin",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Coriander",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Greek yogurt",
+        "amount": "3 tbsp"
+      },
+      {
+        "name": "Mint",
+        "amount": "handful"
+      }
+    ],
+    "instructions": "Mix lamb, grated onion, spices. Form koftas. Grill 10 min. Cook bulgur. Serve with yogurt and mint.",
+    "prepMin": 30,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "r031",
+    "name": "Kosher Quinoa Veggie Bowl",
+    "dietTags": [
+      "vegetarian",
+      "kosher",
+      "halal",
+      "vegan"
+    ],
+    "allergens": [],
+    "kcalPerServing": 420,
+    "macros": {
+      "proteinG": 18,
+      "carbG": 58,
+      "fatG": 12
+    },
+    "ingredients": [
+      {
+        "name": "Quinoa",
+        "amount": "80g dry"
+      },
+      {
+        "name": "Roasted broccoli",
+        "amount": "150g"
+      },
+      {
+        "name": "Chickpeas",
+        "amount": "100g"
+      },
+      {
+        "name": "Lemon tahini dressing",
+        "amount": "2 tbsp"
+      },
+      {
+        "name": "Pomegranate seeds",
+        "amount": "2 tbsp"
+      }
+    ],
+    "instructions": "Cook quinoa. Roast broccoli 200C 20 min. Combine, add chickpeas, dressing, pomegranate.",
+    "prepMin": 30,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "r032",
+    "name": "Pre-Workout Banana & Almond Butter",
+    "dietTags": [
+      "omnivore",
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher",
+      "paleo"
+    ],
+    "allergens": [
+      "nuts"
+    ],
+    "kcalPerServing": 280,
+    "macros": {
+      "proteinG": 6,
+      "carbG": 46,
+      "fatG": 8
+    },
+    "ingredients": [
+      {
+        "name": "Banana",
+        "amount": "2"
+      },
+      {
+        "name": "Almond butter",
+        "amount": "2 tbsp"
+      }
+    ],
+    "instructions": "Slice banana. Dip in almond butter. Eat 30-60 min before training.",
+    "prepMin": 2,
+    "tags": [
+      "preworkout",
+      "snack",
+      "breakfast"
+    ]
+  },
+  {
+    "id": "r033",
+    "name": "Vegetarian Chili",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher",
+      "mediterranean"
+    ],
+    "allergens": [],
+    "kcalPerServing": 400,
+    "macros": {
+      "proteinG": 22,
+      "carbG": 60,
+      "fatG": 6
+    },
+    "ingredients": [
+      {
+        "name": "Kidney beans",
+        "amount": "200g"
+      },
+      {
+        "name": "Black beans",
+        "amount": "100g"
+      },
+      {
+        "name": "Canned tomatoes",
+        "amount": "400g"
+      },
+      {
+        "name": "Bell peppers",
+        "amount": "2"
+      },
+      {
+        "name": "Corn",
+        "amount": "100g"
+      },
+      {
+        "name": "Chili powder",
+        "amount": "2 tsp"
+      },
+      {
+        "name": "Cumin",
+        "amount": "1 tsp"
+      }
+    ],
+    "instructions": "Sauté peppers, add all other ingredients. Simmer 30 min. Season.",
+    "prepMin": 35,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "r034",
+    "name": "Smoked Salmon Bagel",
+    "dietTags": [
+      "omnivore",
+      "pescatarian"
+    ],
+    "allergens": [
+      "gluten",
+      "fish",
+      "dairy"
+    ],
+    "kcalPerServing": 440,
+    "macros": {
+      "proteinG": 28,
+      "carbG": 48,
+      "fatG": 15
+    },
+    "ingredients": [
+      {
+        "name": "Whole grain bagel",
+        "amount": "1"
+      },
+      {
+        "name": "Smoked salmon",
+        "amount": "100g"
+      },
+      {
+        "name": "Cream cheese",
+        "amount": "30g"
+      },
+      {
+        "name": "Capers",
+        "amount": "1 tbsp"
+      },
+      {
+        "name": "Red onion",
+        "amount": "few slices"
+      },
+      {
+        "name": "Lemon juice",
+        "amount": "1 tsp"
+      }
+    ],
+    "instructions": "Toast bagel. Spread cream cheese. Layer salmon, capers, onion. Squeeze lemon.",
+    "prepMin": 5,
+    "tags": [
+      "breakfast",
+      "lunch"
+    ]
+  },
+  {
+    "id": "r035",
+    "name": "Cauliflower Fried Rice",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "keto",
+      "paleo",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "soy"
+    ],
+    "kcalPerServing": 280,
+    "macros": {
+      "proteinG": 10,
+      "carbG": 22,
+      "fatG": 16
+    },
+    "ingredients": [
+      {
+        "name": "Cauliflower",
+        "amount": "1 head"
+      },
+      {
+        "name": "Eggs",
+        "amount": "2"
+      },
+      {
+        "name": "Mixed vegetables",
+        "amount": "150g"
+      },
+      {
+        "name": "Soy sauce",
+        "amount": "2 tbsp"
+      },
+      {
+        "name": "Sesame oil",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Garlic",
+        "amount": "2 cloves"
+      }
+    ],
+    "instructions": "Pulse cauliflower to rice. Stir-fry veg and garlic. Add cauliflower rice, soy sauce. Push aside, scramble eggs in. Combine.",
+    "prepMin": 15,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "r036",
+    "name": "High-Protein French Toast",
+    "dietTags": [
+      "omnivore",
+      "vegetarian"
+    ],
+    "allergens": [
+      "eggs",
+      "gluten",
+      "dairy"
+    ],
+    "kcalPerServing": 400,
+    "macros": {
+      "proteinG": 30,
+      "carbG": 44,
+      "fatG": 10
+    },
+    "ingredients": [
+      {
+        "name": "Whole grain bread",
+        "amount": "2 slices"
+      },
+      {
+        "name": "Eggs",
+        "amount": "2"
+      },
+      {
+        "name": "Protein powder",
+        "amount": "20g"
+      },
+      {
+        "name": "Milk",
+        "amount": "60ml"
+      },
+      {
+        "name": "Cinnamon",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Maple syrup",
+        "amount": "1 tsp"
+      }
+    ],
+    "instructions": "Whisk eggs, milk, protein powder, cinnamon. Dip bread. Cook 3 min per side. Drizzle syrup.",
+    "prepMin": 10,
+    "tags": [
+      "breakfast",
+      "postworkout"
+    ]
+  },
+  {
+    "id": "r037",
+    "name": "Tuna Nicoise Salad",
+    "dietTags": [
+      "omnivore",
+      "pescatarian",
+      "mediterranean"
+    ],
+    "allergens": [
+      "fish",
+      "eggs"
+    ],
+    "kcalPerServing": 480,
+    "macros": {
+      "proteinG": 40,
+      "carbG": 28,
+      "fatG": 23
+    },
+    "ingredients": [
+      {
+        "name": "Tuna (canned)",
+        "amount": "160g"
+      },
+      {
+        "name": "Green beans",
+        "amount": "100g"
+      },
+      {
+        "name": "Cherry tomatoes",
+        "amount": "100g"
+      },
+      {
+        "name": "Hard-boiled egg",
+        "amount": "2"
+      },
+      {
+        "name": "Olives",
+        "amount": "30g"
+      },
+      {
+        "name": "Dijon vinaigrette",
+        "amount": "3 tbsp"
+      }
+    ],
+    "instructions": "Blanch green beans. Arrange all on a plate. Drizzle vinaigrette.",
+    "prepMin": 20,
+    "tags": [
+      "lunch"
+    ]
+  },
+  {
+    "id": "r038",
+    "name": "Mango Chia Pudding",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [],
+    "kcalPerServing": 300,
+    "macros": {
+      "proteinG": 8,
+      "carbG": 46,
+      "fatG": 10
+    },
+    "ingredients": [
+      {
+        "name": "Chia seeds",
+        "amount": "40g"
+      },
+      {
+        "name": "Coconut milk",
+        "amount": "200ml"
+      },
+      {
+        "name": "Mango",
+        "amount": "1"
+      },
+      {
+        "name": "Honey",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Lime juice",
+        "amount": "1 tsp"
+      }
+    ],
+    "instructions": "Mix chia with coconut milk. Refrigerate 4h or overnight. Top with diced mango, honey, lime.",
+    "prepMin": 5,
+    "tags": [
+      "breakfast",
+      "snack"
+    ]
+  },
+  {
+    "id": "r039",
+    "name": "Chicken Tikka",
+    "dietTags": [
+      "omnivore",
+      "halal"
+    ],
+    "allergens": [
+      "dairy"
+    ],
+    "kcalPerServing": 420,
+    "macros": {
+      "proteinG": 48,
+      "carbG": 12,
+      "fatG": 18
+    },
+    "ingredients": [
+      {
+        "name": "Chicken thighs",
+        "amount": "200g"
+      },
+      {
+        "name": "Greek yogurt",
+        "amount": "100g"
+      },
+      {
+        "name": "Tikka spice mix",
+        "amount": "2 tbsp"
+      },
+      {
+        "name": "Lemon juice",
+        "amount": "1 tbsp"
+      },
+      {
+        "name": "Garlic",
+        "amount": "2 cloves"
+      }
+    ],
+    "instructions": "Marinate chicken in yogurt, spices, lemon, garlic 2h. Grill or bake 200C 25 min.",
+    "prepMin": 30,
+    "tags": [
+      "dinner"
+    ]
+  },
+  {
+    "id": "r040",
+    "name": "Egg White Omelette",
+    "dietTags": [
+      "omnivore",
+      "vegetarian",
+      "keto",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "eggs"
+    ],
+    "kcalPerServing": 220,
+    "macros": {
+      "proteinG": 28,
+      "carbG": 6,
+      "fatG": 10
+    },
+    "ingredients": [
+      {
+        "name": "Egg whites",
+        "amount": "6"
+      },
+      {
+        "name": "Spinach",
+        "amount": "60g"
+      },
+      {
+        "name": "Cherry tomatoes",
+        "amount": "80g"
+      },
+      {
+        "name": "Salt & pepper",
+        "amount": "to taste"
+      },
+      {
+        "name": "Olive oil spray",
+        "amount": "1 spray"
+      }
+    ],
+    "instructions": "Whisk egg whites, season. Cook in sprayed pan, add veg when half-set. Fold. Serve immediately.",
+    "prepMin": 10,
+    "tags": [
+      "breakfast",
+      "snack"
+    ]
+  }
+]

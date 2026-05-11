@@ -62,6 +62,8 @@ struct ItemRow: View {
         case is AlarmItem:         return item.isCompleted ? "bell.slash.fill" : "bell.fill"
         case is HabitInstanceItem: return item.isCompleted ? "circle.fill" : "circle"
         case is EventItem:         return item.isCompleted ? "calendar.badge.checkmark" : "calendar"
+        case is WorkoutItem:       return item.isCompleted ? "figure.strengthtraining.traditional" : "circle"
+        case is MealItem:          return item.isCompleted ? "fork.knife.circle.fill" : "circle"
         default:                   return item.isCompleted ? "checkmark.circle.fill" : "circle"
         }
     }
@@ -100,6 +102,12 @@ struct ItemRow: View {
         }
         if item is HabitInstanceItem {
             parts.append("· Habit")
+        }
+        if let workout = item as? WorkoutItem {
+            parts.append("· ~\(workout.estimatedKcal) kcal")
+        }
+        if let meal = item as? MealItem {
+            parts.append("· \(meal.displayKcal) kcal")
         }
         return parts
     }
@@ -144,6 +152,8 @@ struct ItemRow: View {
         case is ReminderItem:      return "Reminder"
         case is AlarmItem:         return "Alarm"
         case is HabitInstanceItem: return "Habit"
+        case is WorkoutItem:       return "Workout"
+        case is MealItem:          return "Meal"
         default:                   return "Item"
         }
     }

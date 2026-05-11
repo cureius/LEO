@@ -8,6 +8,8 @@ struct TodayView: View {
     @State private var viewModel: TodayViewModel? = nil
     @State private var selectedItem: (any Item)? = nil
     @State private var showHistory = false
+    @State private var showFitness = false
+    @State private var hasBodyProfile = false
 
     var body: some View {
         Group {
@@ -24,7 +26,7 @@ struct TodayView: View {
             let vm = TodayViewModel(itemRepository: appEnv.itemRepository)
             viewModel = vm
             await vm.loadItems()
-            // Observe data changes for the lifetime of this view
+            hasBodyProfile = await appEnv.bodyProfileRepository.load() != nil
             await vm.startObserving()
         }
     }
@@ -33,7 +35,11 @@ struct TodayView: View {
     private func mainContent(vm: TodayViewModel) -> some View {
         ZStack(alignment: .bottom) {
             VStack(spacing: 0) {
-                TodayHeader(date: vm.selectedDate, onHistoryTap: { showHistory = true })
+                TodayHeader(
+                    date: vm.selectedDate,
+                    onHistoryTap: { showHistory = true },
+                    onFitnessTap: hasBodyProfile ? { showFitness = true } : nil
+                )
                 DateStrip(selectedDate: Bindable(vm).selectedDate)
                 Divider().background(Theme.Color.divider)
 
@@ -79,6 +85,10 @@ struct TodayView: View {
         .background(Theme.Color.background)
         .sheet(isPresented: $showHistory) {
             HistoryView()
+                .environment(appEnv)
+        }
+        .sheet(isPresented: $showFitness) {
+            FitnessHomeView()
                 .environment(appEnv)
         }
         .sheet(item: Binding(
@@ -250,7 +260,14 @@ private struct DayButton: View {
 private struct TodayHeader: View {
     let date: Date
     let onHistoryTap: () -> Void
+    let onFitnessTap: (() -> Void)?
     private var isToday: Bool { Calendar.current.isDateInToday(date) }
+
+    init(date: Date, onHistoryTap: @escaping () -> Void, onFitnessTap: (() -> Void)? = nil) {
+        self.date = date
+        self.onHistoryTap = onHistoryTap
+        self.onFitnessTap = onFitnessTap
+    }
 
     var body: some View {
         HStack(alignment: .center) {
@@ -263,6 +280,21 @@ private struct TodayHeader: View {
                     .foregroundStyle(Theme.Color.textSecondary)
             }
             Spacer()
+            // Fitness pill (only when profile exists)
+            if isToday, let tap = onFitnessTap {
+                Button(action: tap) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "figure.strengthtraining.traditional")
+                        Text("Fitness")
+                    }
+                    .font(.caption.bold())
+                    .foregroundStyle(Theme.Color.accent)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .background(Theme.Color.surface)
+                    .clipShape(Capsule())
+                }
+            }
             // History button
             Button(action: onHistoryTap) {
                 Image(systemName: "clock.arrow.circlepath")
