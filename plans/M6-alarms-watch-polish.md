@@ -25,7 +25,7 @@
 ---
 
 ### M6-T01 — Real alarm playback
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** M5 complete
 - **Estimated effort:** L
 
@@ -57,6 +57,10 @@ An alarm that overrides silent mode and reliably wakes the device — best-effor
 
 **Notes / decisions**
 - Document caveats clearly in onboarding (M6-T05).
+- Persistent alarm via burst pre-scheduling (2026-05-11): Critical Alerts entitlement was not pursued for v1. Instead, `NotificationManager` pre-schedules 27 extra notifications per timed item — 20 at 1-minute intervals (first 20 min after due) + 7 at 5-minute intervals (25–60 min). All burst notifications share the prefix `item.<uuid>.burst.<n>` and are cancelled together via `cancelAll(for: itemID)` when the user acts. Applied to any item with a `.point` or `.dueAt` anchor.
+- Custom alarm sound `leo_alarm.caf` (2026-05-11): 6-second two-tone alarm (880 Hz / 1100 Hz alternating), 22050 Hz, AAC-compressed, ~20 KB. Generated offline via Python `wave` + macOS `afconvert`. Bundled in `Resources/` and referenced via `UNNotificationSound(named: UNNotificationSoundName("leo_alarm.caf"))`.
+- `com.apple.developer.usernotifications.time-sensitive: true` entitlement added to `LEO.entitlements` so timed-item notifications break through Focus modes.
+- `NotificationIcon.imageset` added to `Assets.xcassets` with 40/80/120 px lion logo PNGs. Attached to every notification via `UNNotificationAttachment` in `applyIcon(to:)`.
 
 ---
 
@@ -88,7 +92,7 @@ A Live Activity for armed alarms with snooze/dismiss controls; supports the audi
 ---
 
 ### M6-T03 — Alarm UX
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** M6-T02
 - **Estimated effort:** S
 
@@ -109,6 +113,13 @@ The user can set, edit, and trust alarms.
 - [ ] Capturing "wake me at X" sets and arms.
 - [ ] Test button reliably plays sound.
 - [ ] User can disable an alarm without deleting it.
+
+**Notes / decisions**
+- In-app reminder action sheet (2026-05-11): When the user taps a notification body (not an action button), `NotificationDelegate` posts `.leoReminderTapped` via `NotificationCenter` with a `PendingReminderAlert` as the object. `AppTabView` observes this with `.onReceive` and presents `ReminderActionSheet` — a sheet with Done (green), Snooze 10 min, Snooze 1 hour, and Dismiss buttons.
+- `ReminderActionSheet` uses `@MainActor () async -> Void` typed closures for Done/Snooze handlers. `isActing` state prevents double-tapping during async operations.
+- Threading fix (2026-05-11): `NotificationDelegate` methods use `Task.detached` (not `Task`) to avoid inheriting a stale actor context. `await MainActor.run { completion() }` satisfies `UNUserNotificationCenter`'s requirement that completion handlers run on the main thread. Failure to do this caused "Call must be made on main thread" runtime exceptions.
+- `handleDone` and `handleSnooze` in `AppTabView` are `@MainActor` `async` closures. The sheet closure is marked `@MainActor in` to avoid capturing the actor context ambiguously.
+- Snooze re-syncs the full item list (calls `cancelAll(for:)` + `NotificationManager.sync(for:)`) so burst notifications for the snoozed time are rescheduled at the new due time.
 
 ---
 

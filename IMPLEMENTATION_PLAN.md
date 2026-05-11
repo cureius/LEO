@@ -1,7 +1,7 @@
 # LEO — Implementation Plan (master)
 
 **Companion to:** [`AGENTS.md`](AGENTS.md), [`PRD.md`](PRD.md), [`ROADMAP.md`](ROADMAP.md)
-**Last updated:** 2026-05-07
+**Last updated:** 2026-05-11
 
 This file is the **source of truth for project state** and the home of global rules. Per-milestone task detail lives in `plans/M*.md`.
 
@@ -113,6 +113,16 @@ When the user (or the agent, with user approval) makes a decision that overrides
 | 2026-05-08 | Bumped deployment target to iOS 18.0; xcodeVersion updated to 17.0 | User has Xcode 17 + iPhone 13 iOS 26; objectVersion 77 patch no longer needed |
 | 2026-05-07 | `@Previewable` macro removed from previews | Not available in Swift 5.10 / Xcode 15; use wrapper structs instead |
 | 2026-05-08 | `ModelConfiguration` uses `.cloudKitDatabase(.none)` until M3 | SwiftData validates CloudKit rules (all attrs optional, all rels have inverses) at container init even for in-memory stores when app is signed with CloudKit entitlements. M3 must make all @Model attrs optional and add inverse to StoredHabit.recurrenceRule before switching to `.private("iCloud.com.leo.app")` |
+| 2026-05-11 | Claude SSE `content_block_start` must be parsed to capture tool id/name | The tool `id` and `name` arrive in `content_block_start`, not `content_block_delta`. Without parsing this event, tool names are empty strings and the agentic loop silently fails. Store in `toolBlockMeta[index]` keyed by block index; read at `content_block_stop`. |
+| 2026-05-11 | Agentic tool-use loop: `while loopCount < 6` in `AssistantChatViewModel` | Claude may call multiple tools across multiple turns. The view model runs a loop: stream → collect `pendingCalls` → execute all → feed results back as a user message → stream again. Loop exits when no tool calls remain or after 6 rounds. |
+| 2026-05-11 | Burst pre-scheduling instead of Critical Alerts entitlement | Critical Alerts require Apple entitlement (not auto-granted). Workaround: pre-schedule 27 extra notifications per timed item — 20 at 1-min intervals + 7 at 5-min intervals after the due time — all cancelled via `cancelAll(for:)` when user acts. Applied to any item with a `.point` or `.dueAt` anchor, not just `ReminderItem`/`AlarmItem` types. |
+| 2026-05-11 | Hybrid OCR: Apple Vision first, Claude Vision as fallback | On-device `VNRecognizeTextRequest` runs before sending any image to Claude API. If OCR extracts text, only the text string goes to Claude (zero image tokens). If OCR finds nothing readable, the JPEG is sent via Claude Vision. Reduces per-image API cost ~95% on legible handwriting. |
+| 2026-05-11 | `sheet(item:)` over `sheet(isPresented:)` for `DiffReviewSheet` | `sheet(isPresented:)` opens before the bound data is set, causing a blank/black sheet. `sheet(item:)` with a `ProposalPresentation: Identifiable` struct guarantees the data is present when the sheet body renders. |
+| 2026-05-11 | `Task.detached` + `await MainActor.run { completion() }` in `NotificationDelegate` | `Task { }` inherits the enclosing actor context; inside `UNUserNotificationCenterDelegate` methods this is unpredictable and caused "Call must be made on main thread" crashes. `Task.detached` avoids inheriting stale context; `await MainActor.run { completion() }` satisfies `UNUserNotificationCenter`'s requirement that completion handlers run on the main thread. |
+| 2026-05-11 | Synchronous Keychain read for `hasAPIKey` initial value in `AssistantChatView` | Async loading caused a `false→true` flip that swapped the `NavigationStack` hierarchy mid-view, resetting tab selection to Today. Reading synchronously from Keychain at `@State` init (at view creation, not first render) prevents the swap. |
+| 2026-05-11 | `DiffPayload` / `DiffChange` must be `Hashable` + serialized in `PersistedMessage` | Proposals disappeared on session reload. Fix: added `diff: DiffPayload?` and `isApplied: Bool` to `PersistedMessage`, `Hashable` to `DiffPayload`/`DiffChange`/`PendingNewItem`, and a `.diffProposal` case to `PersistedRole`. Proposals are persisted immediately after the tool call in `send()`. |
+| 2026-05-11 | `leoReminderTapped` + `PendingReminderAlert` for decoupled in-app snooze/done UI | `NotificationDelegate` posts to `NotificationCenter` when the user taps a reminder notification body. `AppTabView` observes via `.onReceive` and presents `ReminderActionSheet`. This keeps the delegate free of SwiftUI dependencies and avoids threading issues from presenting UI directly in the delegate. |
+| 2026-05-11 | App icon uses exact reference image with 8-point flood-fill background removal | Source PNG had near-white gray (#E1E1E1, ~12% from white) background, not transparent. Simple `-transparent white` failed. 8-point flood-fill (4 corners + 4 edge midpoints) at 13% fuzz correctly removed the background without eating into logo colors. Composited onto dark navy radial gradient (#0F2A3A→#04101A). |
 
 ---
 

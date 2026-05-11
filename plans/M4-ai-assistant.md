@@ -23,7 +23,7 @@
 ---
 
 ### M4-T01 — Claude API client + prompt caching
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** M3 complete
 - **Estimated effort:** L
 
@@ -57,11 +57,13 @@ A typed Claude API client with prompt caching for the user's standing context.
 
 **Notes / decisions**
 - API key never logged. Confirm via grep before release.
+- Critical fix (2026-05-11): Claude SSE sends tool `id` and `name` in `content_block_start`, not `content_block_delta`. Added `toolBlockMeta: [String: (id: String, name: String)]` dictionary keyed by block index; values are read at `content_block_stop` to emit the `.toolUse` event. Without this, tool names were empty strings and the agentic loop broke silently.
+- Custom alarm sound: `leo_alarm.caf` bundled in Resources (880/1100 Hz, 22050 Hz, AAC, ~20 KB). Applied via `UNNotificationSound(named:)` on all timed notifications.
 
 ---
 
 ### M4-T02 — Tool definitions + tool runtime
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** M4-T01
 - **Estimated effort:** L
 
@@ -102,10 +104,15 @@ A typed catalog of tools the AI can call, with a runtime that executes them safe
 - [ ] Each tool unit-tested with at least one happy and one edge case.
 - [ ] Round-trip: model → tool call → tool result → model continues, on a canned conversation.
 
+**Notes / decisions**
+- Agentic loop added (2026-05-11): `AssistantChatViewModel.send()` runs `while loopCount < 6`. Each iteration streams one response, collects all `pendingCalls`, executes them in `ToolRuntime`, then appends a user message with `toolResult` blocks and loops. Exits when no tool calls remain or after 6 rounds.
+- `ProposeAddTool` schema extended with richer item fields; populates a `PendingNewItem` struct (title, notes, anchor, tags). `PendingNewItem` is `Codable + Hashable + Sendable`.
+- Tool result carrying a `DiffPayload` is decoded from the tool result string via `JSONDecoder().decode(WrappedDiff.self, from:)` and immediately shown as a proposal bubble + persisted to the conversation store.
+
 ---
 
 ### M4-T03 — Diff review sheet
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** M4-T02
 - **Estimated effort:** M
 
@@ -132,10 +139,17 @@ When the AI proposes a `Diff`, the user sees it in a structured sheet and accept
 - [ ] Partial accept works (some changes applied, others ignored).
 - [ ] Undo restores within 10s.
 
+**Notes / decisions**
+- Proposals persist across session reloads (2026-05-11): `PersistedMessage` gained `diff: DiffPayload?`, `isApplied: Bool`, and `PersistedRole` gained `.diffProposal`. `AssistantChatViewModel.send()` writes the proposal immediately after the tool call.
+- `sheet(isPresented:)` replaced with `sheet(item: $presentedProposal)` using a `ProposalPresentation: Identifiable` wrapper. The previous approach opened the sheet before the diff was set, resulting in a blank/black screen.
+- `DiffPayload`, `DiffChange`, `PendingNewItem` all made `Hashable` (required for `Set` operations in the review sheet's per-change toggle logic).
+- `onApply` closure changed from `(Set<String>)` to `([DiffChange])` to carry full change payloads through to the repository write.
+- `markProposalApplied(id:)` writes `isApplied = true` to both the in-memory array and the `ConversationStore` so the "Changes applied" state survives session reloads.
+
 ---
 
 ### M4-T04 — Chat UI ("Ask LEO")
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** M4-T01, M4-T02, M4-T03
 - **Estimated effort:** L
 
@@ -165,10 +179,18 @@ A chat surface for free-form planning conversations. Tool calls run transparentl
 - [ ] Tool calls render and complete within reasonable time.
 - [ ] History persists and reloads.
 
+**Notes / decisions**
+- Markdown rendering (2026-05-11): assistant messages render via `AttributedString(markdown:options: .init(interpretedSyntax: .inlineOnlyPreservingWhitespace))` so bold/italic/code spans display correctly. Plain text fallback if parsing fails.
+- Photo-to-tasks (2026-05-11): Added `PhotosPicker` camera button in the input bar. Pending image shown as a preview strip with ✕ dismiss. `ChatMessage` gains `imageData: Data?` (JPEG thumbnail for display) and `ocrText: String?` (Vision extraction result shown as "Read from photo" card in the bubble).
+- Hybrid OCR flow: `VisionOCRService.shared.recognizeText(from:)` runs first. On success, only the extracted text string goes to Claude (no image tokens). On failure, the JPEG is sent via `ImageBlock` (Claude Vision). Display bubble always shows the OCR outcome.
+- Tab navigation fix (2026-05-11): `AssistantChatView`'s `hasAPIKey` is now read synchronously from Keychain at `@State` init — not asynchronously — preventing a `false→true` flip that swapped the `NavigationStack` and reset tab selection to Today.
+- `ChatHomeView` renamed to `ChatHomeBody` and its own `NavigationStack` removed; it uses the parent stack from `AssistantChatView`, eliminating double-stack nesting.
+- `clearHistory()` made `async`; writes `session.messages = []` and `session.title = "New chat"` to `ConversationStore` so the clear survives app relaunch.
+
 ---
 
 ### M4-T05 — Model routing (on-device vs cloud)
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** M4-T01, M1-T05
 - **Estimated effort:** M
 
@@ -197,7 +219,7 @@ Pick the cheapest model that can do the job.
 ---
 
 ### M4-T06 — Token budget meter + privacy controls
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** M4-T01
 - **Estimated effort:** S
 
