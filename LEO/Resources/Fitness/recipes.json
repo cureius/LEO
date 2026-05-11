@@ -1911,5 +1911,817 @@
       "breakfast",
       "snack"
     ]
+  },
+  {
+    "id": "in001",
+    "name": "Poha",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "nuts"
+    ],
+    "kcalPerServing": 320,
+    "macros": {
+      "proteinG": 8,
+      "carbG": 52,
+      "fatG": 9
+    },
+    "ingredients": [
+      {
+        "name": "Flattened rice (poha)",
+        "amount": "80g"
+      },
+      {
+        "name": "Onion",
+        "amount": "half, diced"
+      },
+      {
+        "name": "Green chilli",
+        "amount": "1, chopped"
+      },
+      {
+        "name": "Peanuts",
+        "amount": "1 tbsp"
+      },
+      {
+        "name": "Mustard seeds",
+        "amount": "1/2 tsp"
+      },
+      {
+        "name": "Curry leaves",
+        "amount": "few"
+      },
+      {
+        "name": "Turmeric",
+        "amount": "pinch"
+      },
+      {
+        "name": "Lemon",
+        "amount": "half"
+      },
+      {
+        "name": "Oil",
+        "amount": "2 tsp"
+      }
+    ],
+    "instructions": "Rinse poha and drain. Heat oil, splutter mustard seeds with peanuts and curry leaves. Add onion and chilli; sauté 2 min. Add turmeric and poha, mix gently for 3 min. Finish with lemon juice and chopped coriander.",
+    "prepMin": 15,
+    "tags": [
+      "breakfast"
+    ]
+  },
+  {
+    "id": "in002",
+    "name": "Idli with Sambar",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [],
+    "kcalPerServing": 280,
+    "macros": {
+      "proteinG": 12,
+      "carbG": 48,
+      "fatG": 4
+    },
+    "ingredients": [
+      {
+        "name": "Idli batter",
+        "amount": "200g"
+      },
+      {
+        "name": "Toor dal",
+        "amount": "30g"
+      },
+      {
+        "name": "Mixed vegetables",
+        "amount": "80g"
+      },
+      {
+        "name": "Tamarind",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Sambar masala",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Mustard seeds",
+        "amount": "1/2 tsp"
+      },
+      {
+        "name": "Curry leaves",
+        "amount": "few"
+      }
+    ],
+    "instructions": "Steam idlis 12 min until fluffy. Cook dal soft, add veg, tamarind, sambar masala; simmer 10 min. Temper with mustard seeds and curry leaves. Serve hot.",
+    "prepMin": 25,
+    "tags": [
+      "breakfast"
+    ]
+  },
+  {
+    "id": "in003",
+    "name": "Masala Dosa",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [],
+    "kcalPerServing": 400,
+    "macros": {
+      "proteinG": 10,
+      "carbG": 60,
+      "fatG": 13
+    },
+    "ingredients": [
+      {
+        "name": "Dosa batter",
+        "amount": "150g"
+      },
+      {
+        "name": "Potatoes",
+        "amount": "2 medium, boiled"
+      },
+      {
+        "name": "Onion",
+        "amount": "1, sliced"
+      },
+      {
+        "name": "Mustard seeds",
+        "amount": "1/2 tsp"
+      },
+      {
+        "name": "Turmeric",
+        "amount": "pinch"
+      },
+      {
+        "name": "Green chilli",
+        "amount": "1"
+      },
+      {
+        "name": "Oil",
+        "amount": "1 tbsp"
+      }
+    ],
+    "instructions": "Sauté mustard, onion, chilli, turmeric. Mash potatoes in. Spread batter on hot tawa; drizzle oil, cook until crisp. Place filling, fold and serve.",
+    "prepMin": 25,
+    "tags": [
+      "breakfast",
+      "lunch"
+    ]
+  },
+  {
+    "id": "in004",
+    "name": "Upma",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [],
+    "kcalPerServing": 280,
+    "macros": {
+      "proteinG": 8,
+      "carbG": 44,
+      "fatG": 8
+    },
+    "ingredients": [
+      {
+        "name": "Semolina (sooji)",
+        "amount": "60g"
+      },
+      {
+        "name": "Onion",
+        "amount": "half"
+      },
+      {
+        "name": "Carrot",
+        "amount": "1 small"
+      },
+      {
+        "name": "Green peas",
+        "amount": "2 tbsp"
+      },
+      {
+        "name": "Mustard seeds",
+        "amount": "1/2 tsp"
+      },
+      {
+        "name": "Curry leaves",
+        "amount": "few"
+      },
+      {
+        "name": "Ghee",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Water",
+        "amount": "200ml"
+      }
+    ],
+    "instructions": "Dry-roast semolina 3 min. Heat ghee, splutter mustard with curry leaves. Add veg, sauté 3 min. Pour water, salt; stir in semolina, cover 4 min.",
+    "prepMin": 15,
+    "tags": [
+      "breakfast"
+    ]
+  },
+  {
+    "id": "in005",
+    "name": "Besan Chilla",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [],
+    "kcalPerServing": 300,
+    "macros": {
+      "proteinG": 16,
+      "carbG": 32,
+      "fatG": 12
+    },
+    "ingredients": [
+      {
+        "name": "Gram flour (besan)",
+        "amount": "60g"
+      },
+      {
+        "name": "Onion",
+        "amount": "half, diced"
+      },
+      {
+        "name": "Tomato",
+        "amount": "half, diced"
+      },
+      {
+        "name": "Coriander",
+        "amount": "handful"
+      },
+      {
+        "name": "Ajwain",
+        "amount": "1/4 tsp"
+      },
+      {
+        "name": "Oil",
+        "amount": "2 tsp"
+      },
+      {
+        "name": "Water",
+        "amount": "120ml"
+      }
+    ],
+    "instructions": "Whisk besan with water and spices to pancake consistency. Mix in veg. Spread on hot pan, drizzle oil, flip after 2 min. Repeat for second chilla.",
+    "prepMin": 12,
+    "tags": [
+      "breakfast",
+      "snack"
+    ]
+  },
+  {
+    "id": "in006",
+    "name": "Aloo Paratha with Curd",
+    "dietTags": [
+      "vegetarian",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "gluten",
+      "dairy"
+    ],
+    "kcalPerServing": 480,
+    "macros": {
+      "proteinG": 14,
+      "carbG": 60,
+      "fatG": 20
+    },
+    "ingredients": [
+      {
+        "name": "Whole wheat flour",
+        "amount": "80g"
+      },
+      {
+        "name": "Potato",
+        "amount": "1 medium, boiled"
+      },
+      {
+        "name": "Onion",
+        "amount": "half"
+      },
+      {
+        "name": "Green chilli",
+        "amount": "1"
+      },
+      {
+        "name": "Coriander",
+        "amount": "handful"
+      },
+      {
+        "name": "Curd",
+        "amount": "100g"
+      },
+      {
+        "name": "Ghee",
+        "amount": "1 tsp"
+      }
+    ],
+    "instructions": "Mix mashed potato with onion, chilli, salt. Stuff into rolled-out dough. Cook on tawa with ghee both sides until golden. Serve with curd.",
+    "prepMin": 25,
+    "tags": [
+      "breakfast",
+      "lunch"
+    ]
+  },
+  {
+    "id": "in007",
+    "name": "Sprouted Moong Salad",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [],
+    "kcalPerServing": 220,
+    "macros": {
+      "proteinG": 14,
+      "carbG": 32,
+      "fatG": 4
+    },
+    "ingredients": [
+      {
+        "name": "Sprouted moong",
+        "amount": "100g"
+      },
+      {
+        "name": "Cucumber",
+        "amount": "half, diced"
+      },
+      {
+        "name": "Tomato",
+        "amount": "1, diced"
+      },
+      {
+        "name": "Onion",
+        "amount": "half, diced"
+      },
+      {
+        "name": "Lemon",
+        "amount": "half"
+      },
+      {
+        "name": "Chaat masala",
+        "amount": "1/2 tsp"
+      },
+      {
+        "name": "Coriander",
+        "amount": "handful"
+      }
+    ],
+    "instructions": "Lightly steam sprouts 3 min (optional). Toss with veg, lemon, chaat masala, coriander.",
+    "prepMin": 8,
+    "tags": [
+      "breakfast",
+      "snack",
+      "lunch"
+    ]
+  },
+  {
+    "id": "in008",
+    "name": "Masala Oats",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "oats"
+    ],
+    "kcalPerServing": 320,
+    "macros": {
+      "proteinG": 12,
+      "carbG": 48,
+      "fatG": 9
+    },
+    "ingredients": [
+      {
+        "name": "Rolled oats",
+        "amount": "50g"
+      },
+      {
+        "name": "Onion",
+        "amount": "half"
+      },
+      {
+        "name": "Tomato",
+        "amount": "half"
+      },
+      {
+        "name": "Mixed vegetables",
+        "amount": "80g"
+      },
+      {
+        "name": "Mustard seeds",
+        "amount": "1/2 tsp"
+      },
+      {
+        "name": "Turmeric",
+        "amount": "pinch"
+      },
+      {
+        "name": "Oil",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Water",
+        "amount": "200ml"
+      }
+    ],
+    "instructions": "Sauté mustard, onion, veg in oil 3 min. Add tomato, turmeric, water; simmer 2 min. Stir in oats, cook 4 min until thick.",
+    "prepMin": 12,
+    "tags": [
+      "breakfast"
+    ]
+  },
+  {
+    "id": "in009",
+    "name": "Dal Tadka with Rice",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [],
+    "kcalPerServing": 420,
+    "macros": {
+      "proteinG": 16,
+      "carbG": 70,
+      "fatG": 8
+    },
+    "ingredients": [
+      {
+        "name": "Toor dal",
+        "amount": "80g"
+      },
+      {
+        "name": "Basmati rice",
+        "amount": "70g dry"
+      },
+      {
+        "name": "Tomato",
+        "amount": "1"
+      },
+      {
+        "name": "Onion",
+        "amount": "half"
+      },
+      {
+        "name": "Ginger-garlic paste",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Cumin",
+        "amount": "1/2 tsp"
+      },
+      {
+        "name": "Turmeric",
+        "amount": "1/4 tsp"
+      },
+      {
+        "name": "Ghee",
+        "amount": "1 tsp"
+      }
+    ],
+    "instructions": "Pressure-cook dal with turmeric 3 whistles. Sauté cumin, onion, ginger-garlic, tomato in ghee. Add dal, simmer 5 min. Serve over steamed rice.",
+    "prepMin": 25,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "in010",
+    "name": "Rajma Chawal",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [],
+    "kcalPerServing": 500,
+    "macros": {
+      "proteinG": 20,
+      "carbG": 80,
+      "fatG": 10
+    },
+    "ingredients": [
+      {
+        "name": "Rajma (kidney beans)",
+        "amount": "100g, soaked"
+      },
+      {
+        "name": "Basmati rice",
+        "amount": "80g dry"
+      },
+      {
+        "name": "Onion",
+        "amount": "1"
+      },
+      {
+        "name": "Tomato",
+        "amount": "2"
+      },
+      {
+        "name": "Ginger-garlic paste",
+        "amount": "1 tbsp"
+      },
+      {
+        "name": "Rajma masala",
+        "amount": "2 tsp"
+      },
+      {
+        "name": "Oil",
+        "amount": "1 tbsp"
+      }
+    ],
+    "instructions": "Pressure-cook rajma 4 whistles. Sauté onion, ginger-garlic, tomato, masala. Add rajma with water, simmer 15 min. Serve with rice.",
+    "prepMin": 45,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "in011",
+    "name": "Khichdi",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [],
+    "kcalPerServing": 360,
+    "macros": {
+      "proteinG": 14,
+      "carbG": 56,
+      "fatG": 9
+    },
+    "ingredients": [
+      {
+        "name": "Moong dal",
+        "amount": "50g"
+      },
+      {
+        "name": "Rice",
+        "amount": "60g"
+      },
+      {
+        "name": "Mixed vegetables",
+        "amount": "80g"
+      },
+      {
+        "name": "Cumin",
+        "amount": "1/2 tsp"
+      },
+      {
+        "name": "Turmeric",
+        "amount": "1/4 tsp"
+      },
+      {
+        "name": "Ghee",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Hing",
+        "amount": "pinch"
+      }
+    ],
+    "instructions": "Rinse rice + dal. Pressure-cook with veg, turmeric, salt, water (1:4) for 3 whistles. Temper with ghee, cumin, hing; pour over.",
+    "prepMin": 25,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "in012",
+    "name": "Paneer Bhurji with Roti",
+    "dietTags": [
+      "vegetarian",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "dairy",
+      "gluten"
+    ],
+    "kcalPerServing": 480,
+    "macros": {
+      "proteinG": 26,
+      "carbG": 38,
+      "fatG": 25
+    },
+    "ingredients": [
+      {
+        "name": "Paneer",
+        "amount": "120g, crumbled"
+      },
+      {
+        "name": "Whole wheat roti",
+        "amount": "2"
+      },
+      {
+        "name": "Onion",
+        "amount": "1"
+      },
+      {
+        "name": "Tomato",
+        "amount": "1"
+      },
+      {
+        "name": "Green chilli",
+        "amount": "1"
+      },
+      {
+        "name": "Garam masala",
+        "amount": "1/2 tsp"
+      },
+      {
+        "name": "Oil",
+        "amount": "1 tbsp"
+      }
+    ],
+    "instructions": "Sauté onion till soft, add tomato and chilli; cook 4 min. Add crumbled paneer and garam masala; stir 3 min. Serve with hot rotis.",
+    "prepMin": 15,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "in013",
+    "name": "Chicken Curry with Rice",
+    "dietTags": [
+      "omnivore",
+      "halal"
+    ],
+    "allergens": [],
+    "kcalPerServing": 520,
+    "macros": {
+      "proteinG": 38,
+      "carbG": 56,
+      "fatG": 16
+    },
+    "ingredients": [
+      {
+        "name": "Chicken (bone-in)",
+        "amount": "200g"
+      },
+      {
+        "name": "Basmati rice",
+        "amount": "70g dry"
+      },
+      {
+        "name": "Onion",
+        "amount": "1"
+      },
+      {
+        "name": "Tomato",
+        "amount": "2"
+      },
+      {
+        "name": "Ginger-garlic paste",
+        "amount": "1 tbsp"
+      },
+      {
+        "name": "Curry powder",
+        "amount": "2 tsp"
+      },
+      {
+        "name": "Garam masala",
+        "amount": "1/2 tsp"
+      },
+      {
+        "name": "Oil",
+        "amount": "1 tbsp"
+      }
+    ],
+    "instructions": "Brown onion, add ginger-garlic, tomato, masalas; cook 5 min. Add chicken, sear 4 min. Add water, simmer 25 min. Serve over rice.",
+    "prepMin": 45,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "in014",
+    "name": "Egg Curry with Roti",
+    "dietTags": [
+      "omnivore",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [
+      "eggs",
+      "gluten"
+    ],
+    "kcalPerServing": 440,
+    "macros": {
+      "proteinG": 22,
+      "carbG": 36,
+      "fatG": 24
+    },
+    "ingredients": [
+      {
+        "name": "Eggs",
+        "amount": "3, boiled"
+      },
+      {
+        "name": "Roti",
+        "amount": "2"
+      },
+      {
+        "name": "Onion",
+        "amount": "1"
+      },
+      {
+        "name": "Tomato",
+        "amount": "2"
+      },
+      {
+        "name": "Ginger-garlic paste",
+        "amount": "1 tsp"
+      },
+      {
+        "name": "Curry powder",
+        "amount": "1.5 tsp"
+      },
+      {
+        "name": "Oil",
+        "amount": "1 tbsp"
+      }
+    ],
+    "instructions": "Sauté onion till golden, add ginger-garlic, tomato, masala; cook 4 min. Add water for gravy; simmer 5 min. Slip in eggs, simmer 3 min. Serve with rotis.",
+    "prepMin": 25,
+    "tags": [
+      "lunch",
+      "dinner"
+    ]
+  },
+  {
+    "id": "in015",
+    "name": "Roasted Chana Snack",
+    "dietTags": [
+      "vegetarian",
+      "vegan",
+      "halal",
+      "kosher"
+    ],
+    "allergens": [],
+    "kcalPerServing": 180,
+    "macros": {
+      "proteinG": 12,
+      "carbG": 26,
+      "fatG": 3
+    },
+    "ingredients": [
+      {
+        "name": "Roasted chana (chickpeas)",
+        "amount": "40g"
+      },
+      {
+        "name": "Black salt",
+        "amount": "pinch"
+      },
+      {
+        "name": "Lemon",
+        "amount": "half"
+      },
+      {
+        "name": "Onion",
+        "amount": "few slices"
+      }
+    ],
+    "instructions": "Toss roasted chana with black salt, lemon juice, optional onion slices. Eat fresh.",
+    "prepMin": 2,
+    "tags": [
+      "snack",
+      "preworkout"
+    ]
   }
 ]

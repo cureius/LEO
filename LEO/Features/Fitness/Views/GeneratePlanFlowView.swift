@@ -210,6 +210,9 @@ private struct PlanReviewList: View {
     let onBack: () -> Void
 
     @State private var expandedWeeks: Set<Int> = [0]
+    /// Resolved exercise metadata so we can show actual names + instructions
+    /// without async-loading them in every row.
+    @State private var exerciseLookup: [String: Exercise] = [:]
 
     private var workoutsByWeek: [(week: Int, items: [WorkoutItem])] {
         let grouped = Dictionary(grouping: plan.workouts) { weekNumber(for: $0.anchor.sortDate) }
@@ -331,6 +334,18 @@ private struct PlanReviewList: View {
                     .disabled(isActivating)
             }
         }
+        .task { await loadExerciseLookup() }
+    }
+
+    private func loadExerciseLookup() async {
+        let ids = Set(plan.workouts.flatMap { $0.plannedExercises.map(\.exerciseID) })
+        var lookup: [String: Exercise] = [:]
+        for id in ids {
+            if let ex = await FitnessLibrary.shared.exercise(id: id) {
+                lookup[id] = ex
+            }
+        }
+        exerciseLookup = lookup
     }
 
     private var summaryCard: some View {
@@ -366,23 +381,48 @@ private struct PlanReviewList: View {
                 Image(systemName: includedWorkouts.contains(workout.id) ? "checkmark.circle.fill" : "circle")
                     .foregroundStyle(includedWorkouts.contains(workout.id) ? Theme.Color.accent : Theme.Color.textSecondary)
                     .font(.title3)
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: 6) {
                     Text(workout.title)
-                        .font(Theme.Typography.body)
+                        .font(Theme.Typography.body.bold())
                         .foregroundStyle(Theme.Color.textPrimary)
                     if let start = workout.anchor.sortDate {
-                        Text(start, format: .dateTime.weekday().hour().minute())
+                        Text("\(start.formatted(.dateTime.weekday(.wide).month().day())) · \(start.formatted(.dateTime.hour().minute())) · ~\(workout.estimatedKcal) kcal")
                             .font(.caption)
                             .foregroundStyle(Theme.Color.textSecondary)
                     }
-                    Text("\(workout.plannedExercises.count) exercises · ~\(workout.estimatedKcal) kcal")
-                        .font(.caption)
-                        .foregroundStyle(Theme.Color.textSecondary)
+                    // Exercise breakdown
+                    VStack(alignment: .leading, spacing: 3) {
+                        ForEach(workout.plannedExercises, id: \.exerciseID) { planned in
+                            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                                Text("•")
+                                    .foregroundStyle(Theme.Color.accent)
+                                Text(exerciseLookup[planned.exerciseID]?.name ?? "Exercise")
+                                    .font(.caption)
+                                    .foregroundStyle(Theme.Color.textPrimary)
+                                Spacer()
+                                Text(formatSetsReps(planned))
+                                    .font(.caption.monospacedDigit())
+                                    .foregroundStyle(Theme.Color.textSecondary)
+                            }
+                        }
+                    }
+                    .padding(.top, 2)
                 }
-                Spacer()
+                Spacer(minLength: 0)
             }
+            .padding(.vertical, 4)
         }
         .buttonStyle(.plain)
+    }
+
+    private func formatSetsReps(_ p: PlannedExercise) -> String {
+        if let mins = p.durationMin, mins > 0 {
+            return "\(p.sets)×\(mins) min"
+        }
+        if let w = p.weightKg, w > 0 {
+            return "\(p.sets)×\(p.reps) @ \(w.formatted(.number.precision(.fractionLength(1)))) kg"
+        }
+        return "\(p.sets)×\(p.reps)"
     }
 
     private func mealRow(_ meal: MealItem) -> some View {

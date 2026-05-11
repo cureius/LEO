@@ -122,8 +122,13 @@ actor FitnessPlanGenerator {
     }
 
     private func sessionTitle(for groups: [String], week: Int, day: Int) -> String {
-        let pretty = groups.map { $0.prefix(1).uppercased() + $0.dropFirst() }.joined(separator: " + ")
-        return "W\(week)D\(day) · \(pretty)"
+        let pretty = groups.map { name -> String in
+            switch name {
+            case "fullBody": return "Full body"
+            default:         return name.prefix(1).uppercased() + name.dropFirst()
+            }
+        }.joined(separator: " + ")
+        return "W\(week) D\(day) · \(pretty)"
     }
 
     // MARK: - Meals
