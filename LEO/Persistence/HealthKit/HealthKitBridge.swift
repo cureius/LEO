@@ -49,7 +49,10 @@ actor HealthKitBridge {
             if let t = HKObjectType.quantityType(forIdentifier: id) { types.insert(t) }
         }
         types.insert(HKObjectType.workoutType())
-        if let correlation = HKObjectType.correlationType(forIdentifier: .food) { types.insert(correlation) }
+        // NOTE: HKCorrelationType (.food) cannot be requested for sharing — Apple
+        // rejects authorization the moment it sees one in `typesToShare`. We get
+        // write access by requesting the contained quantity samples above; the
+        // correlation itself can be saved using that permission.
         return types
     }()
 
@@ -206,7 +209,9 @@ actor HealthKitBridge {
         let mealDate: Date
         if case .point(let d) = item.anchor { mealDate = d } else { mealDate = .now }
 
-        let energyType = HKQuantityType.quantityType(forIdentifier: .dietaryEnergyConsumed)!
+        guard let energyType = HKQuantityType.quantityType(forIdentifier: .dietaryEnergyConsumed) else {
+            throw HealthKitError.notAvailable
+        }
         let energySample = HKQuantitySample(
             type: energyType,
             quantity: HKQuantity(unit: .kilocalorie(), doubleValue: kcal),
@@ -224,7 +229,9 @@ actor HealthKitBridge {
                 samples.append(HKQuantitySample(type: t, quantity: HKQuantity(unit: .gram(), doubleValue: macros.fatG), start: mealDate, end: mealDate))
             }
         }
-        let foodType = HKCorrelationType.correlationType(forIdentifier: .food)!
+        guard let foodType = HKCorrelationType.correlationType(forIdentifier: .food) else {
+            throw HealthKitError.notAvailable
+        }
         let correlation = HKCorrelation(
             type: foodType,
             start: mealDate,
