@@ -11,6 +11,9 @@ struct FitnessSettingsView: View {
     @State private var errorMessage: String? = nil
     /// Prevents onChange from firing when loadProfile sets the toggle programmatically.
     @State private var isLoadingProfile = true
+    @State private var isRequestingHK = false
+    /// Set to true when we know HealthKit can't be used in this build (entitlement missing).
+    @State private var hkBlockedReason: String? = nil
 
     var body: some View {
         List {
@@ -38,19 +41,34 @@ struct FitnessSettingsView: View {
             }
 
             Section("HealthKit") {
-                if appEnv.healthKitBridge.isAvailable {
-                    Toggle("Sync with Apple Health", isOn: $healthKitEnabled)
-                        .onChange(of: healthKitEnabled) { _, enabled in
-                            // Guard: skip when the toggle is set programmatically during load
-                            guard !isLoadingProfile else { return }
-                            if enabled {
-                                Task { await requestHealthKitAccess() }
-                            }
-                        }
-                } else {
+                if !appEnv.healthKitBridge.isAvailable {
                     Label("Apple Health not available on this device", systemImage: "heart.slash")
                         .foregroundStyle(Theme.Color.textSecondary)
                         .font(.caption)
+                } else if let blocked = hkBlockedReason {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Label("Apple Health unavailable", systemImage: "heart.slash")
+                            .font(.callout)
+                        Text(blocked)
+                            .font(.caption)
+                            .foregroundStyle(Theme.Color.textSecondary)
+                    }
+                } else {
+                    HStack {
+                        Toggle("Sync with Apple Health", isOn: $healthKitEnabled)
+                            .disabled(isRequestingHK)
+                            .onChange(of: healthKitEnabled) { _, enabled in
+                                // Skip when loadProfile sets the toggle programmatically
+                                guard !isLoadingProfile else { return }
+                                if enabled {
+                                    Task { await requestHealthKitAccess() }
+                                }
+                            }
+                        if isRequestingHK {
+                            ProgressView()
+                                .controlSize(.small)
+                        }
+                    }
                 }
                 Text("When enabled, LEO writes completed workouts and meals to Apple Health and reads your weight automatically.")
                     .font(.caption)
@@ -143,17 +161,40 @@ struct FitnessSettingsView: View {
     }
 
     private func requestHealthKitAccess() async {
-        let status = await appEnv.healthKitBridge.requestAccess()
-        // Sync the toggle back to reflect the actual granted status
-        let granted = (status == .sharingAuthorized)
-        if healthKitEnabled != granted {
-            isLoadingProfile = true
-            healthKitEnabled = granted
-            isLoadingProfile = false
+        isRequestingHK = true
+        defer { isRequestingHK = false }
+
+        let outcome = await appEnv.healthKitBridge.requestAccess()
+
+        // For .granted, verify with a follow-up status query so the toggle reflects
+        // what HK actually returned (the user may have denied in the system sheet).
+        var trulyGranted = false
+        if case .granted = outcome {
+            let status = await appEnv.healthKitBridge.authorizationStatus()
+            trulyGranted = (status == .sharingAuthorized)
         }
-        if !granted && status != .notDetermined {
-            // Permission denied — direct user to Settings
-            errorMessage = "HealthKit access was denied. Enable it in iOS Settings → Privacy & Security → Health → LEO."
+
+        // Always sync the toggle back to ground truth — never leave it stuck on.
+        isLoadingProfile = true
+        healthKitEnabled = trulyGranted
+        isLoadingProfile = false
+
+        switch outcome {
+        case .granted where trulyGranted:
+            break  // success — nothing to show
+        case .granted:
+            // System sheet returned success but no permissions actually granted
+            errorMessage = "Apple Health didn't grant any permissions. Open iOS Settings → Privacy & Security → Health → LEO to enable the categories you want to sync."
+        case .denied:
+            errorMessage = "HealthKit access was denied. You can change this in iOS Settings → Privacy & Security → Health → LEO."
+        case .unavailable:
+            errorMessage = "HealthKit is not available on this device."
+        case .entitlementMissing:
+            hkBlockedReason = "This build of LEO is signed without the HealthKit capability. Reinstall a Release build or add the HealthKit capability in Xcode → Signing & Capabilities."
+        case .timedOut:
+            hkBlockedReason = "Apple Health didn't respond in 5 seconds. This usually means LEO is missing the HealthKit capability. Add it in Xcode → Signing & Capabilities and reinstall."
+        case .error(let msg):
+            errorMessage = "Apple Health error: \(msg)"
         }
     }
 

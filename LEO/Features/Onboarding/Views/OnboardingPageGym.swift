@@ -70,8 +70,13 @@ struct OnboardingPageGym: View {
                             healthKitGranted = false
                             return
                         }
-                        let status = await healthKitBridge.requestAccess()
-                        healthKitGranted = (status == .sharingAuthorized)
+                        let outcome = await healthKitBridge.requestAccess()
+                        if case .granted = outcome {
+                            let status = await healthKitBridge.authorizationStatus()
+                            healthKitGranted = (status == .sharingAuthorized)
+                        } else {
+                            healthKitGranted = false
+                        }
                     }
                 } label: {
                     HStack {

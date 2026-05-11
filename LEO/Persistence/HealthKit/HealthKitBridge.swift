@@ -55,44 +55,56 @@ actor HealthKitBridge {
 
     // MARK: - Authorization
 
-    func requestAccess() async -> HKAuthorizationStatus {
+    /// Detailed outcome of an authorization attempt so the UI can show the right message.
+    enum AuthOutcome: Sendable {
+        case granted                  // user said yes
+        case denied                   // user said no
+        case unavailable              // device has no HealthKit
+        case entitlementMissing       // app binary lacks HealthKit entitlement (debug builds)
+        case timedOut                 // HK daemon did not respond within the budget
+        case error(String)            // HK threw an explicit error
+    }
+
+    func requestAccess() async -> AuthOutcome {
         guard isAvailable else {
             logger.info("HealthKit not available on this device")
-            return .notDetermined
+            return .unavailable
         }
-        // Snapshot actor-isolated values before spawning a detached task
+        // Use the completion-handler API so we can race a strict timeout
+        // against the HK daemon. The async wrapper has occasionally been
+        // observed to silently never resume when the entitlement is missing.
         let shareTypes = self.writeTypes
         let readTypes  = self.readTypes
         let hkStore    = self.store
 
-        // Race the authorization call against a 30 s timeout so the toggle
-        // never hangs if the entitlement is missing or the HK daemon stalls.
-        let authTask = Task.detached {
-            do {
-                try await hkStore.requestAuthorization(toShare: shareTypes, read: readTypes)
-                return HKAuthorizationStatus.sharingAuthorized
-            } catch {
-                return HKAuthorizationStatus.notDetermined
-            }
-        }
-        let timeoutTask = Task.detached {
-            try? await Task.sleep(nanoseconds: 30_000_000_000)
-        }
+        return await withCheckedContinuation { (continuation: CheckedContinuation<AuthOutcome, Never>) in
+            let state = ResumeOnce<AuthOutcome>()
 
-        let result: HKAuthorizationStatus = await withTaskGroup(of: HKAuthorizationStatus.self) { group in
-            group.addTask { await authTask.value }
-            group.addTask {
-                await timeoutTask.value
-                return .notDetermined
+            // 5-second timeout — long enough for the user to interact with the
+            // system permission sheet, short enough to surface entitlement bugs.
+            DispatchQueue.global().asyncAfter(deadline: .now() + 5.0) {
+                state.resume(continuation, with: .timedOut)
             }
-            let first = await group.next() ?? .notDetermined
-            group.cancelAll()
-            authTask.cancel()
-            timeoutTask.cancel()
-            return first
+
+            hkStore.requestAuthorization(toShare: shareTypes, read: readTypes) { success, error in
+                if let error = error as NSError? {
+                    // HKError code 4 == HKErrorAuthorizationNotDetermined — usually entitlement missing
+                    let outcome: AuthOutcome
+                    if error.domain == "com.apple.healthkit" && error.code == 4 {
+                        outcome = .entitlementMissing
+                    } else {
+                        outcome = .error(error.localizedDescription)
+                    }
+                    state.resume(continuation, with: outcome)
+                    return
+                }
+                // success == true means the user interacted with the sheet (granted or denied).
+                // We can't tell granted vs denied directly from this callback; rely on the
+                // post-call status query instead. Return .granted as a hopeful default; the
+                // caller verifies via authorizationStatus().
+                state.resume(continuation, with: success ? .granted : .denied)
+            }
         }
-        logger.info("HealthKit auth result: \(result.rawValue)")
-        return result
     }
 
     func authorizationStatus() async -> HKAuthorizationStatus {
@@ -267,6 +279,22 @@ actor HealthKitBridge {
         if titleLower.contains("swim") { return .swimming }
         if titleLower.contains("walk") { return .walking }
         return .traditionalStrengthTraining
+    }
+}
+
+/// Thread-safe single-shot continuation resumer. Used so a timeout DispatchWorkItem
+/// and the HealthKit completion callback can race without ever resuming the
+/// continuation twice (which would trap).
+final class ResumeOnce<T>: @unchecked Sendable {
+    private let lock = NSLock()
+    private var resumed = false
+
+    func resume(_ continuation: CheckedContinuation<T, Never>, with value: T) {
+        lock.lock()
+        let canResume = !resumed
+        resumed = true
+        lock.unlock()
+        if canResume { continuation.resume(returning: value) }
     }
 }
 
