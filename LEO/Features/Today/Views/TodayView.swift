@@ -40,7 +40,7 @@ struct TodayView: View {
                     onHistoryTap: { showHistory = true },
                     onFitnessTap: hasBodyProfile ? { showFitness = true } : nil
                 )
-                DateStrip(selectedDate: Bindable(vm).selectedDate)
+                DateStrip(vm: vm)
                 Divider().background(Theme.Color.divider)
 
                 if vm.isLoading {
@@ -104,99 +104,117 @@ struct TodayView: View {
     }
 }
 
-// MARK: - Date strip (week navigation)
+// MARK: - Date strip (week navigation + expandable month grid)
 
 private struct DateStrip: View {
-    @Binding var selectedDate: Date
-
-    @State private var weekOffset = 0
+    var vm: TodayViewModel
+    @State private var showMonthGrid = false
     private let cal = Calendar.current
 
-    private var weekStart: Date {
-        let today = cal.startOfDay(for: .now)
-        // Anchor to Monday
-        let weekday = cal.component(.weekday, from: today)       // Sun=1…Sat=7
-        let daysBack = (weekday + 5) % 7                         // Mon=0, Tue=1…
-        let monday = cal.date(byAdding: .day, value: -daysBack, to: today)!
-        return cal.date(byAdding: .weekOfYear, value: weekOffset, to: monday)!
-    }
-
-    private var weekDays: [Date] {
-        (0..<7).map { cal.date(byAdding: .day, value: $0, to: weekStart)! }
-    }
-
-    private var monthLabel: String {
-        // Show month of the week's midpoint
-        weekDays[3].formatted(.dateTime.month(.wide).year())
-    }
-
     var body: some View {
-        VStack(spacing: 6) {
-            // ── Month row ──────────────────────────────────────────────
+        VStack(spacing: 0) {
+            // ── Month / nav row ────────────────────────────────────────
             HStack(spacing: 4) {
-                Button { withAnimation(.easeInOut(duration: 0.2)) { weekOffset -= 1 } } label: {
+                Button { withAnimation(.easeInOut(duration: 0.2)) { vm.weekOffset -= 1 } } label: {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundStyle(Theme.Color.textSecondary)
-                        .frame(width: 32, height: 28)
+                        .frame(width: 28, height: 28)
                 }
 
-                Text(monthLabel)
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundStyle(Theme.Color.textPrimary)
-                    .frame(maxWidth: .infinity)
+                // Month label — tap to expand/collapse month grid
+                Button {
+                    let opening = !showMonthGrid
+                    withAnimation(.spring(duration: 0.3, bounce: 0.1)) { showMonthGrid.toggle() }
+                    if opening { Task { await vm.loadMonthDates(for: vm.weekDays[3]) } }
+                } label: {
+                    HStack(spacing: 3) {
+                        Text(vm.visibleMonthLabel)
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(Theme.Color.textPrimary)
+                        Image(systemName: showMonthGrid ? "chevron.up" : "chevron.down")
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundStyle(Theme.Color.textSecondary)
+                    }
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
 
-                if !cal.isDateInToday(selectedDate) || weekOffset != 0 {
+                Spacer()
+
+                // Week item total — only when there's something to show
+                if vm.weekItemTotal > 0 {
+                    Text("\(vm.weekItemTotal) this week")
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundStyle(Theme.Color.textSecondary)
+                        .transition(.opacity)
+                }
+
+                if !cal.isDateInToday(vm.selectedDate) || vm.weekOffset != 0 {
                     Button("Today") {
                         withAnimation(.easeInOut(duration: 0.2)) {
-                            weekOffset = 0
-                            selectedDate = cal.startOfDay(for: .now)
+                            vm.selectedDate = cal.startOfDay(for: .now)
                         }
                     }
-                    .font(.system(size: 13, weight: .medium))
+                    .font(.system(size: 12, weight: .semibold))
                     .foregroundStyle(Theme.Color.accent)
-                    .padding(.horizontal, 6)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 3)
+                    .background(Theme.Color.accent.opacity(0.1))
+                    .clipShape(Capsule())
                 }
 
-                Button { withAnimation(.easeInOut(duration: 0.2)) { weekOffset += 1 } } label: {
+                Button { withAnimation(.easeInOut(duration: 0.2)) { vm.weekOffset += 1 } } label: {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundStyle(Theme.Color.textSecondary)
-                        .frame(width: 32, height: 28)
+                        .frame(width: 28, height: 28)
                 }
             }
-            .padding(.horizontal, Theme.Spacing.sm)
+            .padding(.horizontal, Theme.Spacing.md)
+            .padding(.top, Theme.Spacing.xs)
 
-            // ── Day buttons ────────────────────────────────────────────
+            // ── Day buttons (swipeable) ────────────────────────────────
             HStack(spacing: 0) {
-                ForEach(weekDays, id: \.self) { day in
+                ForEach(vm.weekDays, id: \.self) { day in
                     DayButton(
                         date: day,
-                        isSelected: cal.isDate(day, inSameDayAs: selectedDate),
-                        isToday: cal.isDateInToday(day)
+                        isSelected: cal.isDate(day, inSameDayAs: vm.selectedDate),
+                        isToday: cal.isDateInToday(day),
+                        itemCount: vm.weekItemCounts[cal.startOfDay(for: day)] ?? 0
                     ) {
-                        selectedDate = cal.startOfDay(for: day)
+                        withAnimation(.easeInOut(duration: 0.15)) {
+                            vm.selectedDate = cal.startOfDay(for: day)
+                        }
                     }
                     .frame(maxWidth: .infinity)
                 }
             }
             .padding(.horizontal, Theme.Spacing.xs)
-        }
-        .padding(.vertical, Theme.Spacing.sm)
-        .background(Theme.Color.background)
-        // When selectedDate changes externally (e.g., a notification), sync weekOffset
-        .onChange(of: selectedDate) { _, newDate in
-            if !weekDays.contains(where: { cal.isDate($0, inSameDayAs: newDate) }) {
-                let today = cal.startOfDay(for: .now)
-                let weekday = cal.component(.weekday, from: today)
-                let daysBack = (weekday + 5) % 7
-                let thisMonday = cal.date(byAdding: .day, value: -daysBack, to: today)!
-                let newWeekday = cal.component(.weekday, from: newDate)
-                let newDaysBack = (newWeekday + 5) % 7
-                let newMonday = cal.date(byAdding: .day, value: -newDaysBack, to: newDate)!
-                weekOffset = cal.dateComponents([.weekOfYear], from: thisMonday, to: newMonday).weekOfYear ?? 0
+            .padding(.vertical, Theme.Spacing.sm)
+            .contentShape(Rectangle())
+            .gesture(
+                DragGesture(minimumDistance: 40, coordinateSpace: .local)
+                    .onEnded { value in
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            if value.translation.width < -40 { vm.weekOffset += 1 }
+                            else if value.translation.width > 40 { vm.weekOffset -= 1 }
+                        }
+                    }
+            )
+
+            // ── Expandable month grid ──────────────────────────────────
+            if showMonthGrid {
+                MonthGridView(
+                    vm: vm,
+                    onDismiss: {
+                        withAnimation(.spring(duration: 0.3, bounce: 0.1)) { showMonthGrid = false }
+                    }
+                )
+                .transition(.move(edge: .top).combined(with: .opacity))
             }
         }
+        .background(Theme.Color.background)
     }
 }
 
@@ -204,6 +222,7 @@ private struct DayButton: View {
     let date: Date
     let isSelected: Bool
     let isToday: Bool
+    let itemCount: Int
     let onTap: () -> Void
 
     private var dayLetter: String { date.formatted(.dateTime.weekday(.narrow)) }
@@ -241,9 +260,13 @@ private struct DayButton: View {
                         )
                 }
 
-                // Dot — today indicator when a different day is selected
+                // Density dot — shows when day has items OR is today-but-not-selected.
+                // White when selected (visible on filled background), accent otherwise.
+                let showDot = itemCount > 0 || (isToday && !isSelected)
                 Circle()
-                    .fill(isToday && !isSelected ? Theme.Color.accent : Color.clear)
+                    .fill(showDot
+                          ? (isSelected ? Color.white.opacity(0.8) : Theme.Color.accent)
+                          : Color.clear)
                     .frame(width: 4, height: 4)
             }
             .frame(maxWidth: .infinity)
@@ -251,7 +274,10 @@ private struct DayButton: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .accessibilityLabel(date.formatted(.dateTime.weekday(.wide).month().day()))
+        .accessibilityLabel(
+            date.formatted(.dateTime.weekday(.wide).month().day())
+            + (itemCount > 0 ? ", \(itemCount) items" : "")
+        )
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
@@ -842,6 +868,155 @@ private struct CompletedSection: View {
             }
             return nil
         }
+    }
+}
+
+// MARK: - Month grid (expandable calendar)
+
+private struct MonthGridView: View {
+    var vm: TodayViewModel
+    let onDismiss: () -> Void
+
+    @State private var displayedMonth: Date = Calendar.current.startOfDay(for: .now)
+    private let cal = Calendar.current
+    private let columns = Array(repeating: GridItem(.flexible(), spacing: 2), count: 7)
+    private let weekdayHeaders = ["M", "T", "W", "T", "F", "S", "S"]
+
+    var body: some View {
+        VStack(spacing: 0) {
+            Divider().background(Theme.Color.divider)
+
+            // Month navigation row
+            HStack {
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        displayedMonth = cal.date(byAdding: .month, value: -1, to: displayedMonth)!
+                    }
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(Theme.Color.textSecondary)
+                        .frame(width: 36, height: 36)
+                }
+
+                Text(displayedMonth.formatted(.dateTime.month(.wide).year()))
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(Theme.Color.textPrimary)
+                    .frame(maxWidth: .infinity)
+
+                Button {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        displayedMonth = cal.date(byAdding: .month, value: 1, to: displayedMonth)!
+                    }
+                } label: {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(Theme.Color.textSecondary)
+                        .frame(width: 36, height: 36)
+                }
+            }
+            .padding(.horizontal, Theme.Spacing.md)
+            .padding(.top, Theme.Spacing.sm)
+
+            // Weekday header row
+            HStack(spacing: 0) {
+                ForEach(weekdayHeaders, id: \.self) { h in
+                    Text(h)
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundStyle(Theme.Color.textSecondary)
+                        .frame(maxWidth: .infinity)
+                }
+            }
+            .padding(.horizontal, Theme.Spacing.xs)
+            .padding(.top, Theme.Spacing.xs)
+
+            // Day cells
+            LazyVGrid(columns: columns, spacing: 4) {
+                ForEach(Array(monthDays(for: displayedMonth).enumerated()), id: \.offset) { _, day in
+                    if let day {
+                        MonthDayCell(
+                            date: day,
+                            isSelected: cal.isDate(day, inSameDayAs: vm.selectedDate),
+                            isToday: cal.isDateInToday(day),
+                            hasItems: vm.monthItemDates.contains(cal.startOfDay(for: day))
+                        ) {
+                            withAnimation(.easeInOut(duration: 0.15)) {
+                                vm.selectedDate = cal.startOfDay(for: day)
+                            }
+                            onDismiss()
+                        }
+                    } else {
+                        Color.clear.frame(height: 38)
+                    }
+                }
+            }
+            .padding(.horizontal, Theme.Spacing.xs)
+            .padding(.bottom, Theme.Spacing.sm)
+        }
+        .background(Theme.Color.background)
+        .onAppear {
+            displayedMonth = monthStart(for: vm.weekDays[3])
+            Task { await vm.loadMonthDates(for: displayedMonth) }
+        }
+        .onChange(of: displayedMonth) { _, newMonth in
+            Task { await vm.loadMonthDates(for: newMonth) }
+        }
+    }
+
+    private func monthStart(for date: Date) -> Date {
+        cal.date(from: cal.dateComponents([.year, .month], from: date)) ?? date
+    }
+
+    private func monthDays(for month: Date) -> [Date?] {
+        let first = monthStart(for: month)
+        let count = cal.range(of: .day, in: .month, for: month)!.count
+        let leadingBlanks = (cal.component(.weekday, from: first) + 5) % 7  // Mon = 0
+        var days: [Date?] = Array(repeating: nil, count: leadingBlanks)
+        for i in 0..<count {
+            days.append(cal.date(byAdding: .day, value: i, to: first))
+        }
+        let trailing = (7 - days.count % 7) % 7
+        if trailing > 0 { days += Array(repeating: nil, count: trailing) }
+        return days
+    }
+}
+
+private struct MonthDayCell: View {
+    let date: Date
+    let isSelected: Bool
+    let isToday: Bool
+    let hasItems: Bool
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            VStack(spacing: 2) {
+                ZStack {
+                    if isSelected {
+                        Circle().fill(Theme.Color.accent)
+                    } else if isToday {
+                        Circle().strokeBorder(Theme.Color.accent, lineWidth: 1.5)
+                    }
+                    Text("\(Calendar.current.component(.day, from: date))")
+                        .font(.system(size: 13, weight: isSelected || isToday ? .semibold : .regular))
+                        .foregroundStyle(
+                            isSelected ? .white
+                                : isToday ? Theme.Color.accent
+                                : Theme.Color.textPrimary
+                        )
+                }
+                .frame(width: 32, height: 32)
+
+                Circle()
+                    .fill(hasItems
+                          ? (isSelected ? Color.white.opacity(0.7) : Theme.Color.accent)
+                          : Color.clear)
+                    .frame(width: 4, height: 4)
+            }
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(date.formatted(.dateTime.weekday(.wide).month().day()))
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 

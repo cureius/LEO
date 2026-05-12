@@ -14,9 +14,37 @@ final class TodayViewModel {
     private(set) var isLoading = false
     private(set) var error: String? = nil
 
-    var selectedDate: Date = Calendar.current.startOfDay(for: .now) {
-        didSet { Task { await loadItems() } }
+    // Week strip & month grid data
+    var weekOffset: Int = 0 {
+        didSet {
+            guard weekOffset != oldValue else { return }
+            Task { await loadWeekCounts() }
+        }
     }
+    private(set) var weekItemCounts: [Date: Int] = [:]
+    private(set) var monthItemDates: Set<Date> = []
+
+    var selectedDate: Date = Calendar.current.startOfDay(for: .now) {
+        didSet {
+            syncWeekOffset()
+            Task { await loadItems() }
+        }
+    }
+
+    // MARK: - Computed helpers for the calendar strip
+
+    var weekDays: [Date] {
+        let cal = Calendar.current
+        let today = cal.startOfDay(for: .now)
+        let wd = cal.component(.weekday, from: today)
+        let monday = cal.date(byAdding: .day, value: -((wd + 5) % 7), to: today)!
+        let weekStart = cal.date(byAdding: .weekOfYear, value: weekOffset, to: monday)!
+        return (0..<7).map { cal.date(byAdding: .day, value: $0, to: weekStart)! }
+    }
+
+    var weekItemTotal: Int { weekItemCounts.values.reduce(0, +) }
+
+    var visibleMonthLabel: String { weekDays[3].formatted(.dateTime.month(.wide).year()) }
 
     // MARK: - Dependencies
     private let itemRepository: ItemRepository
@@ -64,10 +92,49 @@ final class TodayViewModel {
             completedTodayItems = all.filter { $0.isCompleted && !($0 is WorkoutItem) && !($0 is MealItem) }.sorted {
                 ($0.anchor.sortDate ?? .distantPast) < ($1.anchor.sortDate ?? .distantPast)
             }
+            await loadWeekCounts()
         } catch {
             self.error = error.localizedDescription
             logger.error("TodayViewModel load failed: \(error)")
         }
+    }
+
+    // MARK: - Week / month data loading
+
+    func loadWeekCounts() async {
+        let cal = Calendar.current
+        let days = weekDays
+        guard let first = days.first, let last = days.last else { return }
+        let interval = DateInterval(
+            start: cal.startOfDay(for: first),
+            end: cal.date(byAdding: .day, value: 1, to: cal.startOfDay(for: last))!
+        )
+        let items = (try? await itemRepository.fetch(predicate: .inDateInterval(interval))) ?? []
+        var counts: [Date: Int] = [:]
+        for item in items {
+            guard let d = item.anchor.sortDate else { continue }
+            counts[cal.startOfDay(for: d), default: 0] += 1
+        }
+        weekItemCounts = counts
+    }
+
+    func loadMonthDates(for month: Date) async {
+        let cal = Calendar.current
+        guard let start = cal.date(from: cal.dateComponents([.year, .month], from: month)),
+              let end = cal.date(byAdding: .month, value: 1, to: start) else { return }
+        let items = (try? await itemRepository.fetch(predicate: .inDateInterval(DateInterval(start: start, end: end)))) ?? []
+        monthItemDates = Set(items.compactMap { item -> Date? in
+            guard let d = item.anchor.sortDate else { return nil }
+            return cal.startOfDay(for: d)
+        })
+    }
+
+    private func syncWeekOffset() {
+        let cal = Calendar.current
+        let today = cal.startOfDay(for: .now)
+        let thisMonday = cal.date(byAdding: .day, value: -((cal.component(.weekday, from: today) + 5) % 7), to: today)!
+        let selMonday = cal.date(byAdding: .day, value: -((cal.component(.weekday, from: selectedDate) + 5) % 7), to: selectedDate)!
+        weekOffset = cal.dateComponents([.weekOfYear], from: thisMonday, to: selMonday).weekOfYear ?? 0
     }
 
     func completeItem(_ item: any Item) async {
