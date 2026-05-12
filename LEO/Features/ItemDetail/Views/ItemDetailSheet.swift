@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 @MainActor
 struct ItemDetailSheet: View {
@@ -34,6 +35,7 @@ private struct ItemDetailFormView: View {
     @State private var showDeleteConfirm = false
     @State private var showRecurrenceBuilder = false
     @State private var recurrenceBuilderVM: RecurrenceBuilderViewModel = RecurrenceBuilderViewModel()
+    @State private var notesEditorHeight: CGFloat = MarkdownTextEditor.minHeight
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -42,9 +44,16 @@ private struct ItemDetailFormView: View {
                 Section {
                     TextField("Title", text: $vm.title)
                         .font(Theme.Typography.headline)
-                    TextField("Note (optional)", text: $vm.notes)
-                        .font(Theme.Typography.body)
-                        .foregroundStyle(Theme.Color.textSecondary)
+                }
+
+                Section("Description") {
+                    MarkdownTextEditor(
+                        text: $vm.notes,
+                        placeholder: "Notes, links, or formatting…",
+                        dynamicHeight: $notesEditorHeight
+                    )
+                    .frame(height: notesEditorHeight)
+                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
                 }
 
                 Section("Time") {
@@ -227,6 +236,174 @@ private struct AnchorPicker: View {
         case .dueAt:     anchor = .dueAt(dueDate)
         case .timeBlock: anchor = .timeBlock(start: startDate, end: max(endDate, startDate.addingTimeInterval(900)))
         case .point:     anchor = .point(pointDate)
+        }
+    }
+}
+
+// MARK: - Markdown text editor
+
+/// Multiline UITextView-backed editor with a markdown formatting toolbar.
+/// Grows dynamically with content. Stores text as a plain markdown string.
+struct MarkdownTextEditor: UIViewRepresentable {
+    @Binding var text: String
+    var placeholder: String = "Add notes…"
+    @Binding var dynamicHeight: CGFloat
+
+    static let minHeight: CGFloat = 80
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(text: $text, height: $dynamicHeight,
+                    placeholder: placeholder, minHeight: Self.minHeight)
+    }
+
+    func makeUIView(context: Context) -> UITextView {
+        let tv = UITextView()
+        tv.delegate = context.coordinator
+        tv.isScrollEnabled = false
+        tv.font = .systemFont(ofSize: 15)
+        tv.backgroundColor = .clear
+        tv.textContainerInset = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)
+        tv.textContainer.lineFragmentPadding = 0
+        tv.inputAccessoryView = context.coordinator.makeToolbar()
+        context.coordinator.textView = tv
+
+        if text.isEmpty {
+            tv.text = placeholder
+            tv.textColor = .placeholderText
+        } else {
+            tv.text = text
+            tv.textColor = .label
+        }
+        return tv
+    }
+
+    func updateUIView(_ tv: UITextView, context: Context) {
+        // Sync text when changed externally (not by the user typing)
+        if tv.textColor != .placeholderText, tv.text != text {
+            tv.text = text
+        }
+        // Always schedule a height recalc after the current layout pass.
+        // This handles initial load with existing notes (makeUIView sets text
+        // before frame.width is known, so we must defer until layout is done).
+        DispatchQueue.main.async {
+            context.coordinator.recalcHeight(tv)
+        }
+    }
+
+    // MARK: - Coordinator
+
+    final class Coordinator: NSObject, UITextViewDelegate {
+        @Binding var text: String
+        @Binding var height: CGFloat
+        let placeholder: String
+        let minHeight: CGFloat
+        weak var textView: UITextView?
+
+        init(text: Binding<String>, height: Binding<CGFloat>,
+             placeholder: String, minHeight: CGFloat) {
+            _text = text
+            _height = height
+            self.placeholder = placeholder
+            self.minHeight = minHeight
+        }
+
+        func textViewDidBeginEditing(_ tv: UITextView) {
+            if tv.textColor == .placeholderText {
+                tv.text = nil
+                tv.textColor = .label
+            }
+        }
+
+        func textViewDidEndEditing(_ tv: UITextView) {
+            if tv.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                tv.text = placeholder
+                tv.textColor = .placeholderText
+                text = ""
+            }
+        }
+
+        func textViewDidChange(_ tv: UITextView) {
+            guard tv.textColor != .placeholderText else { return }
+            text = tv.text
+            recalcHeight(tv)
+        }
+
+        func recalcHeight(_ tv: UITextView) {
+            // Use actual width once laid out; fall back to screen-minus-padding estimate.
+            let w = tv.frame.width > 0 ? tv.frame.width : UIScreen.main.bounds.width - 64
+            let h = max(minHeight, ceil(tv.sizeThatFits(CGSize(width: w, height: .infinity)).height))
+            // Guard with a 1pt tolerance to avoid triggering redundant SwiftUI redraws.
+            guard abs(h - height) > 1 else { return }
+            height = h  // callers (textViewDidChange, updateUIView's async block) are on main
+        }
+
+        // MARK: Toolbar
+
+        func makeToolbar() -> UIToolbar {
+            let bar = UIToolbar()
+            bar.sizeToFit()
+
+            func icon(_ name: String, action: @escaping () -> Void) -> UIBarButtonItem {
+                UIBarButtonItem(image: UIImage(systemName: name),
+                                primaryAction: UIAction { [weak self] _ in
+                                    guard self != nil else { return }
+                                    action()
+                                })
+            }
+            func label(_ title: String, bold: Bool = false, action: @escaping () -> Void) -> UIBarButtonItem {
+                let btn = UIBarButtonItem(title: title,
+                                         primaryAction: UIAction { [weak self] _ in
+                                             guard self != nil else { return }
+                                             action()
+                                         })
+                btn.setTitleTextAttributes(
+                    [.font: bold ? UIFont.boldSystemFont(ofSize: 15) : UIFont.systemFont(ofSize: 15)],
+                    for: .normal)
+                return btn
+            }
+            let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            let done  = UIBarButtonItem(systemItem: .done,
+                                        primaryAction: UIAction { [weak self] _ in
+                                            self?.textView?.resignFirstResponder()
+                                        })
+            bar.items = [
+                label("B", bold: true) { [weak self] in self?.inline("**") },
+                label("I")             { [weak self] in self?.inline("_") },
+                icon("strikethrough")  { [weak self] in self?.inline("~~") },
+                icon("list.bullet")    { [weak self] in self?.linePrefix("- ") },
+                label("H", bold: true) { [weak self] in self?.linePrefix("## ") },
+                space, done
+            ]
+            return bar
+        }
+
+        // MARK: Formatting
+
+        private func inline(_ marker: String) {
+            guard let tv = textView, let sel = tv.selectedTextRange else { return }
+            let selected = tv.text(in: sel) ?? ""
+            if selected.isEmpty {
+                tv.replace(sel, withText: "\(marker)\(marker)")
+                if let mid = tv.position(from: sel.start, offset: marker.count) {
+                    tv.selectedTextRange = tv.textRange(from: mid, to: mid)
+                }
+            } else {
+                tv.replace(sel, withText: "\(marker)\(selected)\(marker)")
+            }
+            text = tv.text
+            recalcHeight(tv)
+        }
+
+        private func linePrefix(_ prefix: String) {
+            guard let tv = textView, let cursor = tv.selectedTextRange else { return }
+            let nsText = tv.text as NSString
+            let offset = tv.offset(from: tv.beginningOfDocument, to: cursor.start)
+            let lineRange = nsText.lineRange(for: NSRange(location: offset, length: 0))
+            guard let start = tv.position(from: tv.beginningOfDocument, offset: lineRange.location),
+                  let insert = tv.textRange(from: start, to: start) else { return }
+            tv.replace(insert, withText: prefix)
+            text = tv.text
+            recalcHeight(tv)
         }
     }
 }
