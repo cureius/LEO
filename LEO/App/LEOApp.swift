@@ -57,6 +57,12 @@ struct LEOApp: App {
 
                 scheduleAppRefresh()
 
+                // Restore saved calendar/reminder subscriptions so the first sync
+                // uses the user's persisted selection (not an empty set).
+                let savedCalIDs = Set(UserDefaults.standard.stringArray(forKey: "ek_subscribed_calendar_ids") ?? [])
+                let savedRemIDs = Set(UserDefaults.standard.stringArray(forKey: "ek_subscribed_reminder_list_ids") ?? [])
+                await env.eventKitBridge.subscribe(calendarIDs: savedCalIDs, reminderListIDs: savedRemIDs)
+
                 // Begin observing EKEventStoreChanged so external edits (Google/iCloud)
                 // flow into LEO without a manual sync.
                 await env.calendarSyncCoordinator.start()

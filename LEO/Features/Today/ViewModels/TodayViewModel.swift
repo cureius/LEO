@@ -61,7 +61,7 @@ final class TodayViewModel {
             } else {
                 untimedItems = []
             }
-            completedTodayItems = all.filter(\.isCompleted).sorted {
+            completedTodayItems = all.filter { $0.isCompleted && !($0 is WorkoutItem) && !($0 is MealItem) }.sorted {
                 ($0.anchor.sortDate ?? .distantPast) < ($1.anchor.sortDate ?? .distantPast)
             }
         } catch {
@@ -72,7 +72,7 @@ final class TodayViewModel {
 
     func completeItem(_ item: any Item) async {
         var updated = item
-        updated.completion = .completed(at: .now)
+        updated.completion = item.isCompleted ? .open : .completed(at: .now)
         updated.updatedAt = .now
         do {
             try await itemRepository.update(updated)

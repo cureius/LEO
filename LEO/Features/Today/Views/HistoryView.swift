@@ -24,6 +24,19 @@ struct HistoryView: View {
                             Section(header: DayHeader(date: section.day, count: section.items.count)) {
                                 ForEach(section.items, id: \.id) { item in
                                     HistoryRow(item: item)
+                                        .swipeActions(edge: .leading) {
+                                            Button {
+                                                Task { await reopen(item) }
+                                            } label: {
+                                                Label("Reopen", systemImage: "arrow.uturn.backward.circle")
+                                            }
+                                            .tint(Theme.Color.accent)
+                                        }
+                                        .contextMenu {
+                                            Button("Mark incomplete", systemImage: "arrow.uturn.backward.circle") {
+                                                Task { await reopen(item) }
+                                            }
+                                        }
                                 }
                             }
                         }
@@ -36,6 +49,16 @@ struct HistoryView: View {
             .refreshable { await load() }
         }
         .task { await load() }
+    }
+
+    // MARK: - Actions
+
+    private func reopen(_ item: any Item) async {
+        var updated = item
+        updated.completion = .open
+        updated.updatedAt = .now
+        try? await appEnv.itemRepository.update(updated)
+        await load()
     }
 
     // MARK: - Load

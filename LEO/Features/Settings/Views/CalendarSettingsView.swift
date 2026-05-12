@@ -205,12 +205,32 @@ struct CalendarSettingsView: View {
 
     private func syncNow() async {
         isSyncing = true
+        syncReport = "Pulling from server…"
         defer { isSyncing = false }
         await pushSubscription()
-        await appEnv.eventKitBridge.refreshSources()
+
+        // Kick off a CalDAV pull. EKEventStoreChanged fires when iOS finishes.
+        // We race that notification against a 6-second timeout so manual sync
+        // doesn't hang forever if the server has nothing new to report.
+        await withTaskGroup(of: Void.self) { group in
+            group.addTask { await self.appEnv.eventKitBridge.refreshSources() }
+            group.addTask {
+                // Wait for the signal that iOS has finished pulling from CalDAV
+                for await _ in NotificationCenter.default.notifications(named: .EKEventStoreChanged).prefix(1) {}
+            }
+            group.addTask { try? await Task.sleep(for: .seconds(6)) }
+            // Proceed as soon as ANY of the above finishes
+            _ = await group.next()
+            group.cancelAll()
+        }
+
         do {
             let report = try await appEnv.eventKitBridge.sync()
-            syncReport = "Imported \(report.imported), updated \(report.updated), removed \(report.removed)"
+            if report.imported == 0 && report.updated == 0 && report.removed == 0 {
+                syncReport = "Already up to date"
+            } else {
+                syncReport = "Imported \(report.imported), updated \(report.updated), removed \(report.removed)"
+            }
         } catch {
             syncReport = "Sync failed: \(error.localizedDescription)"
         }

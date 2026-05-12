@@ -28,7 +28,9 @@ struct ItemRow: View {
         }
         .buttonStyle(.plain)
         .contextMenu {
-            if !item.isCompleted {
+            if item.isCompleted {
+                Button("Mark incomplete", systemImage: "arrow.uturn.backward.circle") { onComplete(item) }
+            } else {
                 Button("Complete", systemImage: "checkmark.circle") { onComplete(item) }
             }
             Button("Edit", systemImage: "pencil") { onTap(item) }

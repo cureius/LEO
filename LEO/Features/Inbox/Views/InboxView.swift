@@ -101,7 +101,7 @@ struct InboxView: View {
 
     private func complete(_ item: any Item) async {
         var updated = item
-        updated.completion = .completed(at: .now)
+        updated.completion = item.isCompleted ? .open : .completed(at: .now)
         updated.updatedAt = .now
         try? await appEnv.itemRepository.update(updated)
         await loadItems()

@@ -109,6 +109,14 @@ actor EventKitBridge {
     // MARK: - Sync
 
     func sync() async throws -> EKSyncReport {
+        // Reset the store's in-memory cache so we read the latest data from
+        // the system calendar database. Required after EKEventStoreChanged fires;
+        // without this the store returns stale objects it has already loaded.
+        store.reset()
+        // Yield once so the actor's cooperative thread can process any pending
+        // EventKit internal callbacks before we issue queries against the store.
+        await Task.yield()
+
         var report = EKSyncReport()
 
         // Sync events
@@ -145,22 +153,29 @@ actor EventKitBridge {
         let existingItems = try await itemRepository.fetch()
         let existingExternalIDs = Set(existingItems.compactMap { ($0 as? EventItem)?.externalRef?.identifier })
 
+        let existingEventItems = existingItems.compactMap { $0 as? EventItem }
         for ekEvent in ekEvents {
             let eid = ekEvent.eventIdentifier ?? ""
             if existingExternalIDs.contains(eid) {
-                // Update if modified more recently
-                if let existing = existingItems.compactMap({ $0 as? EventItem }).first(where: { $0.externalRef?.identifier == eid }) {
-                    if let ekModified = ekEvent.lastModifiedDate, ekModified > existing.updatedAt {
-                        var updated = EventItem(from: ekEvent)
-                        updated = EventItem(
-                            id: existing.id, title: updated.title, notes: updated.notes,
-                            createdAt: existing.createdAt, updatedAt: ekModified,
-                            importance: existing.importance, anchor: updated.anchor,
-                            completion: existing.completion, tags: existing.tags,
-                            location: updated.location, attendees: updated.attendees,
-                            externalRef: updated.externalRef
-                        )
-                        try await itemRepository.update(updated)
+                // EventKit is source of truth — always overwrite scheduling data.
+                // Preserve LEO-only fields: id, createdAt, importance, completion, tags.
+                if let existing = existingEventItems.first(where: { $0.externalRef?.identifier == eid }) {
+                    let fromEK = EventItem(from: ekEvent)
+                    let updatedAt = ekEvent.lastModifiedDate ?? existing.updatedAt
+                    let merged = EventItem(
+                        id: existing.id, title: fromEK.title, notes: fromEK.notes,
+                        createdAt: existing.createdAt, updatedAt: updatedAt,
+                        importance: existing.importance, anchor: fromEK.anchor,
+                        completion: existing.completion, tags: existing.tags,
+                        location: fromEK.location, attendees: fromEK.attendees,
+                        externalRef: fromEK.externalRef
+                    )
+                    // Skip write if nothing changed (title + anchor are the likely diffs)
+                    if merged.title != existing.title
+                        || merged.anchor != existing.anchor
+                        || merged.location != existing.location
+                        || merged.notes != existing.notes {
+                        try await itemRepository.update(merged)
                         report.updated += 1
                     }
                 }

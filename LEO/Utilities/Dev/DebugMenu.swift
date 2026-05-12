@@ -170,6 +170,10 @@ struct DebugMenu: View {
             try ctx.delete(model: StoredAlarm.self)
             try ctx.delete(model: StoredHabitInstance.self)
             try ctx.delete(model: StoredHabit.self)
+            try ctx.delete(model: StoredWorkoutItem.self)
+            try ctx.delete(model: StoredMealItem.self)
+            try ctx.delete(model: StoredBodyProfile.self)
+            try ctx.delete(model: StoredMeasurement.self)
             try ctx.save()
             statusMessage = "All data wiped"
             NotificationCenter.default.post(name: .leoDataDidChange, object: nil)

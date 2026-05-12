@@ -71,6 +71,7 @@ struct TodayView: View {
                         untimedItems: vm.untimedItems,
                         completedItems: vm.completedTodayItems,
                         onComplete: { item in Task { await vm.completeItem(item) } },
+                        onUncomplete: { item in Task { await vm.completeItem(item) } },
                         onTap: { item in selectedItem = item },
                         onRefresh: { await vm.loadItems() }
                     )
@@ -326,6 +327,7 @@ private struct TodayScrollView: View {
     let untimedItems: [any Item]
     let completedItems: [any Item]
     let onComplete: (any Item) -> Void
+    let onUncomplete: (any Item) -> Void
     let onTap: (any Item) -> Void
     let onRefresh: () async -> Void
 
@@ -391,6 +393,7 @@ private struct TodayScrollView: View {
                         CompletedSection(
                             items: completedItems,
                             isExpanded: $showCompleted,
+                            onUncomplete: onUncomplete,
                             onTap: onTap
                         )
                     }
@@ -532,7 +535,9 @@ private struct UnscheduledRow: View {
 
     @ViewBuilder
     private var rowContextMenu: some View {
-        if !item.isCompleted {
+        if item.isCompleted {
+            Button("Mark incomplete", systemImage: "arrow.uturn.backward.circle") { onComplete(item) }
+        } else {
             Button("Complete", systemImage: "checkmark.circle") { onComplete(item) }
         }
         Button("Edit", systemImage: "pencil") { onTap(item) }
@@ -675,7 +680,9 @@ private struct ScheduleRow: View {
 
     @ViewBuilder
     private var rowContextMenu: some View {
-        if !item.isCompleted {
+        if item.isCompleted {
+            Button("Mark incomplete", systemImage: "arrow.uturn.backward.circle") { onComplete(item) }
+        } else {
             Button("Complete", systemImage: "checkmark.circle") { onComplete(item) }
         }
         Button("Edit", systemImage: "pencil") { onTap(item) }
@@ -735,6 +742,7 @@ private struct ImportanceBadge: View {
 private struct CompletedSection: View {
     let items: [any Item]
     @Binding var isExpanded: Bool
+    let onUncomplete: (any Item) -> Void
     let onTap: (any Item) -> Void
 
     var body: some View {
@@ -772,12 +780,17 @@ private struct CompletedSection: View {
             if isExpanded {
                 Divider().background(Theme.Color.divider)
                 ForEach(items, id: \.id) { item in
-                    Button { onTap(item) } label: {
-                        HStack(spacing: Theme.Spacing.md) {
+                    HStack(spacing: Theme.Spacing.md) {
+                        Button { onUncomplete(item) } label: {
                             Image(systemName: "checkmark.circle.fill")
                                 .font(.system(size: 20))
                                 .foregroundStyle(Theme.Color.success)
+                                .contentShape(Circle().scale(1.4))
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("Mark incomplete")
 
+                        Button { onTap(item) } label: {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(item.title)
                                     .font(.system(size: 15, weight: .medium))
@@ -790,14 +803,19 @@ private struct CompletedSection: View {
                                         .foregroundStyle(Theme.Color.textSecondary.opacity(0.7))
                                 }
                             }
-                            Spacer()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .contentShape(Rectangle())
                         }
-                        .padding(.horizontal, Theme.Spacing.lg)
-                        .padding(.vertical, 10)
-                        .contentShape(Rectangle())
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
+                    .padding(.horizontal, Theme.Spacing.lg)
+                    .padding(.vertical, 10)
                     .opacity(0.7)
+                    .contextMenu {
+                        Button("Mark incomplete", systemImage: "arrow.uturn.backward.circle") {
+                            onUncomplete(item)
+                        }
+                    }
                     if item.id != items.last?.id {
                         RowDivider()
                     }
