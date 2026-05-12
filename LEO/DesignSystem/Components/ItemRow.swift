@@ -94,7 +94,11 @@ struct ItemRow: View {
         case .dueAt(let d):
             parts.append("Due \(d.formatted(.relative(presentation: .named)))")
         case .timeBlock(let s, let e):
-            parts.append("\(s.formatted(.dateTime.hour().minute())) – \(e.formatted(.dateTime.hour().minute()))")
+            if item.anchor.isAllDayBlock {
+                parts.append("All day")
+            } else {
+                parts.append("\(s.formatted(.dateTime.hour().minute())) – \(e.formatted(.dateTime.hour().minute()))")
+            }
         case .point(let d):
             parts.append(d.formatted(.dateTime.hour().minute()))
         default: break

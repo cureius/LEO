@@ -203,6 +203,7 @@ private struct HistoryRow: View {
     private var timeString: String? {
         switch item.anchor {
         case .timeBlock(let s, let e):
+            if item.anchor.isAllDayBlock { return "All day" }
             return "\(s.formatted(.dateTime.hour().minute()))–\(e.formatted(.dateTime.hour().minute()))"
         case .point(let d):
             return d.formatted(.dateTime.hour().minute())

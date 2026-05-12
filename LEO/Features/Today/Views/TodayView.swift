@@ -10,6 +10,7 @@ struct TodayView: View {
     @State private var showHistory = false
     @State private var showFitness = false
     @State private var hasBodyProfile = false
+    @State private var showTimeline = false
 
     var body: some View {
         Group {
@@ -37,6 +38,7 @@ struct TodayView: View {
             VStack(spacing: 0) {
                 TodayHeader(
                     date: vm.selectedDate,
+                    showTimeline: $showTimeline,
                     onHistoryTap: { showHistory = true },
                     onFitnessTap: hasBodyProfile ? { showFitness = true } : nil
                 )
@@ -48,6 +50,15 @@ struct TodayView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .background(Theme.Color.background)
 
+                } else if showTimeline {
+                    DayTimelineView(
+                        selectedDate: vm.selectedDate,
+                        timedItems: vm.timedItems,
+                        onComplete: { item in Task { await vm.completeItem(item) } },
+                        onTap: { item in selectedItem = item },
+                        onRefresh: { await vm.loadItems() }
+                    )
+                    .transition(.opacity)
                 } else if vm.timedItems.isEmpty && vm.untimedItems.isEmpty && vm.completedTodayItems.isEmpty {
                     let isToday = Calendar.current.isDateInToday(vm.selectedDate)
                     ScrollView {
@@ -75,6 +86,7 @@ struct TodayView: View {
                         onTap: { item in selectedItem = item },
                         onRefresh: { await vm.loadItems() }
                     )
+                    .transition(.opacity)
                 }
             }
 
@@ -286,18 +298,20 @@ private struct DayButton: View {
 
 private struct TodayHeader: View {
     let date: Date
+    @Binding var showTimeline: Bool
     let onHistoryTap: () -> Void
     let onFitnessTap: (() -> Void)?
     private var isToday: Bool { Calendar.current.isDateInToday(date) }
 
-    init(date: Date, onHistoryTap: @escaping () -> Void, onFitnessTap: (() -> Void)? = nil) {
+    init(date: Date, showTimeline: Binding<Bool>, onHistoryTap: @escaping () -> Void, onFitnessTap: (() -> Void)? = nil) {
         self.date = date
+        self._showTimeline = showTimeline
         self.onHistoryTap = onHistoryTap
         self.onFitnessTap = onFitnessTap
     }
 
     var body: some View {
-        HStack(alignment: .center) {
+        HStack(alignment: .center, spacing: 6) {
             VStack(alignment: .leading, spacing: 1) {
                 Text(date, format: .dateTime.weekday(.wide))
                     .font(.system(size: 22, weight: .bold))
@@ -307,34 +321,49 @@ private struct TodayHeader: View {
                     .foregroundStyle(Theme.Color.textSecondary)
             }
             Spacer()
-            // Fitness pill (only when profile exists)
-            if isToday, let tap = onFitnessTap {
-                Button(action: tap) {
-                    HStack(spacing: 4) {
+
+            // Single icon cluster — fitness (optional) · list · timeline · history
+            HStack(spacing: 0) {
+                if isToday, let tap = onFitnessTap {
+                    Button(action: tap) {
                         Image(systemName: "figure.strengthtraining.traditional")
-                        Text("Fitness")
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundStyle(Theme.Color.accent)
+                            .frame(width: 32, height: 30)
                     }
-                    .font(.caption.bold())
-                    .foregroundStyle(Theme.Color.accent)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
-                    .background(Theme.Color.surface)
-                    .clipShape(Capsule())
+                    .accessibilityLabel("Fitness")
+
+                    Divider().frame(height: 16)
                 }
+
+                Button { withAnimation(.easeInOut(duration: 0.2)) { showTimeline = false } } label: {
+                    Image(systemName: "list.bullet")
+                        .font(.system(size: 13, weight: showTimeline ? .regular : .semibold))
+                        .foregroundStyle(showTimeline ? Theme.Color.textSecondary : Theme.Color.accent)
+                        .frame(width: 30, height: 30)
+                }
+                .accessibilityLabel("List view")
+
+                Button { withAnimation(.easeInOut(duration: 0.2)) { showTimeline = true } } label: {
+                    Image(systemName: "calendar.day.timeline.leading")
+                        .font(.system(size: 13, weight: showTimeline ? .semibold : .regular))
+                        .foregroundStyle(showTimeline ? Theme.Color.accent : Theme.Color.textSecondary)
+                        .frame(width: 30, height: 30)
+                }
+                .accessibilityLabel("Timeline view")
+
+                Divider().frame(height: 16)
+
+                Button(action: onHistoryTap) {
+                    Image(systemName: "clock.arrow.circlepath")
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundStyle(Theme.Color.textSecondary)
+                        .frame(width: 32, height: 30)
+                }
+                .accessibilityLabel("View history")
             }
-            // History button
-            Button(action: onHistoryTap) {
-                Image(systemName: "clock.arrow.circlepath")
-                    .font(.system(size: 18, weight: .medium))
-                    .foregroundStyle(Theme.Color.textSecondary)
-                    .frame(width: 36, height: 36)
-                    .background(Theme.Color.surface)
-                    .clipShape(Circle())
-            }
-            .accessibilityLabel("View history")
-            if isToday {
-                LEOChip(label: "Today", icon: "sun.max.fill", color: Theme.Color.accent)
-            }
+            .background(Theme.Color.surface)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
         }
         .padding(.horizontal, Theme.Spacing.lg)
         .padding(.vertical, Theme.Spacing.md)
@@ -363,13 +392,26 @@ private struct TodayScrollView: View {
     @State private var now: Date = .now
     private let minuteTimer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
 
-    // Sorted timed items + "now" marker injected between past & future
+    // All-day events (midnight-to-midnight blocks) shown in a separate strip
+    private var allDayItems: [any Item] {
+        timedItems.filter { $0.anchor.isAllDayBlock }
+                  .sorted { $0.title.localizedCompare($1.title) == .orderedAscending }
+    }
+
+    // Regular timed events shown in the timeline
+    private var scheduledItems: [any Item] {
+        timedItems.filter { !$0.anchor.isAllDayBlock }
+    }
+
+    // Sorted scheduled items + "now" marker injected between past & future
     private var scheduleEntries: [ScheduleEntry] {
-        let sorted = timedItems.sorted {
-            ($0.anchor.sortDate ?? .distantFuture) < ($1.anchor.sortDate ?? .distantFuture)
+        let sorted = scheduledItems.sorted { a, b in
+            let da = a.anchor.sortDate ?? .distantFuture
+            let db = b.anchor.sortDate ?? .distantFuture
+            if da != db { return da < db }
+            return a.anchor.sortPriority < b.anchor.sortPriority
         }
         var entries = sorted.map { ScheduleEntry.item($0) }
-        // Use `now` (state) so SwiftUI re-evaluates this when the timer fires
         let nowIdx = sorted.firstIndex(where: {
             ($0.anchor.sortDate ?? .distantFuture) > now
         }) ?? sorted.count
@@ -400,6 +442,14 @@ private struct TodayScrollView: View {
                     // ── Timed schedule ─────────────────────────────────
                     if !timedItems.isEmpty {
                         SectionHeader(title: "Schedule", count: timedItems.count)
+
+                        // All-day strip — shown above the hourly timeline
+                        if !allDayItems.isEmpty {
+                            AllDayStrip(items: allDayItems, onComplete: onComplete, onTap: onTap)
+                            if !scheduledItems.isEmpty {
+                                RowDivider(leadingPad: 0)
+                            }
+                        }
 
                         ForEach(scheduleEntries) { entry in
                             switch entry {
@@ -690,6 +740,7 @@ private struct ScheduleRow: View {
     }
 
     private var startTimeText: String {
+        if item.anchor.isAllDayBlock { return "" }
         guard let d = item.anchor.sortDate else { return "" }
         return d.formatted(.dateTime.hour().minute())
     }
@@ -857,6 +908,7 @@ private struct CompletedSection: View {
     private func completionTimeString(_ item: any Item) -> String? {
         switch item.anchor {
         case .timeBlock(let s, let e):
+            if item.anchor.isAllDayBlock { return "All day" }
             return "\(s.formatted(.dateTime.hour().minute()))–\(e.formatted(.dateTime.hour().minute()))"
         case .point(let d):
             return d.formatted(.dateTime.hour().minute())
@@ -867,6 +919,103 @@ private struct CompletedSection: View {
                 return "Done at \(completedAt.formatted(.dateTime.hour().minute()))"
             }
             return nil
+        }
+    }
+}
+
+// MARK: - All-day strip
+
+/// Compact strip shown above the hourly schedule for all-day events.
+/// Visually distinct from timed rows: no time column, accent-tinted background.
+private struct AllDayStrip: View {
+    let items: [any Item]
+    let onComplete: (any Item) -> Void
+    let onTap: (any Item) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // Section micro-label
+            HStack(spacing: 4) {
+                Image(systemName: "sun.max.fill")
+                    .font(.system(size: 9, weight: .bold))
+                    .foregroundStyle(Theme.Color.accent)
+                Text("ALL DAY")
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundStyle(Theme.Color.accent)
+                    .tracking(0.8)
+            }
+            .padding(.leading, Theme.Spacing.lg)
+            .padding(.top, 8)
+            .padding(.bottom, 2)
+
+            ForEach(items, id: \.id) { item in
+                AllDayRow(item: item, onComplete: onComplete, onTap: onTap)
+                if item.id != items.last?.id {
+                    Divider()
+                        .background(Theme.Color.accent.opacity(0.15))
+                        .padding(.leading, Theme.Spacing.lg)
+                }
+            }
+        }
+        .background(Theme.Color.accent.opacity(0.06))
+        .padding(.bottom, 4)
+    }
+}
+
+private struct AllDayRow: View {
+    let item: any Item
+    let onComplete: (any Item) -> Void
+    let onTap: (any Item) -> Void
+
+    var body: some View {
+        Button { onTap(item) } label: {
+            HStack(spacing: 10) {
+                // Completion circle
+                Button(action: { onComplete(item) }) {
+                    Image(systemName: item.isCompleted ? "checkmark.circle.fill" : "circle")
+                        .font(.system(size: 18))
+                        .foregroundStyle(
+                            item.isCompleted ? Theme.Color.success : Theme.Color.accent.opacity(0.5)
+                        )
+                        .contentShape(Circle().scale(1.3))
+                }
+                .buttonStyle(.plain)
+
+                // Title + optional location
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(item.title)
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundStyle(
+                            item.isCompleted ? Theme.Color.textSecondary : Theme.Color.textPrimary
+                        )
+                        .strikethrough(item.isCompleted, color: Theme.Color.textSecondary)
+                        .lineLimit(1)
+
+                    if let ev = item as? EventItem,
+                       let loc = ev.location, !loc.isEmpty {
+                        let shortLoc = loc.components(separatedBy: ",").first?
+                            .trimmingCharacters(in: .whitespaces) ?? loc
+                        Text(shortLoc)
+                            .font(.system(size: 11))
+                            .foregroundStyle(Theme.Color.textSecondary)
+                            .lineLimit(1)
+                    }
+                }
+
+                Spacer(minLength: 0)
+            }
+            .padding(.horizontal, Theme.Spacing.lg)
+            .padding(.vertical, 8)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .contextMenu {
+            if item.isCompleted {
+                Button("Mark incomplete", systemImage: "arrow.uturn.backward.circle") { onComplete(item) }
+            } else {
+                Button("Complete", systemImage: "checkmark.circle") { onComplete(item) }
+            }
+            Button("Edit", systemImage: "pencil") { onTap(item) }
         }
     }
 }
@@ -1026,6 +1175,259 @@ private struct IdentifiableItem: Identifiable {
     let item: any Item
     var id: UUID { item.id }
     init(_ item: any Item) { self.item = item }
+}
+
+// MARK: - Day timeline view (full 24-hour grid)
+
+private struct DayTimelineView: View {
+    let selectedDate: Date
+    let timedItems: [any Item]
+    let onComplete: (any Item) -> Void
+    let onTap: (any Item) -> Void
+    let onRefresh: () async -> Void
+
+    static let hourHeight: CGFloat = 64
+    static let timeColWidth: CGFloat = 52
+    static let eventLeadPad: CGFloat = 10
+
+    @State private var now: Date = .now
+    private let minuteTimer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+
+    private var allDayItems: [any Item] {
+        timedItems.filter { $0.anchor.isAllDayBlock }
+            .sorted { $0.title.localizedCompare($1.title) == .orderedAscending }
+    }
+    private var scheduledItems: [any Item] { timedItems.filter { !$0.anchor.isAllDayBlock } }
+    private var isToday: Bool { Calendar.current.isDateInToday(selectedDate) }
+
+    private var nowMinutes: CGFloat {
+        guard isToday else { return -1 }
+        let cal = Calendar.current
+        return CGFloat(cal.component(.hour, from: now) * 60 + cal.component(.minute, from: now))
+    }
+    private var nowY: CGFloat { nowMinutes / 60 * Self.hourHeight }
+
+    var body: some View {
+        ScrollViewReader { proxy in
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 0) {
+                    if !allDayItems.isEmpty {
+                        AllDayStrip(items: allDayItems, onComplete: onComplete, onTap: onTap)
+                        Divider().background(Theme.Color.divider)
+                    }
+
+                    // VStack gives each hour row a real layout position so
+                    // ScrollViewReader.scrollTo("tl-hour-N") works correctly.
+                    VStack(spacing: 0) {
+                        ForEach(0..<24, id: \.self) { hour in
+                            TimelineHourSlot(hour: hour)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: Self.hourHeight)
+                                .id("tl-hour-\(hour)")
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .overlay(alignment: .topLeading) {
+                        // GeometryReader inherits the VStack's size (full width ×
+                        // 24 * hourHeight), giving correct coordinates for event blocks.
+                        GeometryReader { geo in
+                            ZStack(alignment: .topLeading) {
+                                ForEach(scheduledItems, id: \.id) { item in
+                                    if let sm = startMinutes(item) {
+                                        let eX = Self.timeColWidth + Self.eventLeadPad
+                                        let eW = max(0, geo.size.width - eX - Theme.Spacing.md)
+                                        TimelineEventBlock(
+                                            item: item,
+                                            color: itemColor(item),
+                                            onComplete: onComplete,
+                                            onTap: onTap
+                                        )
+                                        .frame(width: eW, height: blockHeight(item))
+                                        .offset(x: eX, y: sm / 60 * Self.hourHeight)
+                                    }
+                                }
+
+                                if isToday && nowMinutes >= 0 {
+                                    TimelineNowLine(width: geo.size.width)
+                                        .offset(y: nowY)
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer().frame(height: 120)
+                }
+            }
+            .refreshable { await onRefresh() }
+            .onAppear {
+                let targetHour = isToday
+                    ? max(0, Calendar.current.component(.hour, from: .now) - 1)
+                    : 7
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                    withAnimation { proxy.scrollTo("tl-hour-\(targetHour)", anchor: .top) }
+                }
+            }
+            .onReceive(minuteTimer) { fired in now = fired }
+        }
+    }
+
+    private func startMinutes(_ item: any Item) -> CGFloat? {
+        let cal = Calendar.current
+        func mins(_ d: Date) -> CGFloat {
+            CGFloat(cal.component(.hour, from: d) * 60 + cal.component(.minute, from: d))
+        }
+        switch item.anchor {
+        case .timeBlock(let s, _): return mins(s)
+        case .point(let d):        return mins(d)
+        case .dueAt(let d):        return mins(d)
+        default:                   return nil
+        }
+    }
+
+    private func blockHeight(_ item: any Item) -> CGFloat {
+        if case .timeBlock(let s, let e) = item.anchor {
+            let mins = CGFloat(e.timeIntervalSince(s) / 60)
+            return max(44, mins / 60 * Self.hourHeight)
+        }
+        return 44
+    }
+
+    private func itemColor(_ item: any Item) -> Color {
+        switch item {
+        case is EventItem:         return Theme.Color.accent
+        case is ReminderItem:      return Theme.Color.success
+        case is AlarmItem:         return Theme.Color.danger
+        case is HabitInstanceItem: return Theme.Color.warning
+        default:                   return Theme.Color.textSecondary
+        }
+    }
+}
+
+// MARK: - Timeline hour slot
+
+private struct TimelineHourSlot: View {
+    let hour: Int
+
+    private var label: String {
+        switch hour {
+        case 0:  return "12 AM"
+        case 12: return "12 PM"
+        case 1..<12: return "\(hour) AM"
+        default: return "\(hour - 12) PM"
+        }
+    }
+
+    var body: some View {
+        HStack(spacing: 0) {
+            Text(label)
+                .font(.system(size: 10, weight: .medium, design: .rounded))
+                .foregroundStyle(Theme.Color.textSecondary.opacity(0.5))
+                .frame(width: DayTimelineView.timeColWidth, alignment: .trailing)
+                .padding(.trailing, 8)
+
+            Rectangle()
+                .fill(Theme.Color.divider)
+                .frame(height: 0.5)
+                .frame(maxWidth: .infinity)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+    }
+}
+
+// MARK: - Timeline event block
+
+private struct TimelineEventBlock: View {
+    let item: any Item
+    let color: Color
+    let onComplete: (any Item) -> Void
+    let onTap: (any Item) -> Void
+
+    var body: some View {
+        Button { onTap(item) } label: {
+            HStack(alignment: .top, spacing: 6) {
+                RoundedRectangle(cornerRadius: 1.5)
+                    .fill(color.opacity(item.isCompleted ? 0.4 : 1))
+                    .frame(width: 3)
+                    .padding(.vertical, 4)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(item.title)
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(item.isCompleted ? color.opacity(0.5) : color)
+                        .strikethrough(item.isCompleted, color: color.opacity(0.5))
+                        .lineLimit(2)
+
+                    if let t = timeLabel {
+                        Text(t)
+                            .font(.system(size: 10))
+                            .foregroundStyle(color.opacity(0.7))
+                    }
+                }
+
+                Spacer(minLength: 0)
+
+                Button { onComplete(item) } label: {
+                    Image(systemName: item.isCompleted ? "checkmark.circle.fill" : "circle")
+                        .font(.system(size: 14))
+                        .foregroundStyle(item.isCompleted ? color.opacity(0.6) : color.opacity(0.4))
+                        .contentShape(Circle().scale(1.5))
+                }
+                .buttonStyle(.plain)
+                .padding(.top, 4)
+                .padding(.trailing, 4)
+            }
+            .padding(.horizontal, 6)
+            .padding(.vertical, 4)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .background(color.opacity(item.isCompleted ? 0.05 : 0.1))
+            .clipShape(RoundedRectangle(cornerRadius: 6))
+            .overlay(RoundedRectangle(cornerRadius: 6).strokeBorder(color.opacity(0.25), lineWidth: 0.5))
+        }
+        .buttonStyle(.plain)
+        .contextMenu {
+            if item.isCompleted {
+                Button("Mark incomplete", systemImage: "arrow.uturn.backward.circle") { onComplete(item) }
+            } else {
+                Button("Complete", systemImage: "checkmark.circle") { onComplete(item) }
+            }
+            Button("Edit", systemImage: "pencil") { onTap(item) }
+        }
+    }
+
+    private var timeLabel: String? {
+        switch item.anchor {
+        case .timeBlock(let s, let e):
+            return "\(s.formatted(.dateTime.hour().minute()))–\(e.formatted(.dateTime.hour().minute()))"
+        case .point(let d):   return d.formatted(.dateTime.hour().minute())
+        case .dueAt(let d):   return "Due \(d.formatted(.dateTime.hour().minute()))"
+        default:              return nil
+        }
+    }
+}
+
+// MARK: - Timeline NOW line
+
+private struct TimelineNowLine: View {
+    let width: CGFloat
+
+    var body: some View {
+        HStack(spacing: 0) {
+            Text("NOW")
+                .font(.system(size: 8, weight: .bold))
+                .foregroundStyle(Theme.Color.danger)
+                .frame(width: DayTimelineView.timeColWidth - 2, alignment: .trailing)
+                .padding(.trailing, 4)
+
+            Circle()
+                .fill(Theme.Color.danger)
+                .frame(width: 7, height: 7)
+
+            Rectangle()
+                .fill(Theme.Color.danger.opacity(0.6))
+                .frame(height: 1.5)
+        }
+        .frame(width: width)
+    }
 }
 
 #Preview("Today — seeded") {

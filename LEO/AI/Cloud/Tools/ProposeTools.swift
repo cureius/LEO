@@ -73,8 +73,8 @@ struct ProposeAddTool: LEOTool {
                                 "type": .string("string"),
                                 "enum": .array([.string("task"), .string("event"), .string("reminder")])
                             ]),
-                            "start": .object(["type": .string("string"), "description": .string("ISO8601 datetime, e.g. 2026-05-10T09:00:00")]),
-                            "end":   .object(["type": .string("string"), "description": .string("ISO8601 datetime for block/event end")]),
+                            "start": .object(["type": .string("string"), "description": .string("ISO8601 datetime WITH timezone offset, e.g. 2026-05-10T09:00:00+05:30. Never omit the offset.")]),
+                            "end":   .object(["type": .string("string"), "description": .string("ISO8601 datetime WITH timezone offset for block/event end.")]),
                             "notes": .object(["type": .string("string")])
                         ]),
                         "required": .array([.string("title"), .string("type")])
@@ -129,8 +129,17 @@ struct ProposeCancelTool: LEOTool {
     )
 
     func run(_ input: Input, context: ToolContext) async throws -> Output {
-        let changes = input.ids.map { id in
-            DiffChange(itemID: id, kind: "delete", field: "", newValue: "")
+        var changes: [DiffChange] = []
+        for idStr in input.ids {
+            // Look up the item so we can show its real title in the review sheet.
+            let title: String
+            if let uuid = UUID(uuidString: idStr),
+               let item = (try? await context.itemRepository.fetch(predicate: .byID(uuid)))?.first {
+                title = item.title
+            } else {
+                title = "Unknown item"
+            }
+            changes.append(DiffChange(itemID: idStr, kind: "delete", field: "title", newValue: title))
         }
         return Output(diff: DiffPayload(changes: changes, rationale: input.rationale))
     }

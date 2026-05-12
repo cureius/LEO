@@ -79,8 +79,12 @@ final class TodayViewModel {
             let interval = dayInterval(for: selectedDate)
             let all = try await itemRepository.fetch(predicate: .inDateInterval(interval))
             let open = all.filter { !$0.isCompleted }
-            timedItems = open.filter { !$0.anchor.isUntimed }.sorted {
-                ($0.anchor.sortDate ?? .distantFuture) < ($1.anchor.sortDate ?? .distantFuture)
+            timedItems = open.filter { !$0.anchor.isUntimed }.sorted { a, b in
+                let da = a.anchor.sortDate ?? .distantFuture
+                let db = b.anchor.sortDate ?? .distantFuture
+                if da != db { return da < db }
+                // Tiebreaker: point-in-time items before time blocks at the same moment
+                return a.anchor.sortPriority < b.anchor.sortPriority
             }
             // Untimed tasks belong to today's backlog only
             if Calendar.current.isDateInToday(selectedDate) {

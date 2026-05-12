@@ -16,6 +16,36 @@ struct DiffReviewSheet: View {
         _accepted = State(initialValue: Set(diff.changes.map(\.itemID)))
     }
 
+    // MARK: - Apply button label and tint
+
+    private var acceptedChanges: [DiffChange] {
+        diff.changes.filter { accepted.contains($0.itemID) }
+    }
+
+    private var applyLabel: String {
+        let n = accepted.count
+        let adds    = acceptedChanges.filter { $0.kind == "add"    }.count
+        let deletes = acceptedChanges.filter { $0.kind == "delete" }.count
+        let updates = acceptedChanges.filter { $0.kind == "update" }.count
+        if deletes > 0 && adds == 0 && updates == 0 {
+            return "Remove \(deletes) item\(deletes == 1 ? "" : "s")"
+        }
+        if adds > 0 && deletes == 0 && updates == 0 {
+            return "Add \(adds) item\(adds == 1 ? "" : "s")"
+        }
+        if updates > 0 && adds == 0 && deletes == 0 {
+            return "Reschedule \(updates) item\(updates == 1 ? "" : "s")"
+        }
+        return "Apply \(n) change\(n == 1 ? "" : "s")"
+    }
+
+    private var applyTint: Color {
+        let deletes = acceptedChanges.filter { $0.kind == "delete" }.count
+        let adds    = acceptedChanges.filter { $0.kind == "add"    }.count
+        if deletes > 0 && adds == 0 { return Theme.Color.danger }
+        return Theme.Color.accent
+    }
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -53,13 +83,13 @@ struct DiffReviewSheet: View {
                 HStack(spacing: 12) {
                     Button("Cancel") { dismiss() }
                         .buttonStyle(.bordered)
-                    Button("Add \(accepted.count) item\(accepted.count == 1 ? "" : "s")") {
+                    Button(applyLabel) {
                         let acceptedChanges = diff.changes.filter { accepted.contains($0.itemID) }
                         onApply(acceptedChanges)
                         dismiss()
                     }
                     .buttonStyle(.borderedProminent)
-                    .tint(Theme.Color.accent)
+                    .tint(applyTint)
                     .disabled(accepted.isEmpty)
                 }
                 .padding()
@@ -115,24 +145,39 @@ private struct DiffChangeRow: View {
     // MARK: - Computed display properties
 
     private var title: String {
-        if change.kind == "add", let p = change.pendingItem { return p.title }
-        if change.kind == "delete" { return "Remove item" }
-        return change.newValue.isEmpty ? "Update \(change.field)" : change.newValue
+        switch change.kind {
+        case "add":    return change.pendingItem?.title ?? change.newValue
+        case "delete": return change.newValue.isEmpty ? "Unknown item" : change.newValue
+        default:       return change.newValue.isEmpty ? "Update \(change.field)" : change.newValue
+        }
     }
 
     private var subtitle: String? {
-        if change.kind == "add", let p = change.pendingItem {
+        switch change.kind {
+        case "add":
+            guard let p = change.pendingItem else { return nil }
             var parts: [String] = [p.type.capitalized]
             if let start = p.start {
-                let iso = ISO8601DateFormatter()
-                iso.formatOptions = [.withInternetDateTime, .withDashSeparatorInDate, .withColonSeparatorInTime]
-                if let date = iso.date(from: start) ?? ISO8601DateFormatter().date(from: start) {
-                    parts.append(date.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day().hour().minute()))
+                let formatOptions: [ISO8601DateFormatter.Options] = [
+                    [.withInternetDateTime, .withDashSeparatorInDate, .withColonSeparatorInTime],
+                    [.withFullDate, .withTime, .withDashSeparatorInDate, .withColonSeparatorInTime]
+                ]
+                for opts in formatOptions {
+                    let iso = ISO8601DateFormatter(); iso.formatOptions = opts
+                    if let date = iso.date(from: start) {
+                        parts.append(date.formatted(.dateTime.weekday(.abbreviated).month(.abbreviated).day().hour().minute()))
+                        break
+                    }
                 }
             }
             return parts.joined(separator: " · ")
+        case "delete":
+            return "Will be permanently deleted"
+        case "update":
+            return change.newValue.isEmpty ? nil : "New time: \(change.newValue)"
+        default:
+            return nil
         }
-        return change.newValue.isEmpty ? nil : change.newValue
     }
 
     private var changeIcon: String {

@@ -92,46 +92,103 @@ struct ChatSessionView: View {
     // MARK: - Apply confirmed diff changes to the repository
 
     private func applyChanges(_ changes: [DiffChange]) async {
-        let iso = ISO8601DateFormatter()
-        iso.formatOptions = [.withInternetDateTime, .withDashSeparatorInDate,
-                             .withColonSeparatorInTime, .withTimeZone]
-
-        for change in changes where change.kind == "add" {
-            guard let p = change.pendingItem else { continue }
-
-            let anchor: Anchor = {
-                if let s = p.start, let start = iso.date(from: s) ?? parseLocalISO(s) {
-                    if let e = p.end, let end = iso.date(from: e) ?? parseLocalISO(e) {
-                        return .timeBlock(start: start, end: end)
-                    }
-                    return .point(start)
-                }
-                return .untimed
-            }()
-
+        for change in changes {
             do {
-                switch p.type {
-                case "event":
-                    try await appEnv.itemRepository.add(EventItem(title: p.title, notes: p.notes, anchor: anchor))
-                case "workout":
-                    try await appEnv.itemRepository.add(WorkoutItem(title: p.title, notes: p.notes, anchor: anchor))
-                case "meal":
-                    let recipeID = UUID().uuidString // placeholder; real ID comes from plan proposals
-                    try await appEnv.itemRepository.add(MealItem(title: p.title, notes: p.notes, anchor: anchor, recipeID: recipeID))
-                default: // "task", "reminder", anything else
-                    try await appEnv.itemRepository.add(TaskItem(title: p.title, notes: p.notes, anchor: anchor))
+                switch change.kind {
+
+                case "add":
+                    guard let p = change.pendingItem else { continue }
+                    let anchor = buildAnchor(start: p.start, end: p.end)
+                    switch p.type {
+                    case "event":
+                        try await appEnv.itemRepository.add(EventItem(title: p.title, notes: p.notes, anchor: anchor))
+                    case "workout":
+                        try await appEnv.itemRepository.add(WorkoutItem(title: p.title, notes: p.notes, anchor: anchor))
+                    case "meal":
+                        try await appEnv.itemRepository.add(MealItem(title: p.title, notes: p.notes, anchor: anchor, recipeID: UUID().uuidString))
+                    default:
+                        try await appEnv.itemRepository.add(TaskItem(title: p.title, notes: p.notes, anchor: anchor))
+                    }
+                    logger.info("Added item '\(p.title)'")
+
+                case "delete":
+                    guard let uuid = UUID(uuidString: change.itemID) else {
+                        logger.warning("Delete: invalid UUID '\(change.itemID)'")
+                        continue
+                    }
+                    try await appEnv.itemRepository.delete(id: uuid)
+                    logger.info("Deleted item \(change.itemID)")
+
+                case "update" where change.field == "anchor":
+                    guard let uuid = UUID(uuidString: change.itemID) else { continue }
+                    let fetched = try await appEnv.itemRepository.fetch(predicate: .byID(uuid))
+                    guard var item = fetched.first else {
+                        logger.warning("Update: item \(change.itemID) not found")
+                        continue
+                    }
+                    item.anchor = parseAnchorString(change.newValue)
+                    item.updatedAt = .now
+                    try await appEnv.itemRepository.update(item)
+                    logger.info("Rescheduled item \(change.itemID)")
+
+                default:
+                    logger.warning("Unhandled change kind '\(change.kind)' for field '\(change.field)'")
                 }
             } catch {
-                logger.error("Failed to create item '\(p.title)': \(error)")
+                logger.error("applyChanges '\(change.kind)' \(change.itemID): \(error)")
             }
         }
     }
 
-    private func parseLocalISO(_ s: String) -> Date? {
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withFullDate, .withTime, .withDashSeparatorInDate, .withColonSeparatorInTime]
-        return f.date(from: s)
+    /// Build an Anchor from optional ISO8601 start/end strings.
+    private func buildAnchor(start: String?, end: String?) -> Anchor {
+        guard let s = start, let startDate = parseISO(s) else { return .untimed }
+        if let e = end, let endDate = parseISO(e) {
+            return .timeBlock(start: startDate, end: endDate)
+        }
+        return .point(startDate)
     }
+
+    /// Parse the compact anchor string produced by ProposeRescheduleTool.
+    /// Format: "timeBlock:<start>–<end>" or "point:<datetime>"
+    private func parseAnchorString(_ s: String) -> Anchor {
+        if s.hasPrefix("timeBlock:") {
+            let rest = String(s.dropFirst("timeBlock:".count))
+            // separator is en-dash (–, U+2013) from ProposeRescheduleTool
+            let parts = rest.components(separatedBy: "–")
+            if parts.count == 2,
+               let start = parseISO(parts[0]),
+               let end   = parseISO(parts[1]) {
+                return .timeBlock(start: start, end: end)
+            }
+        } else if s.hasPrefix("point:") {
+            let rest = String(s.dropFirst("point:".count))
+            if let date = parseISO(rest) { return .point(date) }
+        }
+        return .untimed
+    }
+
+    private func parseISO(_ s: String) -> Date? {
+        let trimmed = s.trimmingCharacters(in: .whitespaces)
+
+        // 1. String includes an explicit timezone offset (e.g. "+05:30" or "Z") — honour it exactly.
+        let withTZ = ISO8601DateFormatter()
+        withTZ.formatOptions = [.withInternetDateTime, .withDashSeparatorInDate,
+                                 .withColonSeparatorInTime, .withTimeZone]
+        if let date = withTZ.date(from: trimmed) { return date }
+
+        // 2. No timezone in the string (AI sent bare local time, e.g. "2026-05-12T09:00:00").
+        //    Treat it as the device's local timezone — NOT UTC, which is the formatter default.
+        let noTZ = ISO8601DateFormatter()
+        noTZ.formatOptions = [.withFullDate, .withTime,
+                               .withDashSeparatorInDate, .withColonSeparatorInTime]
+        noTZ.timeZone = .current   // ← critical: avoids the UTC-offset bug
+        if let date = noTZ.date(from: trimmed) { return date }
+
+        return nil
+    }
+
+    private func parseLocalISO(_ s: String) -> Date? { parseISO(s) }
 
     // MARK: - Message list
 

@@ -187,6 +187,11 @@ private struct AnchorPicker: View {
     @State private var endDate: Date = .now.addingTimeInterval(3600)
     @State private var pointDate: Date = .now
     @State private var dueDate: Date = .now.addingTimeInterval(86400)
+    @State private var allDayDate: Date = Calendar.current.startOfDay(for: .now)
+    @State private var allDayEndDate: Date = Calendar.current.startOfDay(for: .now)
+    @State private var isMultiDay: Bool = false
+    // Toggles All-day mode when "Time block" is selected
+    @State private var isAllDay: Bool = false
 
     enum AnchorMode: String, CaseIterable { case untimed, dueAt, timeBlock, point }
     @State private var mode: AnchorMode = .untimed
@@ -196,7 +201,7 @@ private struct AnchorPicker: View {
             Picker("Time type", selection: $mode) {
                 Text("Inbox").tag(AnchorMode.untimed)
                 Text("Due by").tag(AnchorMode.dueAt)
-                Text("Time block").tag(AnchorMode.timeBlock)
+                Text("Event").tag(AnchorMode.timeBlock)
                 Text("Reminder").tag(AnchorMode.point)
             }
             .pickerStyle(.segmented)
@@ -204,14 +209,32 @@ private struct AnchorPicker: View {
 
             switch mode {
             case .untimed: EmptyView()
+
             case .dueAt:
                 DatePicker("Due date", selection: $dueDate, displayedComponents: [.date, .hourAndMinute])
                     .onChange(of: dueDate) { _, v in anchor = .dueAt(v) }
+
             case .timeBlock:
-                DatePicker("Start", selection: $startDate, displayedComponents: [.date, .hourAndMinute])
-                    .onChange(of: startDate) { _, _ in applyMode() }
-                DatePicker("End", selection: $endDate, displayedComponents: [.date, .hourAndMinute])
-                    .onChange(of: endDate) { _, _ in applyMode() }
+                // All-day toggle — same as Apple Calendar
+                Toggle("All day", isOn: $isAllDay)
+                    .onChange(of: isAllDay) { _, _ in applyMode() }
+
+                if isAllDay {
+                    DatePicker("Date", selection: $allDayDate, displayedComponents: .date)
+                        .onChange(of: allDayDate) { _, _ in applyMode() }
+                    Toggle("Multi-day", isOn: $isMultiDay)
+                        .onChange(of: isMultiDay) { _, _ in applyMode() }
+                    if isMultiDay {
+                        DatePicker("End date", selection: $allDayEndDate, in: allDayDate..., displayedComponents: .date)
+                            .onChange(of: allDayEndDate) { _, _ in applyMode() }
+                    }
+                } else {
+                    DatePicker("Start", selection: $startDate, displayedComponents: [.date, .hourAndMinute])
+                        .onChange(of: startDate) { _, _ in applyMode() }
+                    DatePicker("End", selection: $endDate, in: startDate..., displayedComponents: [.date, .hourAndMinute])
+                        .onChange(of: endDate) { _, _ in applyMode() }
+                }
+
             case .point:
                 DatePicker("Time", selection: $pointDate, displayedComponents: [.date, .hourAndMinute])
                     .onChange(of: pointDate) { _, v in anchor = .point(v) }
@@ -222,20 +245,60 @@ private struct AnchorPicker: View {
 
     private func syncFromAnchor() {
         switch anchor {
-        case .untimed:          mode = .untimed
-        case .dueAt(let d):     mode = .dueAt;      dueDate = d
-        case .timeBlock(let s, let e): mode = .timeBlock; startDate = s; endDate = e
-        case .point(let d):     mode = .point;      pointDate = d
-        default:                mode = .untimed
+        case .untimed:
+            mode = .untimed
+        case .dueAt(let d):
+            mode = .dueAt; dueDate = d
+        case .timeBlock(let s, let e):
+            mode = .timeBlock
+            if anchor.isAllDayBlock {
+                isAllDay = true
+                allDayDate = s
+                let cal = Calendar.current
+                let endH = cal.component(.hour,   from: e)
+                let endM = cal.component(.minute, from: e)
+                // Determine the last calendar day of the event:
+                //   - midnight end (00:00) → last day is the day BEFORE end
+                //   - 23:59 end           → last day is the day CONTAINING end
+                let lastDay: Date = (endH == 0 && endM == 0)
+                    ? (cal.date(byAdding: .day, value: -1, to: e) ?? e)
+                    : cal.startOfDay(for: e)
+                if !cal.isDate(s, inSameDayAs: lastDay) {
+                    isMultiDay = true
+                    allDayEndDate = lastDay
+                } else {
+                    isMultiDay = false
+                    allDayEndDate = s
+                }
+            } else {
+                isAllDay = false
+                startDate = s; endDate = e
+            }
+        case .point(let d):
+            mode = .point; pointDate = d
+        default:
+            mode = .untimed
         }
     }
 
     private func applyMode() {
+        let cal = Calendar.current
         switch mode {
-        case .untimed:   anchor = .untimed
-        case .dueAt:     anchor = .dueAt(dueDate)
-        case .timeBlock: anchor = .timeBlock(start: startDate, end: max(endDate, startDate.addingTimeInterval(900)))
-        case .point:     anchor = .point(pointDate)
+        case .untimed:
+            anchor = .untimed
+        case .dueAt:
+            anchor = .dueAt(dueDate)
+        case .timeBlock:
+            if isAllDay {
+                let start = cal.startOfDay(for: allDayDate)
+                let endDay = isMultiDay ? allDayEndDate : allDayDate
+                let end = cal.date(byAdding: .day, value: 1, to: cal.startOfDay(for: endDay)) ?? start.addingTimeInterval(86400)
+                anchor = .timeBlock(start: start, end: end)
+            } else {
+                anchor = .timeBlock(start: startDate, end: max(endDate, startDate.addingTimeInterval(900)))
+            }
+        case .point:
+            anchor = .point(pointDate)
         }
     }
 }

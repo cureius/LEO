@@ -158,24 +158,70 @@ struct GetItemTool: LEOTool {
 struct ItemSummary: Encodable, Sendable {
     let id: String
     let title: String
-    let type: String
-    let anchor: String
+    let type: String       // "event" | "task" | "reminder" | "alarm" | "habit" | "workout" | "meal"
+    let schedule: String   // human-readable local time: "9:00 AM – 10:00 AM", "Due at 5:00 PM", "Untimed"
+    let anchor: String     // machine-readable ISO8601 with local timezone offset, for tool inputs
     let isCompleted: Bool
-    let importance: Int
+    let importance: String // "low" | "normal" | "high" | "urgent"
+    let notes: String?
+    let location: String?  // events only
 
     init(_ item: any Item) {
         self.id = item.id.uuidString
         self.title = item.title
-        self.type = String(describing: Swift.type(of: item))
         self.isCompleted = item.isCompleted
-        self.importance = item.importance.rawValue
+        self.notes = item.notes.flatMap { $0.isEmpty ? nil : $0 }
+        self.location = (item as? EventItem)?.location
+
+        switch item {
+        case is EventItem:         self.type = "event"
+        case is TaskItem:          self.type = "task"
+        case is ReminderItem:      self.type = "reminder"
+        case is AlarmItem:         self.type = "alarm"
+        case is HabitInstanceItem: self.type = "habit"
+        case is WorkoutItem:       self.type = "workout"
+        case is MealItem:          self.type = "meal"
+        default:                   self.type = "item"
+        }
+
+        switch item.importance {
+        case .low:    self.importance = "low"
+        case .normal: self.importance = "normal"
+        case .high:   self.importance = "high"
+        case .urgent: self.importance = "urgent"
+        }
+
+        // Human-readable time in the device's local timezone
+        let timeFmt = DateFormatter()
+        timeFmt.timeStyle = .short
+        timeFmt.dateStyle = .none
+        timeFmt.timeZone = .current
+
+        // ISO8601 with local timezone offset — used by propose_reschedule / propose_cancel
+        let isoFmt = ISO8601DateFormatter()
+        isoFmt.timeZone = .current
 
         switch item.anchor {
-        case .untimed:              self.anchor = "untimed"
-        case .dueAt(let d):         self.anchor = "due:\(ISO8601DateFormatter().string(from: d))"
-        case .timeBlock(let s, let e): self.anchor = "block:\(ISO8601DateFormatter().string(from: s))–\(ISO8601DateFormatter().string(from: e))"
-        case .point(let d):         self.anchor = "point:\(ISO8601DateFormatter().string(from: d))"
-        case .location:             self.anchor = "location"
+        case .untimed:
+            self.schedule = "Untimed"
+            self.anchor   = "untimed"
+        case .dueAt(let d):
+            self.schedule = "Due at \(timeFmt.string(from: d))"
+            self.anchor   = "due:\(isoFmt.string(from: d))"
+        case .timeBlock(let s, let e):
+            if item.anchor.isAllDayBlock {
+                self.schedule = "All day"
+                self.anchor   = "allday:\(isoFmt.string(from: s))"
+            } else {
+                self.schedule = "\(timeFmt.string(from: s)) – \(timeFmt.string(from: e))"
+                self.anchor   = "block:\(isoFmt.string(from: s))–\(isoFmt.string(from: e))"
+            }
+        case .point(let d):
+            self.schedule = "At \(timeFmt.string(from: d))"
+            self.anchor   = "point:\(isoFmt.string(from: d))"
+        case .location:
+            self.schedule = "Location-based"
+            self.anchor   = "location"
         }
     }
 }
