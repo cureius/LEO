@@ -54,7 +54,9 @@ struct TodayView: View {
                     DayTimelineView(
                         selectedDate: vm.selectedDate,
                         timedItems: vm.timedItems,
+                        completedItems: vm.completedTodayItems,
                         onComplete: { item in Task { await vm.completeItem(item) } },
+                        onUncomplete: { item in Task { await vm.completeItem(item) } },
                         onTap: { item in selectedItem = item },
                         onRefresh: { await vm.loadItems() }
                     )
@@ -1182,7 +1184,9 @@ private struct IdentifiableItem: Identifiable {
 private struct DayTimelineView: View {
     let selectedDate: Date
     let timedItems: [any Item]
+    let completedItems: [any Item]
     let onComplete: (any Item) -> Void
+    let onUncomplete: (any Item) -> Void
     let onTap: (any Item) -> Void
     let onRefresh: () async -> Void
 
@@ -1191,6 +1195,7 @@ private struct DayTimelineView: View {
     static let eventLeadPad: CGFloat = 10
 
     @State private var now: Date = .now
+    @State private var showCompleted = false
     private let minuteTimer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
 
     private var allDayItems: [any Item] {
@@ -1253,6 +1258,15 @@ private struct DayTimelineView: View {
                                 }
                             }
                         }
+                    }
+
+                    if !completedItems.isEmpty {
+                        CompletedSection(
+                            items: completedItems,
+                            isExpanded: $showCompleted,
+                            onUncomplete: onUncomplete,
+                            onTap: onTap
+                        )
                     }
 
                     Spacer().frame(height: 120)

@@ -217,19 +217,142 @@ actor EventKitBridge {
             }
         }
 
-        let existingItems = try await itemRepository.fetch()
-        let existingExternalIDs = Set(existingItems.compactMap { ($0 as? ReminderItem)?.externalRef?.identifier })
+        let window = DateInterval(
+            start: Date.now.addingTimeInterval(-importWindow),
+            end:   Date.now.addingTimeInterval(importWindow)
+        )
 
-        for ekReminder in ekReminders where !ekReminder.isCompleted {
-            let eid = ekReminder.calendarItemIdentifier
-            if !existingExternalIDs.contains(eid) {
+        let existingItems = try await itemRepository.fetch()
+        let existingReminders = existingItems.compactMap { $0 as? ReminderItem }
+        let existingExternalIDs = Set(existingReminders.compactMap { $0.externalRef?.identifier })
+
+        let incomplete = ekReminders.filter { !$0.isCompleted }
+        let activeBaseIDs = Set(incomplete.map { $0.calendarItemIdentifier })
+
+        // ── Import pass ───────────────────────────────────────────────────
+        for ekReminder in incomplete {
+            let baseID = ekReminder.calendarItemIdentifier
+            let rules  = ekReminder.recurrenceRules ?? []
+
+            if !rules.isEmpty, let rule = rules.first {
+                // Recurring reminder — expand into one item per occurrence in window.
+                // EKReminder only hands back one object for the whole series, so we
+                // generate the individual dates from the recurrence rule ourselves.
+                let occurrences = expandRecurringReminder(ekReminder, rule: rule, in: window)
+                for date in occurrences {
+                    let eid = "\(baseID)/\(occurrenceKey(for: date))"
+                    guard !existingExternalIDs.contains(eid) else { continue }
+                    var item = ReminderItem(from: ekReminder)
+                    item.anchor      = .point(date)
+                    item.externalRef = ExternalRef(source: .eventKit, identifier: eid)
+                    try await itemRepository.add(item)
+                    report.imported += 1
+                }
+            } else {
+                // Non-recurring — one item, deduplicated by EK identifier.
+                guard !existingExternalIDs.contains(baseID) else { continue }
                 let item = ReminderItem(from: ekReminder)
                 try await itemRepository.add(item)
                 report.imported += 1
             }
         }
 
+        // ── Deletion pass ─────────────────────────────────────────────────
+        // Remove LEO items whose underlying EK reminder was deleted or moved
+        // out of a subscribed list.
+        for item in existingReminders {
+            guard let ref = item.externalRef, ref.source == .eventKit else { continue }
+            // Occurrence IDs look like "baseID/yyyyMMddTHHmm"; plain IDs have no "/".
+            let baseID = String(ref.identifier.split(separator: "/", maxSplits: 1).first
+                                ?? Substring(ref.identifier))
+            guard !activeBaseIDs.contains(baseID) else { continue }
+            try await itemRepository.delete(id: item.id)
+            report.removed += 1
+        }
+
         return report
+    }
+
+    // Generates every occurrence date for a recurring EKReminder within `window`.
+    private func expandRecurringReminder(_ reminder: EKReminder,
+                                         rule: EKRecurrenceRule,
+                                         in window: DateInterval) -> [Date] {
+        let cal    = Calendar.current
+        let hour   = reminder.dueDateComponents?.hour   ?? 0
+        let minute = reminder.dueDateComponents?.minute ?? 0
+        var dates: [Date] = []
+
+        switch rule.frequency {
+
+        case .daily:
+            let step = max(1, rule.interval)
+            var day  = cal.startOfDay(for: window.start)
+            while day <= window.end {
+                if let date = cal.date(bySettingHour: hour, minute: minute, second: 0, of: day),
+                   window.contains(date) {
+                    dates.append(date)
+                }
+                day = cal.date(byAdding: .day, value: step, to: day)!
+            }
+
+        case .weekly:
+            // EKWeekday rawValue: 1=Sunday … 7=Saturday — same as Calendar.weekday.
+            let targetDays: Set<Int>
+            if let ekDays = rule.daysOfTheWeek, !ekDays.isEmpty {
+                targetDays = Set(ekDays.map { $0.dayOfTheWeek.rawValue })
+            } else if let wd = reminder.dueDateComponents?.weekday {
+                targetDays = [wd]
+            } else {
+                targetDays = []
+            }
+            let step = max(1, rule.interval)
+            // Phase weekly intervals against the reminder's known next-occurrence date.
+            let refWeekStart: Date = {
+                if let comps = reminder.dueDateComponents,
+                   let ref = cal.date(from: comps) { return mondayOf(ref, cal: cal) }
+                return mondayOf(window.start, cal: cal)
+            }()
+
+            var day = cal.startOfDay(for: window.start)
+            while day <= window.end {
+                let weekday = cal.component(.weekday, from: day)
+                if targetDays.contains(weekday) {
+                    let weeksDiff = cal.dateComponents(
+                        [.weekOfYear], from: refWeekStart, to: mondayOf(day, cal: cal)
+                    ).weekOfYear ?? 0
+                    if weeksDiff >= 0 && weeksDiff % step == 0 {
+                        if let date = cal.date(bySettingHour: hour, minute: minute, second: 0, of: day),
+                           window.contains(date) {
+                            dates.append(date)
+                        }
+                    }
+                }
+                day = cal.date(byAdding: .day, value: 1, to: day)!
+            }
+
+        default:
+            // Monthly / yearly — fall back to just the stored next-occurrence date.
+            if let comps = reminder.dueDateComponents,
+               let date  = cal.date(from: comps), window.contains(date) {
+                dates.append(date)
+            }
+        }
+
+        return dates
+    }
+
+    /// Returns the Monday that begins the ISO week containing `date`.
+    private func mondayOf(_ date: Date, cal: Calendar) -> Date {
+        let weekday = cal.component(.weekday, from: date)
+        let daysToMonday = (weekday + 5) % 7   // Sun→6, Mon→0, Tue→1, …
+        return cal.startOfDay(for: cal.date(byAdding: .day, value: -daysToMonday, to: date)!)
+    }
+
+    /// Stable key for a specific occurrence: "yyyyMMddTHHmm".
+    private func occurrenceKey(for date: Date) -> String {
+        let c = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
+        return String(format: "%04d%02d%02dT%02d%02d",
+                      c.year ?? 0, c.month ?? 0, c.day ?? 0, c.hour ?? 0, c.minute ?? 0)
     }
 }
 

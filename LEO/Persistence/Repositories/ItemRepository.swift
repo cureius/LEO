@@ -61,6 +61,19 @@ actor ItemRepository {
         postChange()
     }
 
+    /// Insert many items in a single SwiftData transaction and post one change notification.
+    func addBatch(_ items: [any Item]) async throws {
+        guard !items.isEmpty else { return }
+        let context = controller.newBackgroundContext()
+        for item in items {
+            try insertItem(item, context: context)
+        }
+        try context.save()
+        logger.info("Batch-added \(items.count) items")
+        await refreshWidgetSnapshot()
+        postChange()
+    }
+
     private nonisolated func postChange() {
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: .leoDataDidChange, object: nil)
