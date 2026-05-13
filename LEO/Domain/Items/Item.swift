@@ -17,11 +17,17 @@ public protocol Item: Identifiable, Hashable, Sendable {
     var anchor: Anchor { get set }
     var completion: Completion { get set }
     var tags: [Tag] { get set }
+    /// RFC 5545 RRULE string stored on every occurrence of a recurring item.
+    /// Nil for one-off items. Accessed via dynamic dispatch on `any Item`.
+    var rruleRaw: String? { get }
 }
 
 // MARK: - Shared helpers available on any Item
 
 extension Item {
+    /// Default: non-recurring types return nil without needing a stored property.
+    public var rruleRaw: String? { nil }
+
     var isCompleted: Bool { completion.isFinished }
 
     var isOverdue: Bool {

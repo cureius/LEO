@@ -16,6 +16,7 @@ public struct TaskItem: Item {
     /// The hard due date (distinct from anchor, which may be a scheduled work block before this).
     public var deadline: Date?
     public var estimatedDuration: Duration?
+    public var rruleRaw: String?
 
     public init(
         id: UUID = UUID(),
@@ -28,7 +29,8 @@ public struct TaskItem: Item {
         completion: Completion = .open,
         tags: [Tag] = [],
         deadline: Date? = nil,
-        estimatedDuration: Duration? = nil
+        estimatedDuration: Duration? = nil,
+        rruleRaw: String? = nil
     ) {
         self.id = id
         self.title = title
@@ -41,5 +43,6 @@ public struct TaskItem: Item {
         self.tags = tags
         self.deadline = deadline
         self.estimatedDuration = estimatedDuration
+        self.rruleRaw = rruleRaw
     }
 }

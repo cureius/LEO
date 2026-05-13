@@ -588,8 +588,8 @@ private struct UnscheduledRow: View {
                         .strikethrough(item.isCompleted, color: Theme.Color.textSecondary)
                         .lineLimit(2)
 
-                    if !item.tags.isEmpty {
-                        tagsLabel
+                    if !item.tags.isEmpty || item.rruleRaw != nil {
+                        subtitleLabel
                     }
                 }
 
@@ -604,8 +604,13 @@ private struct UnscheduledRow: View {
         .contextMenu { rowContextMenu }
     }
 
-    private var tagsLabel: some View {
-        Text(item.tags.map(\.name).joined(separator: " · "))
+    private var subtitleLabel: some View {
+        var parts: [String] = []
+        if let raw = item.rruleRaw, let rule = try? RRule.parse(raw) {
+            parts.append("↩ \(RecurrenceFormatter.summary(for: rule))")
+        }
+        parts += item.tags.map(\.name)
+        return Text(parts.joined(separator: " · "))
             .font(.system(size: 12))
             .foregroundStyle(Theme.Color.textSecondary)
             .lineLimit(1)
@@ -720,6 +725,11 @@ private struct ScheduleRow: View {
         case .point(let d):
             parts.append(d.formatted(.dateTime.hour().minute()))
         default: break
+        }
+
+        // Recurrence frequency
+        if let raw = item.rruleRaw, let rule = try? RRule.parse(raw) {
+            parts.append("↩ \(RecurrenceFormatter.summary(for: rule))")
         }
 
         // Location (first segment only — keeps it short)

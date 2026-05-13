@@ -100,7 +100,8 @@
       "Bash(magick /Users/raj/Downloads/Gemini_Generated_Image_9u5vos9u5vos9u5v.png -fuzz 6% -transparent white -background '#0E2535' -flatten /Users/raj/Raj/personal/IOS/LEO/LEO/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon.png)",
       "Bash(magick /Users/raj/Raj/personal/IOS/LEO/LEO/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon.png -crop 1x1+5+5 +repage txt:)",
       "Bash(magick /Users/raj/Raj/personal/IOS/LEO/LEO/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon.png -resize 180x180 /tmp/leo_60pt_final.png)",
-      "Bash(git mv *)"
+      "Bash(git mv *)",
+      "Bash(grep -E \"^.*error:.*$\")"
     ]
   }
 }

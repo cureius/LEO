@@ -64,6 +64,7 @@
 		583018DE3B726CEE879355C6 /* SettingsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FA5B4AFF834054CF306EDA /* SettingsRootView.swift */; };
 		5931D1AA73088DF28C81ECF2 /* ItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889794EB2C78D9A71D74EE49 /* ItemTests.swift */; };
 		5A16DBAFD9240067B35A8181 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CAB86FF90B3CF43D5111E3D /* WidgetKit.framework */; };
+		5AA899BACEC3D8728A59651A /* MarkdownTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E21BF6A2E0FFF5D9CA78D43 /* MarkdownTextEditor.swift */; };
 		5B3FF350C7A725F79CF1703D /* ChatHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B10F1FF7FA59BECC85DF854 /* ChatHomeView.swift */; };
 		5BCA4868411AA5FC8BC2A387 /* EventKitBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283FD1CE55A45448BCA0218F /* EventKitBridge.swift */; };
 		5C2AD65F2B338D19B3B4F829 /* TodayTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8071DDF7419990F8C22C6C /* TodayTabView.swift */; };
@@ -175,6 +176,7 @@
 		FD49D9CEDBFD7465DFD57ED3 /* ItemPredicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D45E3AC90F740DDB8D88FB /* ItemPredicate.swift */; };
 		FEB112500610021197AC178E /* BodyProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C6A5BB0802F0D2669C1FF0 /* BodyProfileRepository.swift */; };
 		FF8BC093D4E37DC6AEBAF70C /* WorkoutDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A302E4337FA9BC3AD40AA525 /* WorkoutDetailSheet.swift */; };
+		FF8CD8F2EB1497033F453199 /* SchemaV3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AFC4E5188AE84F6C366D47 /* SchemaV3.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -250,12 +252,14 @@
 		2DB2E1538FB8CAA814D11D74 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		2F9DC13418DC210C3B371410 /* SchemaV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaV1.swift; sourceTree = "<group>"; };
 		308021BC734D2C1D054ACF04 /* LocationReminderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationReminderManager.swift; sourceTree = "<group>"; };
+		32AFC4E5188AE84F6C366D47 /* SchemaV3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaV3.swift; sourceTree = "<group>"; };
 		33976C4782FAA15815A4C211 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		345761AFFCBA4899D1C3E2F9 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		355D1E79D9169A72FB8606F2 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		3704943A3EA9DF00AABACB29 /* StoredWorkoutItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredWorkoutItem.swift; sourceTree = "<group>"; };
 		3A8F3FAE4B82C5E4459F8CCA /* AIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIRouter.swift; sourceTree = "<group>"; };
 		3CAB86FF90B3CF43D5111E3D /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		3E21BF6A2E0FFF5D9CA78D43 /* MarkdownTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTextEditor.swift; sourceTree = "<group>"; };
 		3E3F196CC8514C468D8EA8F2 /* StoredRecurrenceRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredRecurrenceRule.swift; sourceTree = "<group>"; };
 		3EE1E20B2CB95C9744D43BC0 /* StoreClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreClient.swift; sourceTree = "<group>"; };
 		3FC7D73A213F9F0DECBF532B /* LocationTrigger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTrigger.swift; sourceTree = "<group>"; };
@@ -560,6 +564,7 @@
 				E2D8F4FACA95C9DEFB869472 /* LEOEmptyState.swift */,
 				41EB22DC22016F5BD68B326D /* LEOSkeleton.swift */,
 				49B748C21D917DB88313909F /* LEOTextField.swift */,
+				3E21BF6A2E0FFF5D9CA78D43 /* MarkdownTextEditor.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1142,6 +1147,7 @@
 			children = (
 				2F9DC13418DC210C3B371410 /* SchemaV1.swift */,
 				ED9A3945E100823F761B25A9 /* SchemaV2.swift */,
+				32AFC4E5188AE84F6C366D47 /* SchemaV3.swift */,
 			);
 			path = Schema;
 			sourceTree = "<group>";
@@ -1629,6 +1635,7 @@
 				CD40A4A694699646DDCBFD2B /* LEOTextField.swift in Sources */,
 				2CD250367C134C28AA8BFFA9 /* LocationReminderManager.swift in Sources */,
 				7A180FA396B89CB269F39F9D /* LocationTrigger.swift in Sources */,
+				5AA899BACEC3D8728A59651A /* MarkdownTextEditor.swift in Sources */,
 				4387AC50EEB6858FA3D9826A /* MealDetailSheet.swift in Sources */,
 				4E1D552315051ED8157563D9 /* MealItem.swift in Sources */,
 				E8739246136E78E99B2E3125 /* Measurement.swift in Sources */,
@@ -1664,6 +1671,7 @@
 				1A72AD8D68E313A7BE585B13 /* SchemaSync.swift in Sources */,
 				8CA0D5968FE46432024CF3B3 /* SchemaV1.swift in Sources */,
 				70EF6E3A2D7E78EBD8801937 /* SchemaV2.swift in Sources */,
+				FF8CD8F2EB1497033F453199 /* SchemaV3.swift in Sources */,
 				2D268335A587DF2E68116041 /* Seeder.swift in Sources */,
 				85D5C364705A0A7C4C4787A8 /* Series.swift in Sources */,
 				7670D1EC5CCAAB58197292FB /* SeriesRepository.swift in Sources */,

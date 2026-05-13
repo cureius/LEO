@@ -14,6 +14,7 @@ final class StoredReminder {
     var tags: [StoredTag]?
     var leadTime: Double?
     var externalRefData: Data?
+    var rruleRaw: String?
 
     init(
         id: UUID = UUID(),
@@ -26,7 +27,8 @@ final class StoredReminder {
         completionData: Data,
         tags: [StoredTag]? = nil,
         leadTime: Double? = nil,
-        externalRefData: Data? = nil
+        externalRefData: Data? = nil,
+        rruleRaw: String? = nil
     ) {
         self.id = id
         self.title = title
@@ -39,5 +41,6 @@ final class StoredReminder {
         self.tags = tags
         self.leadTime = leadTime
         self.externalRefData = externalRefData
+        self.rruleRaw = rruleRaw
     }
 }

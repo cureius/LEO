@@ -140,7 +140,8 @@ extension TaskItem {
             completion: try Completion.decoded(from: stored.completionData),
             tags: stored.tags?.map(Tag.from) ?? [],
             deadline: stored.deadline,
-            estimatedDuration: stored.estimatedDurationSeconds.map { .seconds($0) }
+            estimatedDuration: stored.estimatedDurationSeconds.map { .seconds($0) },
+            rruleRaw: stored.rruleRaw
         )
     }
 }
@@ -158,7 +159,8 @@ extension StoredTask {
             completionData: item.completion.encoded(),
             tags: tags,
             deadline: item.deadline,
-            estimatedDurationSeconds: item.estimatedDuration.map { Double($0.components.seconds) }
+            estimatedDurationSeconds: item.estimatedDuration.map { Double($0.components.seconds) },
+            rruleRaw: item.rruleRaw
         )
     }
 }
@@ -181,7 +183,8 @@ extension EventItem {
             tags: stored.tags?.map(Tag.from) ?? [],
             location: stored.location,
             attendees: attendees,
-            externalRef: externalRef
+            externalRef: externalRef,
+            rruleRaw: stored.rruleRaw
         )
     }
 }
@@ -202,7 +205,8 @@ extension StoredEvent {
             tags: tags,
             location: item.location,
             attendeesData: attendeesData,
-            externalRefData: externalRefData
+            externalRefData: externalRefData,
+            rruleRaw: item.rruleRaw
         )
     }
 }
@@ -223,7 +227,8 @@ extension ReminderItem {
             completion: try Completion.decoded(from: stored.completionData),
             tags: stored.tags?.map(Tag.from) ?? [],
             leadTime: stored.leadTime,
-            externalRef: externalRef
+            externalRef: externalRef,
+            rruleRaw: stored.rruleRaw
         )
     }
 }
@@ -237,7 +242,8 @@ extension StoredReminder {
             importanceRaw: item.importance.rawValue,
             anchorData: item.anchor.encoded(),
             completionData: item.completion.encoded(),
-            tags: tags, leadTime: item.leadTime, externalRefData: externalRefData
+            tags: tags, leadTime: item.leadTime, externalRefData: externalRefData,
+            rruleRaw: item.rruleRaw
         )
     }
 }
@@ -254,7 +260,8 @@ extension AlarmItem {
             completion: try Completion.decoded(from: stored.completionData),
             tags: stored.tags?.map(Tag.from) ?? [],
             soundProfile: AlarmSound(rawValue: stored.soundProfileRaw) ?? .default,
-            escalates: stored.escalates
+            escalates: stored.escalates,
+            rruleRaw: stored.rruleRaw
         )
     }
 }
@@ -269,7 +276,8 @@ extension StoredAlarm {
             completionData: item.completion.encoded(),
             tags: tags,
             soundProfileRaw: item.soundProfile.rawValue,
-            escalates: item.escalates
+            escalates: item.escalates,
+            rruleRaw: item.rruleRaw
         )
     }
 }

@@ -17,6 +17,7 @@ final class StoredEvent {
     var attendeesData: Data
     // ExternalRef stored as JSON
     var externalRefData: Data?
+    var rruleRaw: String?
 
     init(
         id: UUID = UUID(),
@@ -30,7 +31,8 @@ final class StoredEvent {
         tags: [StoredTag]? = nil,
         location: String? = nil,
         attendeesData: Data = "[]".data(using: .utf8)!,
-        externalRefData: Data? = nil
+        externalRefData: Data? = nil,
+        rruleRaw: String? = nil
     ) {
         self.id = id
         self.title = title
@@ -44,5 +46,6 @@ final class StoredEvent {
         self.location = location
         self.attendeesData = attendeesData
         self.externalRefData = externalRefData
+        self.rruleRaw = rruleRaw
     }
 }

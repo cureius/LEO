@@ -14,6 +14,7 @@ final class StoredTask {
     var tags: [StoredTag]?
     var deadline: Date?
     var estimatedDurationSeconds: Double? // Duration.components.seconds equivalent
+    var rruleRaw: String?
 
     init(
         id: UUID = UUID(),
@@ -26,7 +27,8 @@ final class StoredTask {
         completionData: Data,
         tags: [StoredTag]? = nil,
         deadline: Date? = nil,
-        estimatedDurationSeconds: Double? = nil
+        estimatedDurationSeconds: Double? = nil,
+        rruleRaw: String? = nil
     ) {
         self.id = id
         self.title = title
@@ -39,5 +41,6 @@ final class StoredTask {
         self.tags = tags
         self.deadline = deadline
         self.estimatedDurationSeconds = estimatedDurationSeconds
+        self.rruleRaw = rruleRaw
     }
 }

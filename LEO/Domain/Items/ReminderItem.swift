@@ -15,6 +15,7 @@ public struct ReminderItem: Item {
     /// How far before the anchor to fire the reminder (e.g., 600 = 10 min before).
     public var leadTime: TimeInterval?
     public var externalRef: ExternalRef?
+    public var rruleRaw: String?
 
     public init(
         id: UUID = UUID(),
@@ -27,7 +28,8 @@ public struct ReminderItem: Item {
         completion: Completion = .open,
         tags: [Tag] = [],
         leadTime: TimeInterval? = nil,
-        externalRef: ExternalRef? = nil
+        externalRef: ExternalRef? = nil,
+        rruleRaw: String? = nil
     ) {
         self.id = id
         self.title = title
@@ -40,5 +42,6 @@ public struct ReminderItem: Item {
         self.tags = tags
         self.leadTime = leadTime
         self.externalRef = externalRef
+        self.rruleRaw = rruleRaw
     }
 }

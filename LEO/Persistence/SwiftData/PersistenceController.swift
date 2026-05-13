@@ -6,16 +6,15 @@ private let logger = Logger(subsystem: "com.theblueman.leo", category: "persiste
 
 /// Central SwiftData container.
 ///
-/// Current schema: SchemaV2 (adds Gym Companion models).
-/// Migration plan: V1 → V2 via lightweight migration (new tables only).
+/// Current schema: SchemaV3 (adds rruleRaw to item types).
+/// Migration plan: V1 → V2 → V3 via lightweight migrations.
 /// CloudKit deferred to M3; all configs use `.cloudKitDatabase(.none)`.
 final class PersistenceController {
     let container: ModelContainer
 
     init(useInMemory: Bool = false) {
         logger.info("PersistenceController init (inMemory=\(useInMemory))")
-        // Always use V2 schema (the latest) when building the container.
-        let schema = Schema(SchemaV2.models)
+        let schema = Schema(SchemaV3.models)
 
         do {
             container = try Self.makeContainer(schema: schema, useInMemory: useInMemory)

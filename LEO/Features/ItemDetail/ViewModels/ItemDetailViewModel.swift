@@ -86,7 +86,6 @@ final class ItemDetailViewModel {
     }
 
     private func saveRecurring(parsed: RRule, anchorStart: Date) async throws {
-        // Expand occurrences for 1 year from the anchor start.
         let end = Calendar.current.date(byAdding: .year, value: 1, to: anchorStart)
                   ?? anchorStart.addingTimeInterval(365 * 86400)
         let window = DateInterval(start: anchorStart, end: end)
@@ -94,13 +93,13 @@ final class ItemDetailViewModel {
             rule: parsed, anchorStart: anchorStart, in: window
         )) ?? [anchorStart]
 
-        // If editing an existing item, remove just that one occurrence first.
         if let original = originalItem {
             try await repository.delete(id: original.id)
         }
 
+        let raw = parsed.rfc5545
         let items: [any Item] = dates.map { date in
-            buildOccurrence(anchor: occurrenceAnchor(for: date))
+            buildOccurrence(anchor: occurrenceAnchor(for: date), rruleRaw: raw)
         }
         try await repository.addBatch(items)
     }
@@ -117,8 +116,7 @@ final class ItemDetailViewModel {
         }
     }
 
-    /// Build a single occurrence item with a given anchor (always open, always new UUID).
-    private func buildOccurrence(anchor occAnchor: Anchor) -> any Item {
+    private func buildOccurrence(anchor occAnchor: Anchor, rruleRaw: String? = nil) -> any Item {
         let now = Date.now
         let cleanNotes: String? = notes.isEmpty ? nil : String(notes.prefix(280))
         let createdAt = originalItem?.createdAt ?? now
@@ -130,7 +128,8 @@ final class ItemDetailViewModel {
                 importance: importance, anchor: occAnchor,
                 completion: .open, tags: tags,
                 deadline: deadline,
-                estimatedDuration: estimatedDurationHours > 0 ? .seconds(estimatedDurationHours * 3600) : nil
+                estimatedDuration: estimatedDurationHours > 0 ? .seconds(estimatedDurationHours * 3600) : nil,
+                rruleRaw: rruleRaw
             )
         case .event:
             return EventItem(
@@ -139,7 +138,8 @@ final class ItemDetailViewModel {
                 importance: importance, anchor: occAnchor,
                 completion: .open, tags: tags,
                 location: location.isEmpty ? nil : location,
-                attendees: attendees
+                attendees: attendees,
+                rruleRaw: rruleRaw
             )
         case .reminder:
             return ReminderItem(
@@ -147,7 +147,8 @@ final class ItemDetailViewModel {
                 createdAt: createdAt, updatedAt: now,
                 importance: importance, anchor: occAnchor,
                 completion: .open, tags: tags,
-                leadTime: leadTimeMinutes > 0 ? TimeInterval(leadTimeMinutes * 60) : nil
+                leadTime: leadTimeMinutes > 0 ? TimeInterval(leadTimeMinutes * 60) : nil,
+                rruleRaw: rruleRaw
             )
         case .alarm:
             return AlarmItem(
@@ -155,7 +156,8 @@ final class ItemDetailViewModel {
                 createdAt: createdAt, updatedAt: now,
                 importance: importance, anchor: occAnchor,
                 completion: .open, tags: tags,
-                soundProfile: soundProfile, escalates: escalates
+                soundProfile: soundProfile, escalates: escalates,
+                rruleRaw: rruleRaw
             )
         }
     }
@@ -195,6 +197,10 @@ final class ItemDetailViewModel {
         } else if let a = item as? AlarmItem {
             soundProfile = a.soundProfile
             escalates = a.escalates
+        }
+        // Restore recurrence rule so the UI shows the correct frequency.
+        if let raw = item.rruleRaw {
+            recurrenceRule = RecurrenceRule(raw: raw)
         }
     }
 

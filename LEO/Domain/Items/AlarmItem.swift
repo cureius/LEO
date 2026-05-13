@@ -15,6 +15,7 @@ public struct AlarmItem: Item {
     public var soundProfile: AlarmSound
     /// If true, volume escalates from low to max over 30s.
     public var escalates: Bool
+    public var rruleRaw: String?
 
     public init(
         id: UUID = UUID(),
@@ -27,7 +28,8 @@ public struct AlarmItem: Item {
         completion: Completion = .open,
         tags: [Tag] = [],
         soundProfile: AlarmSound = .default,
-        escalates: Bool = true
+        escalates: Bool = true,
+        rruleRaw: String? = nil
     ) {
         self.id = id
         self.title = title
@@ -40,6 +42,7 @@ public struct AlarmItem: Item {
         self.tags = tags
         self.soundProfile = soundProfile
         self.escalates = escalates
+        self.rruleRaw = rruleRaw
     }
 }
 

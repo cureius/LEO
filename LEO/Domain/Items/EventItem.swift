@@ -18,6 +18,7 @@ public struct EventItem: Item {
     public var attendees: [String]
     /// External calendar/event reference for EventKit-sourced items.
     public var externalRef: ExternalRef?
+    public var rruleRaw: String?
 
     public init(
         id: UUID = UUID(),
@@ -31,7 +32,8 @@ public struct EventItem: Item {
         tags: [Tag] = [],
         location: String? = nil,
         attendees: [String] = [],
-        externalRef: ExternalRef? = nil
+        externalRef: ExternalRef? = nil,
+        rruleRaw: String? = nil
     ) {
         self.id = id
         self.title = title
@@ -45,6 +47,7 @@ public struct EventItem: Item {
         self.location = location
         self.attendees = attendees
         self.externalRef = externalRef
+        self.rruleRaw = rruleRaw
     }
 }
 

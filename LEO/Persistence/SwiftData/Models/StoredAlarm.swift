@@ -14,6 +14,7 @@ final class StoredAlarm {
     var tags: [StoredTag]?
     var soundProfileRaw: String // AlarmSound.rawValue
     var escalates: Bool
+    var rruleRaw: String?
 
     init(
         id: UUID = UUID(),
@@ -26,7 +27,8 @@ final class StoredAlarm {
         completionData: Data,
         tags: [StoredTag]? = nil,
         soundProfileRaw: String = "alarm_default",
-        escalates: Bool = true
+        escalates: Bool = true,
+        rruleRaw: String? = nil
     ) {
         self.id = id
         self.title = title
@@ -39,5 +41,6 @@ final class StoredAlarm {
         self.tags = tags
         self.soundProfileRaw = soundProfileRaw
         self.escalates = escalates
+        self.rruleRaw = rruleRaw
     }
 }
