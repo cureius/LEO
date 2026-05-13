@@ -11,7 +11,7 @@ private let logger = Logger(subsystem: "com.theblueman.leo", category: "alarm")
 ///
 /// iOS limitation: true alarm-override-silent requires critical alert entitlement from Apple.
 /// Without it, this falls back to the loudest available standard notification.
-actor AlarmEngine {
+actor AlarmEngine: AlarmEngineProtocol {
 
     private var audioPlayer: AVAudioPlayer?
     private var escalationTimer: Timer?
@@ -49,14 +49,14 @@ actor AlarmEngine {
     func disarm(id: UUID) async {
         armedAlarms.remove(id)
         await notificationManager.cancel(identifiers: ["alarm.\(id).fire"])
-        stopAudio()
+        await stopAudio()
         logger.info("Disarmed alarm \(id)")
     }
 
     // MARK: - Audio layer (foreground)
 
     /// Call when the alarm fires and the app is foregrounded (or via Live Activity interaction).
-    func startAudioPlayback(sound: AlarmSound, escalates: Bool) {
+    func startAudioPlayback(sound: AlarmSound, escalates: Bool) async {
         guard sound != .hapticOnly else { return }
 
         do {
@@ -80,7 +80,7 @@ actor AlarmEngine {
         logger.info("Alarm audio started: \(sound.rawValue) escalates=\(escalates)")
     }
 
-    func stopAudio() {
+    func stopAudio() async {
         escalationTimer?.invalidate()
         escalationTimer = nil
         audioPlayer?.stop()

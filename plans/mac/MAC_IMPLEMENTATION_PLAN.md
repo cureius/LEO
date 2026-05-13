@@ -82,16 +82,16 @@ See [`MAC_AGENTS.md`](MAC_AGENTS.md). Re-read every session.
 
 ## Status tracker (the live state)
 
-**Current milestone:** MM0 — Foundation
+**Current milestone:** MM1 — Data Sync
 **Currently-in-progress task:** none
-**Last completed task:** none
-**Next eligible task:** `MM0-T01`
+**Last completed task:** `MM0-T08`
+**Next eligible task:** `MM1-T01`
 
 ### Milestone progress
 
 | Milestone | File | Status | Tasks done / total | Notes |
 |---|---|---|---|---|
-| MM0 — Foundation | [`MM0-foundation.md`](MM0-foundation.md) | TODO | 0 / 8 | macOS target, entitlements, protocol extraction, empty Mac app |
+| MM0 — Foundation | [`MM0-foundation.md`](MM0-foundation.md) | Done | 8 / 8 | macOS target, entitlements, protocol extraction, empty Mac app |
 | MM1 — Data Sync | [`MM1-data-sync.md`](MM1-data-sync.md) | TODO | 0 / 5 | Enable CloudKit, verify iPhone↔Mac, migrate existing users |
 | MM2 — Mac Shell | [`MM2-shell.md`](MM2-shell.md) | TODO | 0 / 7 | NavigationSplitView, sidebar, menu bar, Settings scene |
 | MM3 — Today, Inbox, Detail | [`MM3-today-inbox.md`](MM3-today-inbox.md) | TODO | 0 / 7 | TodayView, InboxView, HabitsView, item-detail inspector, history, drag-reschedule, multi-select |

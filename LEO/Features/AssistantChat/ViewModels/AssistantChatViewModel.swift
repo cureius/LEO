@@ -128,7 +128,11 @@ final class AssistantChatViewModel {
         messages.append(displayMsg)
 
         if let jpeg = imageData {
+            #if os(iOS)
             let extracted = await VisionOCRService.shared.recognizeText(from: jpeg)
+            #else
+            let extracted: String? = nil
+            #endif
 
             if let text = extracted {
                 // ✅ OCR succeeded — only the extracted text goes to Claude (no image tokens)

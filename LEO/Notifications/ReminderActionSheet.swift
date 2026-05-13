@@ -14,7 +14,7 @@ struct ReminderActionSheet: View {
         VStack(spacing: 0) {
             // Drag handle
             Capsule()
-                .fill(Color(.tertiaryLabel))
+                .fill(Color.secondary.opacity(0.4))
                 .frame(width: 40, height: 4)
                 .padding(.top, 10)
                 .padding(.bottom, 6)
@@ -111,9 +111,11 @@ struct ReminderActionSheet: View {
 
             Spacer(minLength: 0)
         }
-        .background(Color(.systemBackground))
+        .background(Theme.Color.background)
+        #if os(iOS)
         .presentationDetents([.medium])
         .presentationDragIndicator(.hidden)
+        #endif
     }
 
     @ViewBuilder

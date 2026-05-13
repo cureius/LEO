@@ -51,7 +51,11 @@ struct ProGateModifier: ViewModifier {
                     ProGateOverlay(feature: feature) { showPaywall = true }
                 }
             }
+            #if os(iOS)
             .sheet(isPresented: $showPaywall) { PaywallView() }
+            #else
+            .sheet(isPresented: $showPaywall) { Text("Upgrade to LEO Pro — MM8").padding(40) }
+            #endif
             .task {
                 entitlement = await StoreClient.shared.currentEntitlement
             }

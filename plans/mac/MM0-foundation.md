@@ -10,19 +10,19 @@
 - All previously-iOS-only services are now behind protocols, with iOS impls intact.
 
 ## Summary checklist
-- [ ] MM0-T01 — Add `LEO-Mac` target to `project.yml`
-- [ ] MM0-T02 — Create macOS entitlements + Info.plist
-- [ ] MM0-T03 — Scaffold `PlatformIOS/` and `PlatformMac/` folders; move iOS-only files
-- [ ] MM0-T04 — Extract service protocols (`AlarmEngineProtocol`, `LocationReminderProviding`, `MenuBarStatusProviding`)
-- [ ] MM0-T05 — Make `AppEnvironment` compile on both platforms
-- [ ] MM0-T06 — Add `LEOMacApp.swift` with empty `MacShellView`
-- [ ] MM0-T07 — Verify dual-platform builds and iCloud sign-in
+- [x] MM0-T01 — Add `LEO-Mac` target to `project.yml`
+- [x] MM0-T02 — Create macOS entitlements + Info.plist
+- [x] MM0-T03 — Scaffold `PlatformIOS/` and `PlatformMac/` folders; move iOS-only files
+- [x] MM0-T04 — Extract service protocols (`AlarmEngineProtocol`, `LocationReminderProviding`, `MenuBarStatusProviding`)
+- [x] MM0-T05 — Make `AppEnvironment` compile on both platforms
+- [x] MM0-T06 — Add `LEOMacApp.swift` with empty `MacShellView`
+- [x] MM0-T07 — Verify dual-platform builds and iCloud sign-in
 - [ ] MM0-T08 — Update `MAC_IMPLEMENTATION_PLAN.md` tracker and commit
 
 ---
 
 ### MM0-T01 — Add `LEO-Mac` target to `project.yml`
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** —
 - **Estimated effort:** M
 

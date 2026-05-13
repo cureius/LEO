@@ -19,12 +19,15 @@ final class AppEnvironment {
     let calendarSyncCoordinator: CalendarSyncCoordinator
     let claudeClient: ClaudeClient
     let weeklyReviewGenerator: WeeklyReviewGenerator
-    let alarmEngine: AlarmEngine
-    let alarmActivityManager: AlarmActivityManager
+    let alarmEngine: any AlarmEngineProtocol
+    let menuBarStatus: any MenuBarStatusProviding
     // Strong reference so delegate isn't deallocated
     let notificationDelegate: NotificationDelegate
     // M8: Gym Companion
     let bodyProfileRepository: BodyProfileRepository
+    #if os(iOS)
+    let alarmActivityManager: AlarmActivityManager
+    #endif
 
     init(useInMemory: Bool = false) {
         let controller = PersistenceController(useInMemory: useInMemory)
@@ -49,8 +52,15 @@ final class AppEnvironment {
             habitRepository: habitRepository,
             claudeClient: claude
         )
+
+        #if os(iOS)
         self.alarmEngine = AlarmEngine(notificationManager: nm)
         self.alarmActivityManager = AlarmActivityManager()
+        self.menuBarStatus = MenuBarStatusProvidingIOS()
+        #else
+        self.alarmEngine = AlarmEngineMacStub()
+        self.menuBarStatus = MenuBarStatusProvidingMacStub()
+        #endif
 
         let delegate = NotificationDelegate(itemRepository: itemRepository, notificationManager: nm)
         self.notificationDelegate = delegate

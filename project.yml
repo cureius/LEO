@@ -3,6 +3,7 @@ options:
   bundleIdPrefix: com.leo
   deploymentTarget:
     iOS: "17.0"
+    macOS: "14.0"
   xcodeVersion: "15.4"
   groupSortPosition: top
   generateEmptyDirectories: true
@@ -23,6 +24,22 @@ schemes:
     test:
       config: Debug
       targets: [LEOTests, LEOUITests]
+    profile:
+      config: Release
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+
+  LEO-Mac:
+    build:
+      targets:
+        LEO-Mac: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets: [LEOMacTests]
     profile:
       config: Release
     analyze:
@@ -54,6 +71,11 @@ targets:
       - path: LEO
         excludes:
           - "**/.gitkeep"
+          - "App/Mac/**"
+          - "PlatformMac/**"
+          - "Resources/LEO-mac.entitlements"
+          - "Resources/LEO-mac-debug.entitlements"
+          - "Resources/Info-mac.plist"
     resources:
       - LEO/Resources
     settings:
@@ -110,6 +132,65 @@ targets:
         NSSpeechRecognitionUsageDescription: "LEO uses speech recognition to convert your voice to captured items."
         NSUserTrackingUsageDescription: "LEO does not track you. This entry is required by iOS."
 
+  LEO-Mac:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: LEO
+        excludes:
+          - "**/.gitkeep"
+          - "PlatformIOS/**"
+          - "App/LEOApp.swift"
+          - "App/AppTabView.swift"
+          - "App/RootView.swift"
+          - "Alarms/**"
+          - "Notifications/LocationReminderManager.swift"
+          - "Integrations/LiveActivities/**"
+          - "Integrations/Focus/**"
+          - "Features/**/Views/**"
+          - "Utilities/Dev/DebugMenu.swift"
+          - "Utilities/Dev/DatabaseBrowserView.swift"
+          - "Utilities/ShakeDetector.swift"
+          - "AI/Vision/VisionOCRService.swift"
+          - "Resources/LEO.entitlements"
+          - "Resources/LEO-debug.entitlements"
+          - "Resources/Info.plist"
+    resources:
+      - LEO/Resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.theblueman.leo
+        PRODUCT_NAME: LEO
+        INFOPLIST_FILE: LEO/Resources/Info-mac.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        DEVELOPMENT_TEAM: ZT397U24CA
+        CODE_SIGN_STYLE: Automatic
+        SWIFT_STRICT_CONCURRENCY: targeted
+        ENABLE_HARDENED_RUNTIME: YES
+        SWIFT_VERSION: "5.10"
+      configs:
+        Debug:
+          DEBUG_INFORMATION_FORMAT: dwarf
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+          CODE_SIGN_ENTITLEMENTS: LEO/Resources/LEO-mac-debug.entitlements
+        Release:
+          DEBUG_INFORMATION_FORMAT: "dwarf-with-dsym"
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: ""
+          CODE_SIGN_ENTITLEMENTS: LEO/Resources/LEO-mac.entitlements
+    info:
+      path: LEO/Resources/Info-mac.plist
+      properties:
+        CFBundleName: LEO
+        CFBundleDisplayName: LEO
+        CFBundleShortVersionString: "$(MARKETING_VERSION)"
+        CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        LSMinimumSystemVersion: "14.0"
+        LSApplicationCategoryType: "public.app-category.productivity"
+        NSPrincipalClass: NSApplication
+
   LEOWidgets:
     type: app-extension
     platform: iOS
@@ -162,3 +243,18 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.theblueman.leo.uitests
         TEST_TARGET_NAME: LEO
+
+  LEOMacTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: LEOMacTests
+        excludes:
+          - "**/.gitkeep"
+    dependencies:
+      - target: LEO-Mac
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.theblueman.leo.mactests
+        SWIFT_STRICT_CONCURRENCY: targeted
