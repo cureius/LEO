@@ -24,14 +24,14 @@ struct FitnessHomeView: View {
             .navigationTitle("Fitness")
             .navigationBarTitleDisplayMode(.large)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .leoTopBarLeading) {
                     Button {
                         showGeneratePlan = true
                     } label: {
                         Label("New plan", systemImage: "sparkles")
                     }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .leoTopBarTrailing) {
                     Button {
                         showAddMeasurement = true
                     } label: {

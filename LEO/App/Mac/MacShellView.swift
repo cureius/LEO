@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MacShellView: View {
     @Environment(MacNavigationModel.self) private var nav
+    @Environment(AppEnvironment.self) private var appEnv
     @SceneStorage("leo.sidebar.section") private var sectionRaw: String = SidebarSection.today.rawValue
     @AppStorage("leo.inspector.visible") private var inspectorVisible: Bool = true
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
@@ -17,6 +18,28 @@ struct MacShellView: View {
             MacInspector()
         }
         .navigationSplitViewStyle(.balanced)
+        .toolbar {
+            ToolbarItem(placement: .leoTopBarLeading) {
+                MacQuickAddView()
+                    .frame(minWidth: 260, idealWidth: 360)
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .leoCompleteSelectedItem)) { _ in
+            guard let id = nav.selectedItemID else { return }
+            Task {
+                guard var items = try? await appEnv.itemRepository.fetch(predicate: .byID(id)),
+                      var item = items.first else { return }
+                item.completion = .completed(at: .now)
+                try? await appEnv.itemRepository.update(item)
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .leoDeleteSelectedItem)) { _ in
+            guard let id = nav.selectedItemID else { return }
+            Task {
+                try? await appEnv.itemRepository.delete(id: id)
+                nav.selectedItemID = nil
+            }
+        }
         .onAppear {
             if let restored = SidebarSection(rawValue: sectionRaw) {
                 nav.selection = restored

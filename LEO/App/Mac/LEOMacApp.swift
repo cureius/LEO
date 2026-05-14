@@ -7,6 +7,8 @@ private let logger = Logger(subsystem: "com.theblueman.leo.mac", category: "app"
 @main
 struct LEOMacApp: App {
     @State private var appEnvironment: AppEnvironment? = nil
+    @State private var hotkeyManager = GlobalHotkeyManager()
+    @State private var captureWindowController = FloatingCaptureWindowController()
 
     var body: some Scene {
         WindowGroup("LEO") {
@@ -19,34 +21,7 @@ struct LEOMacApp: App {
                     loadingView
                 }
             }
-            .task {
-                guard appEnvironment == nil else { return }
-                logger.info("Mac AppEnvironment init start")
-                let env = await Task.detached(priority: .userInitiated) {
-                    AppEnvironment()
-                }.value
-                appEnvironment = env
-                logger.info("Mac AppEnvironment init complete")
-
-                _ = await env.notificationManager.requestAuthorization()
-
-                if let items = try? await env.itemRepository.fetch() {
-                    await env.notificationManager.sync(for: items)
-                }
-
-                let savedCalIDs = Set(UserDefaults.standard.stringArray(forKey: "ek_subscribed_calendar_ids") ?? [])
-                let savedRemIDs = Set(UserDefaults.standard.stringArray(forKey: "ek_subscribed_reminder_list_ids") ?? [])
-                await env.eventKitBridge.subscribe(calendarIDs: savedCalIDs, reminderListIDs: savedRemIDs)
-                await env.calendarSyncCoordinator.start()
-                await env.calendarSyncCoordinator.syncOnForeground()
-
-                for await _ in NotificationCenter.default.notifications(named: .leoDataDidChange) {
-                    await MainActor.run {}
-                    guard let currentItems = try? await env.itemRepository.fetch() else { continue }
-                    logger.info("leoDataDidChange → re-syncing \(currentItems.count) items")
-                    await env.notificationManager.sync(for: currentItems)
-                }
-            }
+            .task { await bootApp() }
         }
         .defaultSize(width: 1200, height: 800)
         .windowStyle(.titleBar)
@@ -54,8 +29,81 @@ struct LEOMacApp: App {
         .commands {
             MacCommands()
         }
+
+        // MenuBar status + capture
+        MenuBarExtra {
+            if let env = appEnvironment {
+                MenuBarCaptureView()
+                    .environment(env)
+            } else {
+                ProgressView().padding()
+            }
+        } label: {
+            Image(systemName: "sun.max")
+        }
+        .menuBarExtraStyle(.window)
+
         Settings {
-            MacSettingsPlaceholder()
+            if let env = appEnvironment {
+                MacSettingsScene()
+                    .environment(env)
+            } else {
+                ProgressView().padding(40)
+            }
+        }
+    }
+
+    // MARK: - Boot
+
+    private func bootApp() async {
+        guard appEnvironment == nil else { return }
+        logger.info("Mac AppEnvironment init start")
+        let env = await Task.detached(priority: .userInitiated) {
+            AppEnvironment()
+        }.value
+        appEnvironment = env
+        logger.info("Mac AppEnvironment init complete")
+
+        _ = await env.notificationManager.requestAuthorization()
+
+        if let items = try? await env.itemRepository.fetch() {
+            await env.notificationManager.sync(for: items)
+        }
+
+        let savedCalIDs = Set(UserDefaults.standard.stringArray(forKey: "ek_subscribed_calendar_ids") ?? [])
+        let savedRemIDs = Set(UserDefaults.standard.stringArray(forKey: "ek_subscribed_reminder_list_ids") ?? [])
+        await env.eventKitBridge.subscribe(calendarIDs: savedCalIDs, reminderListIDs: savedRemIDs)
+        await env.calendarSyncCoordinator.start()
+        await env.calendarSyncCoordinator.syncOnForeground()
+
+        // Background sync using NSBackgroundActivityScheduler (macOS equivalent of BGAppRefreshTask)
+        let activity = NSBackgroundActivityScheduler(identifier: "com.theblueman.leo.refresh")
+        activity.interval = 30 * 60
+        activity.repeats = true
+        activity.qualityOfService = .utility
+        activity.schedule { completion in
+            Task { @MainActor in
+                await env.calendarSyncCoordinator.syncForBackgroundTask()
+                if let items = try? await env.itemRepository.fetch() {
+                    await env.notificationManager.sync(for: items)
+                }
+                completion(.finished)
+            }
+        }
+
+        // Global hotkey (requires Accessibility permission)
+        await MainActor.run {
+            hotkeyManager.start { [captureWindowController] in
+                captureWindowController.toggle(with: env)
+            }
+        }
+
+        // Re-sync notifications on data changes
+        for await _ in NotificationCenter.default.notifications(named: .leoDataDidChange) {
+            await MainActor.run {}
+            guard let items = try? await env.itemRepository.fetch() else { continue }
+            logger.info("leoDataDidChange → re-syncing \(items.count) items")
+            await env.notificationManager.sync(for: items)
         }
     }
 
@@ -73,28 +121,56 @@ struct LEOMacApp: App {
     }
 }
 
-// MARK: - Settings placeholder (full impl in MM8)
+// MARK: - Floating capture window
 
-private struct MacSettingsPlaceholder: View {
-    var body: some View {
-        TabView {
-            Text("General — MM8-T04")
-                .tabItem { Label("General", systemImage: "gearshape") }
-            Text("Calendar — MM8-T05")
-                .tabItem { Label("Calendar", systemImage: "calendar") }
-            Text("AI — MM8-T05")
-                .tabItem { Label("AI", systemImage: "sparkles") }
-            Text("Fitness — MM8-T05")
-                .tabItem { Label("Fitness", systemImage: "figure.run") }
-            Text("Keyboard — MM8-T06")
-                .tabItem { Label("Keyboard", systemImage: "keyboard") }
+@MainActor
+final class FloatingCaptureWindowController {
+    private var window: NSWindow?
+
+    func toggle(with appEnv: AppEnvironment) {
+        if window?.isVisible == true {
+            window?.close()
+            window = nil
+            return
         }
-        .frame(minWidth: 600, minHeight: 480)
-        .padding()
+        let content = FloatingCaptureContent()
+            .environment(appEnv)
+        let host = NSHostingController(rootView: content)
+        let w = NSPanel(contentViewController: host)
+        w.styleMask = [.borderless, .nonactivatingPanel]
+        w.level = .floating
+        w.backgroundColor = .clear
+        w.isOpaque = false
+        w.hasShadow = true
+        w.center()
+        w.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
+        window = w
     }
 }
 
-// MARK: - Commands placeholder (full impl in MM2-T03)
+private struct FloatingCaptureContent: View {
+    @Environment(AppEnvironment.self) private var appEnv
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        VStack(spacing: 0) {
+            MacQuickAddView(onCommit: {
+                NSApp.windows.first { $0.level == .floating }?.close()
+            })
+            .padding(12)
+        }
+        .background(.ultraThinMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .shadow(radius: 20)
+        .frame(width: 600)
+        .onExitCommand {
+            NSApp.windows.first { $0.level == .floating }?.close()
+        }
+    }
+}
+
+// MARK: - Commands (full implementation)
 
 struct MacCommands: Commands {
     var body: some Commands {
@@ -103,7 +179,14 @@ struct MacCommands: Commands {
                 NotificationCenter.default.post(name: .leoOpenQuickAdd, object: nil)
             }
             .keyboardShortcut("n", modifiers: .command)
+            Menu("New…") {
+                Button("Task")     { NotificationCenter.default.post(name: .leoOpenQuickAdd, object: "task") }
+                Button("Event")    { NotificationCenter.default.post(name: .leoOpenQuickAdd, object: "event") }
+                Button("Reminder") { NotificationCenter.default.post(name: .leoOpenQuickAdd, object: "reminder") }
+                Button("Alarm")    { NotificationCenter.default.post(name: .leoOpenQuickAdd, object: "alarm") }
+            }
         }
+
         CommandGroup(after: .sidebar) {
             Button("Today")    { postSection(.today)   }.keyboardShortcut("1", modifiers: .command)
             Button("Inbox")    { postSection(.inbox)   }.keyboardShortcut("2", modifiers: .command)
@@ -116,6 +199,26 @@ struct MacCommands: Commands {
             }
             .keyboardShortcut("i", modifiers: [.control, .option, .command])
         }
+
+        CommandMenu("Item") {
+            Button("Complete") {
+                NotificationCenter.default.post(name: .leoCompleteSelectedItem, object: nil)
+            }
+            .keyboardShortcut(".", modifiers: .command)
+
+            Button("Reschedule…") {
+                NotificationCenter.default.post(name: .leoRescheduleSelectedItem, object: nil)
+            }
+            .keyboardShortcut("r", modifiers: [.command, .shift])
+
+            Divider()
+
+            Button("Delete") {
+                NotificationCenter.default.post(name: .leoDeleteSelectedItem, object: nil)
+            }
+            .keyboardShortcut(.delete, modifiers: .command)
+        }
+
         #if DEBUG
         CommandGroup(after: .windowList) {
             Button("Debug Menu") {

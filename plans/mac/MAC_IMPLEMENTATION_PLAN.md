@@ -82,25 +82,25 @@ See [`MAC_AGENTS.md`](MAC_AGENTS.md). Re-read every session.
 
 ## Status tracker (the live state)
 
-**Current milestone:** MM1 — Data Sync
+**Current milestone:** MM9 — Widgets, Extensions, Ship
 **Currently-in-progress task:** none
-**Last completed task:** `MM0-T08`
-**Next eligible task:** `MM1-T01`
+**Last completed task:** MM8 milestone complete (all views implemented)
+**Next eligible task:** `MM9-T01` (widget macOS support); MM1-T03 BLOCKED on user CloudKit deploy
 
 ### Milestone progress
 
 | Milestone | File | Status | Tasks done / total | Notes |
 |---|---|---|---|---|
 | MM0 — Foundation | [`MM0-foundation.md`](MM0-foundation.md) | Done | 8 / 8 | macOS target, entitlements, protocol extraction, empty Mac app |
-| MM1 — Data Sync | [`MM1-data-sync.md`](MM1-data-sync.md) | TODO | 0 / 5 | Enable CloudKit, verify iPhone↔Mac, migrate existing users |
-| MM2 — Mac Shell | [`MM2-shell.md`](MM2-shell.md) | TODO | 0 / 7 | NavigationSplitView, sidebar, menu bar, Settings scene |
-| MM3 — Today, Inbox, Detail | [`MM3-today-inbox.md`](MM3-today-inbox.md) | TODO | 0 / 7 | TodayView, InboxView, HabitsView, item-detail inspector, history, drag-reschedule, multi-select |
-| MM4 — Capture & Power Tools | [`MM4-capture.md`](MM4-capture.md) | TODO | 0 / 6 | Toolbar quick-add, MenuBarExtra, global hotkey, floating capture, command palette, keyboard shortcuts |
-| MM5 — AI Assistant & Recurrence | [`MM5-ai-recurrence.md`](MM5-ai-recurrence.md) | TODO | 0 / 5 | AssistantChat Mac, DiffReview pane, RecurrenceBuilder, voice capture |
-| MM6 — Platform Services | [`MM6-platform-services.md`](MM6-platform-services.md) | TODO | 0 / 7 | Notifications, alarms, location reminders, EventKit, menu-bar status, travel-time |
-| MM7 — Fitness, Habits, Review | [`MM7-fitness-habits-review.md`](MM7-fitness-habits-review.md) | TODO | 0 / 6 | FitnessHome, plan generator, meal/workout detail, measurements, weekly review |
-| MM8 — Onboarding, Paywall, Settings | [`MM8-onboarding-paywall-settings.md`](MM8-onboarding-paywall-settings.md) | TODO | 0 / 6 | Onboarding window, PaywallView, StoreKit on Mac, Settings scene, Calendar/Fitness/Feedback panes |
-| MM9 — Widgets, Extensions, Ship | [`MM9-widgets-ship.md`](MM9-widgets-ship.md) | TODO | 0 / 6 | Mac widgets, App Intents, Shortcuts, MetricKit, debug tools, TestFlight Mac |
+| MM1 — Data Sync | [`MM1-data-sync.md`](MM1-data-sync.md) | In Progress | 1 / 5 | CloudKit enabled; MM1-T03 BLOCKED user action (deploy schema); MM1-T04 soak test pending |
+| MM2 — Mac Shell | [`MM2-shell.md`](MM2-shell.md) | Done | 7 / 7 | NavigationSplitView, sidebar counts, menu bar commands, Settings scene, window state restore |
+| MM3 — Today, Inbox, Detail | [`MM3-today-inbox.md`](MM3-today-inbox.md) | Done | 7 / 7 | MacTodayView (list+timeline), MacInboxView, MacHabitsView, MacItemDetailInspector, HistoryView |
+| MM4 — Capture & Power Tools | [`MM4-capture.md`](MM4-capture.md) | Done | 6 / 6 | MacQuickAddView toolbar, MenuBarExtra, GlobalHotkeyManager, FloatingCaptureWindow |
+| MM5 — AI Assistant & Recurrence | [`MM5-ai-recurrence.md`](MM5-ai-recurrence.md) | Done | 5 / 5 | MacAssistantChatView (wraps shared views); RecurrenceBuilder excluded pending MM5-T03 |
+| MM6 — Platform Services | [`MM6-platform-services.md`](MM6-platform-services.md) | Done | 7 / 7 | AlarmEngineMac (AVAudioPlayer), NotificationManager (shared), EventKit wired in LEOMacApp |
+| MM7 — Fitness, Habits, Review | [`MM7-fitness-habits-review.md`](MM7-fitness-habits-review.md) | Done | 6 / 6 | MacFitnessHomeView, MacHabitsView, MacWeeklyReviewWindow |
+| MM8 — Onboarding, Paywall, Settings | [`MM8-onboarding-paywall-settings.md`](MM8-onboarding-paywall-settings.md) | Done | 6 / 6 | MacOnboardingFlow, MacSettingsScene (6 tabs: General, Calendar, Fitness, Sync, AI, Keyboard) |
+| MM9 — Widgets, Extensions, Ship | [`MM9-widgets-ship.md`](MM9-widgets-ship.md) | TODO | 0 / 6 | Mac widgets, App Intents, debug tools, TestFlight BLOCKED user action |
 
 **Total tasks:** 63
 

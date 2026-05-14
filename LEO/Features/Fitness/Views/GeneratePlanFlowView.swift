@@ -25,7 +25,7 @@ struct GeneratePlanFlowView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     if step != .activated {
-                        ToolbarItem(placement: .topBarLeading) {
+                        ToolbarItem(placement: .leoTopBarLeading) {
                             Button("Cancel") { dismiss() }
                         }
                     }

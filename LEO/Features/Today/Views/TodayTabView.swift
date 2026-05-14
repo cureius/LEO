@@ -12,7 +12,9 @@ struct TodayTabView: View {
                 TodayView()
                     .id(refreshToken)
                     .navigationTitle("")
+                    #if os(iOS)
                     .navigationBarHidden(true)
+                    #endif
 
                 QuickAddBar(repository: appEnv.itemRepository) {
                     refreshToken = UUID()

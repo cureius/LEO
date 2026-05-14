@@ -68,6 +68,7 @@ struct InboxView: View {
                         .padding(Theme.Spacing.lg)
                 }
             }
+            #if os(iOS)
             .sheet(isPresented: $showAddTask) {
                 ItemDetailSheet(item: nil, onSave: { _ in
                     showAddTask = false
@@ -85,6 +86,7 @@ struct InboxView: View {
                     })
                 }
             }
+            #endif
             .sheet(isPresented: $showScheduleSheet) {
                 if let item = itemToSchedule {
                     ScheduleDateSheet(itemTitle: item.title) { date in
@@ -104,7 +106,7 @@ struct InboxView: View {
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
+        ToolbarItem(placement: .leoTopBarLeading) {
             if !allItems.isEmpty {
                 Text("\(allItems.count)")
                     .font(Theme.Typography.caption)
@@ -115,7 +117,7 @@ struct InboxView: View {
                     .clipShape(Capsule())
             }
         }
-        ToolbarItem(placement: .topBarTrailing) {
+        ToolbarItem(placement: .leoTopBarTrailing) {
             HStack(spacing: 14) {
                 Menu {
                     ForEach(InboxSort.allCases, id: \.self) { s in
@@ -490,7 +492,9 @@ private struct ScheduleDateSheet: View {
             }
         }
         .presentationDetents([.medium, .large])
+        #if os(iOS)
         .presentationDragIndicator(.visible)
+        #endif
     }
 }
 

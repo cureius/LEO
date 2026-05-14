@@ -6,7 +6,9 @@ struct WeeklyReviewView: View {
     @Environment(AppEnvironment.self) private var appEnv
     @Environment(\.dismiss) private var dismiss
     @State private var showShareSheet = false
+    #if os(iOS)
     @State private var shareImage: UIImage? = nil
+    #endif
 
     var body: some View {
         NavigationStack {
@@ -32,10 +34,10 @@ struct WeeklyReviewView: View {
             .navigationTitle("Weekly Review")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .leoTopBarLeading) {
                     Button("Done") { dismiss() }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .leoTopBarTrailing) {
                     ShareLink("Share", item: "Week of \(formattedWeek)")
                 }
             }

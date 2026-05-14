@@ -106,6 +106,7 @@ struct TodayView: View {
             FitnessHomeView()
                 .environment(appEnv)
         }
+        #if os(iOS)
         .sheet(item: Binding(
             get: { selectedItem.map { IdentifiableItem($0) } },
             set: { selectedItem = $0?.item }
@@ -115,6 +116,7 @@ struct TodayView: View {
                 Task { await vm.loadItems() }
             })
         }
+        #endif
     }
 }
 
@@ -1191,7 +1193,7 @@ private struct IdentifiableItem: Identifiable {
 
 // MARK: - Day timeline view (full 24-hour grid)
 
-private struct DayTimelineView: View {
+struct DayTimelineView: View {
     let selectedDate: Date
     let timedItems: [any Item]
     let completedItems: [any Item]

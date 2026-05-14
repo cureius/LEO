@@ -37,10 +37,10 @@ struct MeasurementsChartView: View {
             .navigationTitle("Measurements")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .leoTopBarLeading) {
                     Button("Close") { dismiss() }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .leoTopBarTrailing) {
                     Button("Add") { onAdd() }
                 }
             }

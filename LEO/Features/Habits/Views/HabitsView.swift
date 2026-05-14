@@ -62,7 +62,7 @@ struct HabitsView: View {
             }
             .navigationTitle("Habits")
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                ToolbarItem(placement: .leoTopBarTrailing) {
                     Button { showAddHabit = true } label: {
                         Image(systemName: "plus")
                             .font(.system(size: 16, weight: .semibold))

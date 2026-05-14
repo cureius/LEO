@@ -24,7 +24,7 @@ struct ChatHomeBody: View {
         }
         .navigationTitle("Ask LEO")
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .leoTopBarTrailing) {
                 Button { createNewSession() } label: {
                     Image(systemName: "square.and.pencil")
                         .font(.system(size: 17, weight: .medium))

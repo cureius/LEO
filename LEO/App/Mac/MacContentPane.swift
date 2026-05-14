@@ -4,14 +4,16 @@ struct MacContentPane: View {
     @Environment(MacNavigationModel.self) private var nav
 
     var body: some View {
-        Group {
-            switch nav.selection {
-            case .today:    MacPlaceholderView(title: "Today", milestone: "MM3-T01")
-            case .inbox:    MacPlaceholderView(title: "Inbox", milestone: "MM3-T03")
-            case .habits:   MacPlaceholderView(title: "Habits", milestone: "MM3-T05")
-            case .ask:      MacPlaceholderView(title: "Ask LEO", milestone: "MM5-T01")
-            case .fitness:  MacPlaceholderView(title: "Fitness", milestone: "MM7-T02")
-            case .settings: EmptyView()
+        NavigationStack {
+            Group {
+                switch nav.selection {
+                case .today:   MacTodayView()
+                case .inbox:   MacInboxView()
+                case .habits:  MacHabitsView()
+                case .ask:     MacAssistantChatView()
+                case .fitness: MacFitnessHomeView()
+                case .settings: EmptyView()
+                }
             }
         }
     }

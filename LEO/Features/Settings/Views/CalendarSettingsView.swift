@@ -237,9 +237,13 @@ struct CalendarSettingsView: View {
     }
 
     private func openIOSCalendarSettings() {
+        #if os(iOS)
         if let url = URL(string: UIApplication.openSettingsURLString) {
             UIApplication.shared.open(url)
         }
+        #else
+        NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Calendars")!)
+        #endif
     }
 }
 

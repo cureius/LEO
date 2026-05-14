@@ -58,7 +58,7 @@ final class AppEnvironment {
         self.alarmActivityManager = AlarmActivityManager()
         self.menuBarStatus = MenuBarStatusProvidingIOS()
         #else
-        self.alarmEngine = AlarmEngineMacStub()
+        self.alarmEngine = AlarmEngineMac(notificationManager: nm)
         self.menuBarStatus = MenuBarStatusProvidingMacStub()
         #endif
 

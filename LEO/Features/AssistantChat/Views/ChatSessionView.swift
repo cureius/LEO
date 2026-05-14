@@ -19,7 +19,9 @@ struct ChatSessionView: View {
 
     @State private var vm: AssistantChatViewModel
     @State private var presentedProposal: ProposalPresentation? = nil
+    #if os(iOS)
     @State private var selectedPhoto: PhotosPickerItem? = nil
+    #endif
     @FocusState private var inputFocused: Bool
     @State private var scrollProxy: ScrollViewProxy? = nil
 
@@ -52,11 +54,11 @@ struct ChatSessionView: View {
             // Input bar
             inputBar
         }
-        .background(Color(.systemGroupedBackground))
+        .background(Color.leoSecondaryBackground)
         .navigationTitle(session.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
+            ToolbarItem(placement: .leoTopBarTrailing) {
                 Menu {
                     Button("Clear conversation", systemImage: "trash") {
                         Task { await vm.clearHistory() }
@@ -67,17 +69,18 @@ struct ChatSessionView: View {
             }
         }
         .task { await vm.loadHistory() }
+        #if os(iOS)
         .onChange(of: selectedPhoto) { _, item in
             guard let item else { return }
             Task {
                 if let data = try? await item.loadTransferable(type: Data.self) {
-                    // Compress to JPEG for display and API use
                     let jpeg = UIImage(data: data).flatMap { $0.jpegData(compressionQuality: 0.7) } ?? data
                     vm.pendingImageData = jpeg
                 }
                 selectedPhoto = nil
             }
         }
+        #endif
         .sheet(item: $presentedProposal) { proposal in
             DiffReviewSheet(diff: proposal.diff) { acceptedChanges in
                 Task {
@@ -280,6 +283,7 @@ struct ChatSessionView: View {
 
     private var inputBar: some View {
         VStack(spacing: 0) {
+            #if os(iOS)
             // Pending image preview strip
             if let jpeg = vm.pendingImageData, let uiImage = UIImage(data: jpeg) {
                 HStack {
@@ -302,15 +306,18 @@ struct ChatSessionView: View {
                     Spacer()
                 }
             }
+            #endif
 
             HStack(alignment: .bottom, spacing: 8) {
-                // Camera / photo picker button
+                #if os(iOS)
+                // Camera / photo picker button (iOS only)
                 PhotosPicker(selection: $selectedPhoto, matching: .images, photoLibrary: .shared()) {
                     Image(systemName: "camera.fill")
                         .font(.system(size: 18))
                         .foregroundStyle(Theme.Color.textSecondary)
                         .frame(width: 36, height: 36)
                 }
+                #endif
 
                 // Text field
                 TextField("Message LEO…", text: $vm.inputText, axis: .vertical)
@@ -348,7 +355,7 @@ struct ChatSessionView: View {
             .padding(.horizontal, 14)
             .padding(.vertical, 10)
         }
-        .background(Color(.systemGroupedBackground))
+        .background(Color.leoSecondaryBackground)
     }
 
     // MARK: - Helpers
@@ -373,7 +380,7 @@ struct ChatSessionView: View {
                 Button { dismiss() } label: { Image(systemName: "xmark").font(.system(size: 11, weight: .bold)).foregroundStyle(.secondary) }
             }
             .padding(12)
-            .background(Color(.systemBackground))
+            .background(Color.leoBackground)
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .shadow(color: .black.opacity(0.06), radius: 4)
             .padding(.horizontal, 14)
@@ -438,7 +445,8 @@ private struct UserMessageRow: View {
             Spacer(minLength: 48)
             VStack(alignment: .trailing, spacing: 6) {
 
-                // Image thumbnail
+                #if os(iOS)
+                // Image thumbnail (iOS only — photo attachment not available on Mac)
                 if let jpeg = message.imageData, let uiImage = UIImage(data: jpeg) {
                     Image(uiImage: uiImage)
                         .resizable()
@@ -449,7 +457,6 @@ private struct UserMessageRow: View {
                             bottomTrailingRadius: 4, topTrailingRadius: 18
                         ))
 
-                    // OCR result card shown below the thumbnail
                     if let ocr = message.ocrText {
                         VStack(alignment: .leading, spacing: 4) {
                             Label("Read from photo", systemImage: "text.viewfinder")
@@ -473,6 +480,7 @@ private struct UserMessageRow: View {
                         ))
                     }
                 }
+                #endif
 
                 // User prompt text bubble
                 if !message.text.isEmpty {
@@ -514,7 +522,7 @@ private struct AssistantMessageRow: View {
                     TypingIndicator()
                         .padding(.horizontal, 14)
                         .padding(.vertical, 14)
-                        .background(Color(.systemBackground))
+                        .background(Color.leoBackground)
                         .clipShape(
                             UnevenRoundedRectangle(
                                 topLeadingRadius: 4, bottomLeadingRadius: 18,
@@ -533,7 +541,7 @@ private struct AssistantMessageRow: View {
                     }
                     .padding(.horizontal, 14)
                     .padding(.vertical, 10)
-                    .background(Color(.systemBackground))
+                    .background(Color.leoBackground)
                     .clipShape(
                         UnevenRoundedRectangle(
                             topLeadingRadius: 4, bottomLeadingRadius: 18,

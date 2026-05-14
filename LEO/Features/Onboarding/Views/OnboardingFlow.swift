@@ -22,8 +22,10 @@ struct OnboardingFlow: View {
                 }
             ).tag(4)
         }
+        #if os(iOS)
         .tabViewStyle(.page(indexDisplayMode: .always))
         .indexViewStyle(.page(backgroundDisplayMode: .always))
+        #endif
         .tint(Theme.Color.accent)
     }
 }
@@ -223,13 +225,17 @@ private struct OnboardingPage4: View {
                 .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.md))
 
                 Button {
+                    #if os(iOS)
                     if let url = URL(string: UIApplication.openSettingsURLString) {
                         UIApplication.shared.open(url)
                     }
+                    #else
+                    NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:")!)
+                    #endif
                 } label: {
                     HStack {
                         Image(systemName: "arrow.up.right.square")
-                        Text("Open iOS Settings")
+                        Text("Open Settings")
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 6)

@@ -55,7 +55,11 @@ struct SettingsRootView: View {
             }
 
             Section("Support") {
+                #if os(iOS)
                 NavigationLink("Send feedback") { FeedbackView() }
+                #else
+                Link("Send feedback", destination: URL(string: "mailto:feedback@leo.app")!)
+                #endif
                 NavigationLink("Beta info") {
                     Text("Thank you for being a beta tester! Report any issues via Send feedback. Build: \(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "?")")
                         .padding()
@@ -64,7 +68,11 @@ struct SettingsRootView: View {
             }
 
             Section("Subscription") {
+                #if os(iOS)
                 NavigationLink("Upgrade to Pro") { PaywallView() }
+                #else
+                NavigationLink("Upgrade to Pro") { Text("Mac paywall — MM8-T03").padding() }
+                #endif
             }
 
             Section("About") {
@@ -74,11 +82,17 @@ struct SettingsRootView: View {
                 Link("Support", destination: URL(string: "mailto:feedback@leo.app")!)
             }
 
+            #if DEBUG
             Section("Debug") {
                 NavigationLink("Debug menu") {
+                    #if os(iOS)
                     DebugMenu()
+                    #else
+                    Text("Use ⌘⇧⌥D for debug menu on Mac")
+                    #endif
                 }
             }
+            #endif
         }
         .navigationTitle("Settings")
         .task {
