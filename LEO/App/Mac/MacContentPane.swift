@@ -4,36 +4,19 @@ struct MacContentPane: View {
     @Environment(MacNavigationModel.self) private var nav
 
     var body: some View {
-        NavigationStack {
-            Group {
-                switch nav.selection {
-                case .today:   MacTodayView()
-                case .inbox:   MacInboxView()
-                case .habits:  MacHabitsView()
-                case .ask:     MacAssistantChatView()
-                case .fitness: MacFitnessHomeView()
-                case .settings: EmptyView()
-                }
+        // No NavigationStack here — each feature view owns its own navigation if needed.
+        // .id(nav.selection) tears down and recreates the view when section changes,
+        // clearing any transient state (scroll position, loading, etc.).
+        Group {
+            switch nav.selection {
+            case .today:   MacTodayView()
+            case .inbox:   MacInboxView()
+            case .habits:  MacHabitsView()
+            case .ask:     MacAssistantChatView()
+            case .fitness: MacFitnessHomeView()
+            case .settings: EmptyView()
             }
         }
-    }
-}
-
-struct MacPlaceholderView: View {
-    let title: String
-    let milestone: String
-
-    var body: some View {
-        VStack(spacing: 16) {
-            Image(systemName: "hourglass")
-                .font(.system(size: 48))
-                .foregroundStyle(.tertiary)
-            Text(title)
-                .font(.title2.bold())
-            Text("Coming in \(milestone)")
-                .font(.body)
-                .foregroundStyle(.secondary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .id(nav.selection)  // reset the view tree when section changes
     }
 }

@@ -16,12 +16,20 @@ struct MacShellView: View {
                 .frame(minWidth: 400, idealWidth: 600)
         } detail: {
             MacInspector()
+                .frame(minWidth: 280, idealWidth: 320)
         }
         .navigationSplitViewStyle(.balanced)
         .toolbar {
             ToolbarItem(placement: .leoTopBarLeading) {
                 MacQuickAddView()
                     .frame(minWidth: 260, idealWidth: 360)
+            }
+        }
+        // Handle item actions from menu bar / keyboard shortcuts
+        .onReceive(NotificationCenter.default.publisher(for: .leoSelectSidebarSection)) { note in
+            if let section = note.object as? SidebarSection {
+                nav.selection = section
+                nav.selectedItemID = nil  // clear item selection when changing sections
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .leoCompleteSelectedItem)) { _ in
@@ -50,9 +58,6 @@ struct MacShellView: View {
         .onChange(of: nav.inspectorVisible) { _, visible in
             inspectorVisible = visible
             columnVisibility = visible ? .all : .doubleColumn
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .leoSelectSidebarSection)) { note in
-            if let section = note.object as? SidebarSection { nav.selection = section }
         }
         .onReceive(NotificationCenter.default.publisher(for: .leoToggleInspector)) { _ in
             nav.inspectorVisible.toggle()

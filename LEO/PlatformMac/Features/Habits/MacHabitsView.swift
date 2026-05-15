@@ -37,13 +37,11 @@ struct MacHabitsView: View {
     }
 
     private var habitsContent: some View {
-        List(instances, id: \.id, selection: Binding(
-            get: { nav.selectedItemID },
-            set: { nav.selectedItemID = $0 }
-        )) { instance in
+        List(instances, id: \.id) { instance in
             HabitRow(instance: instance, isSelected: nav.selectedItemID == instance.id) {
                 Task { await toggle(instance) }
             }
+            .onTapGesture { nav.selectedItemID = instance.id }
             .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
     }

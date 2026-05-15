@@ -7,16 +7,15 @@ struct MacSidebar: View {
     @State private var inboxCount: Int = 0
 
     var body: some View {
-        @Bindable var navBinding = nav
-        List(selection: $navBinding.selection) {
+        List {
             Section("Planning") {
-                sidebarRow(.today, badge: todayCount > 0 ? todayCount : nil)
-                sidebarRow(.inbox, badge: inboxCount > 0 ? inboxCount : nil)
-                sidebarRow(.habits)
+                row(.today, badge: todayCount > 0 ? todayCount : nil)
+                row(.inbox, badge: inboxCount > 0 ? inboxCount : nil)
+                row(.habits)
             }
             Section("Tools") {
-                sidebarRow(.ask)
-                sidebarRow(.fitness)
+                row(.ask)
+                row(.fitness)
             }
         }
         .listStyle(.sidebar)
@@ -28,12 +27,46 @@ struct MacSidebar: View {
         }
     }
 
+    // MARK: - Row builder
+
     @ViewBuilder
-    private func sidebarRow(_ section: SidebarSection, badge: Int? = nil) -> some View {
-        Label(section.label, systemImage: section.icon)
-            .tag(section)
-            .badge(badge ?? 0)
+    private func row(_ section: SidebarSection, badge: Int? = nil) -> some View {
+        let selected = nav.selection == section
+        Button {
+            nav.selection = section
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: section.icon)
+                    .font(.system(size: 13))
+                    .foregroundStyle(selected ? Theme.Color.accent : .secondary)
+                    .frame(width: 18)
+                Text(section.label)
+                    .font(.system(size: 13))
+                    .foregroundStyle(selected ? .primary : .primary)
+                Spacer()
+                if let badge, badge > 0 {
+                    Text("\(badge)")
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundStyle(.secondary)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 1)
+                        .background(.secondary.opacity(0.15))
+                        .clipShape(Capsule())
+                }
+            }
+            .padding(.vertical, 3)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .listRowBackground(
+            selected
+                ? RoundedRectangle(cornerRadius: 6)
+                    .fill(Theme.Color.accent.opacity(0.12))
+                : nil
+        )
     }
+
+    // MARK: - Counts
 
     private func refreshCounts() async {
         guard let items = try? await appEnv.itemRepository.fetch() else { return }

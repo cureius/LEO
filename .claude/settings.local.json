@@ -101,7 +101,9 @@
       "Bash(magick /Users/raj/Raj/personal/IOS/LEO/LEO/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon.png -crop 1x1+5+5 +repage txt:)",
       "Bash(magick /Users/raj/Raj/personal/IOS/LEO/LEO/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon.png -resize 180x180 /tmp/leo_60pt_final.png)",
       "Bash(git mv *)",
-      "Bash(grep -E \"^.*error:.*$\")"
+      "Bash(grep -E \"^.*error:.*$\")",
+      "Bash(open *)",
+      "Bash(pkill -x LEO)"
     ]
   }
 }

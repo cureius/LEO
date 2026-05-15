@@ -56,11 +56,9 @@ struct MacInboxView: View {
     }
 
     private var itemList: some View {
-        List(sorted, id: \.id, selection: Binding(
-            get: { nav.selectedItemID },
-            set: { nav.selectedItemID = $0 }
-        )) { item in
+        List(sorted, id: \.id) { item in
             MacItemRow(item: item, isSelected: nav.selectedItemID == item.id)
+                .onTapGesture { nav.selectedItemID = item.id }
                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 .contextMenu {
                     Button("Schedule for Today") {
