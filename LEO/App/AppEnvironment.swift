@@ -25,6 +25,7 @@ final class AppEnvironment {
     let notificationDelegate: NotificationDelegate
     // M8: Gym Companion
     let bodyProfileRepository: BodyProfileRepository
+    let snapshotService: SnapshotService
     #if os(iOS)
     let alarmActivityManager: AlarmActivityManager
     #endif
@@ -37,6 +38,11 @@ final class AppEnvironment {
         self.tagRepository = TagRepository(controller: controller)
         self.seriesRepository = SeriesRepository(controller: controller)
         self.bodyProfileRepository = BodyProfileRepository(controller: controller)
+        self.snapshotService = SnapshotService(
+            itemRepo: itemRepository,
+            habitRepo: habitRepository,
+            bodyProfileRepo: bodyProfileRepository
+        )
 
         let nm = NotificationManager()
         self.notificationManager = nm

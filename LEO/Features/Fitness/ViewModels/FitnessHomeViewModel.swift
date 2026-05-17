@@ -13,33 +13,53 @@ final class FitnessHomeViewModel {
     var isLoading = false
     var errorMessage: String? = nil
 
-    // Computed kcal stats for today
+    // MARK: - Kcal stats
+
     var kcalIn: Int {
         todayMeals.filter(\.isCompleted).reduce(0) { $0 + $1.displayKcal }
     }
 
-    var kcalOut: Int {
-        let bmr = profile.map { BodyMath.bmr(profile: $0) / 24 * hoursInDay } ?? 0
-        let workoutKcal = todayWorkouts.filter(\.isCompleted).reduce(0.0) { $0 + Double($1.displayKcal) }
-        return Int(bmr + workoutKcal)
+    /// Calories burned from completed workouts today only (no BMR blending).
+    var kcalBurned: Int {
+        todayWorkouts.filter(\.isCompleted).reduce(0) { $0 + $1.displayKcal }
     }
 
-    var kcalDelta: Int {
-        guard let p = profile else { return 0 }
-        let target = Int(BodyMath.dailyKcalTarget(profile: p).dailyKcal)
-        return kcalIn - target
+    var kcalTarget: Int {
+        profile.map { Int(BodyMath.dailyKcalTarget(profile: $0).dailyKcal) } ?? 2000
+    }
+
+    /// Positive = surplus vs goal, negative = deficit.
+    var kcalDelta: Int { kcalIn - kcalTarget }
+
+    /// 0…1 fraction of today's calorie target consumed.
+    var kcalProgress: Double {
+        guard kcalTarget > 0 else { return 0 }
+        return min(1, Double(kcalIn) / Double(kcalTarget))
+    }
+
+    // MARK: - Weekly data
+
+    /// Mon–Sun of the current ISO week.
+    var weekDays: [Date] {
+        let cal = Calendar.current
+        let today = cal.startOfDay(for: .now)
+        let weekday = cal.component(.weekday, from: today)
+        let daysFromMonday = (weekday + 5) % 7
+        let monday = cal.date(byAdding: .day, value: -daysFromMonday, to: today)!
+        return (0..<7).map { cal.date(byAdding: .day, value: $0, to: monday)! }
     }
 
     var weekAdherenceRatio: Double {
         let expected = weekWorkouts.count
         guard expected > 0 else { return 0 }
-        let done = weekWorkouts.filter(\.isCompleted).count
-        return Double(done) / Double(expected)
+        return Double(weekWorkouts.filter(\.isCompleted).count) / Double(expected)
     }
 
-    private var hoursInDay: Double {
-        let hour = Calendar.current.component(.hour, from: .now)
-        return Double(hour) + 1
+    func workouts(on day: Date) -> [WorkoutItem] {
+        weekWorkouts.filter { w in
+            guard let d = w.anchor.sortDate else { return false }
+            return Calendar.current.isDate(d, inSameDayAs: day)
+        }
     }
 
     // MARK: - Dependencies
@@ -65,27 +85,34 @@ final class FitnessHomeViewModel {
         profile = await profileLoad
         measurements = await measurementsLoad
 
-        if let items = await itemsLoad {
-            let today = Calendar.current.startOfDay(for: .now)
-            let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: today) ?? today
-            let weekEnd = Calendar.current.date(byAdding: .day, value: 7, to: today) ?? today
+        guard let items = await itemsLoad else { return }
 
-            todayWorkouts = items.compactMap { $0 as? WorkoutItem }.filter { w in
-                guard let d = w.anchor.sortDate else { return false }
-                return d >= today && d < tomorrow
-            }
-            todayMeals = items.compactMap { $0 as? MealItem }.filter { m in
-                guard let d = m.anchor.sortDate else { return false }
-                return d >= today && d < tomorrow
-            }
-            weekWorkouts = items.compactMap { $0 as? WorkoutItem }.filter { w in
-                guard let d = w.anchor.sortDate else { return false }
-                return d >= today && d < weekEnd
-            }
-            weekMeals = items.compactMap { $0 as? MealItem }.filter { m in
-                guard let d = m.anchor.sortDate else { return false }
-                return d >= today && d < weekEnd
-            }
+        let cal = Calendar.current
+        let today = cal.startOfDay(for: .now)
+        let tomorrow = cal.date(byAdding: .day, value: 1, to: today)!
+        // Cover Mon–Sun of current week so weekDays strip has full coverage.
+        let days = weekDays
+        let weekStart = days.first ?? today
+        let weekEnd = cal.date(byAdding: .day, value: 1, to: days.last ?? today)!
+
+        todayWorkouts = items.compactMap { $0 as? WorkoutItem }.filter { w in
+            guard let d = w.anchor.sortDate else { return false }
+            return d >= today && d < tomorrow
+        }.sorted { ($0.anchor.sortDate ?? .distantFuture) < ($1.anchor.sortDate ?? .distantFuture) }
+
+        todayMeals = items.compactMap { $0 as? MealItem }.filter { m in
+            guard let d = m.anchor.sortDate else { return false }
+            return d >= today && d < tomorrow
+        }.sorted { ($0.anchor.sortDate ?? .distantFuture) < ($1.anchor.sortDate ?? .distantFuture) }
+
+        weekWorkouts = items.compactMap { $0 as? WorkoutItem }.filter { w in
+            guard let d = w.anchor.sortDate else { return false }
+            return d >= weekStart && d < weekEnd
+        }
+
+        weekMeals = items.compactMap { $0 as? MealItem }.filter { m in
+            guard let d = m.anchor.sortDate else { return false }
+            return d >= weekStart && d < weekEnd
         }
     }
 
@@ -95,6 +122,13 @@ final class FitnessHomeViewModel {
         var updated = workout
         updated.completion = .completed(at: .now)
         updated.actualKcal = workout.estimatedKcal
+        do { try await itemRepository.update(updated) } catch { errorMessage = error.localizedDescription }
+        await load()
+    }
+
+    func uncompleteWorkout(_ workout: WorkoutItem) async {
+        var updated = workout
+        updated.completion = .open
         do { try await itemRepository.update(updated) } catch { errorMessage = error.localizedDescription }
         await load()
     }
@@ -112,7 +146,6 @@ final class FitnessHomeViewModel {
         let m = BodyMeasurement(weightKg: weightKg, bodyFatPct: bodyFatPct, source: .manual)
         do {
             try await bodyProfileRepository.appendMeasurement(m)
-            // Update current weight in profile
             if var p = profile {
                 p.weightKg = weightKg
                 if let fat = bodyFatPct { p.bodyFatPct = fat }

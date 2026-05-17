@@ -103,7 +103,10 @@
       "Bash(git mv *)",
       "Bash(grep -E \"^.*error:.*$\")",
       "Bash(open *)",
-      "Bash(pkill -x LEO)"
+      "Bash(pkill -x LEO)",
+      "Bash(git push *)",
+      "Bash(gh auth *)",
+      "Bash(ssh -T git@github.com)"
     ]
   }
 }

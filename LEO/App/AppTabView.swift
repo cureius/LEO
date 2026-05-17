@@ -17,8 +17,8 @@ struct AppTabView: View {
                 .tabItem { Label("Inbox", systemImage: "tray") }
                 .tag(1)
 
-            HabitsView()
-                .tabItem { Label("Habits", systemImage: "repeat.circle.fill") }
+            HealthTabView()
+                .tabItem { Label("Health", systemImage: "heart.fill") }
                 .tag(2)
 
             AssistantChatView()

@@ -8,8 +8,6 @@ struct TodayView: View {
     @State private var viewModel: TodayViewModel? = nil
     @State private var selectedItem: (any Item)? = nil
     @State private var showHistory = false
-    @State private var showFitness = false
-    @State private var hasBodyProfile = false
     @State private var showTimeline = false
 
     var body: some View {
@@ -27,7 +25,6 @@ struct TodayView: View {
             let vm = TodayViewModel(itemRepository: appEnv.itemRepository)
             viewModel = vm
             await vm.loadItems()
-            hasBodyProfile = await appEnv.bodyProfileRepository.load() != nil
             await vm.startObserving()
         }
     }
@@ -39,8 +36,7 @@ struct TodayView: View {
                 TodayHeader(
                     date: vm.selectedDate,
                     showTimeline: $showTimeline,
-                    onHistoryTap: { showHistory = true },
-                    onFitnessTap: hasBodyProfile ? { showFitness = true } : nil
+                    onHistoryTap: { showHistory = true }
                 )
                 DateStrip(vm: vm)
                 Divider().background(Theme.Color.divider)
@@ -100,10 +96,6 @@ struct TodayView: View {
         .background(Theme.Color.background)
         .sheet(isPresented: $showHistory) {
             HistoryView()
-                .environment(appEnv)
-        }
-        .sheet(isPresented: $showFitness) {
-            FitnessHomeView()
                 .environment(appEnv)
         }
         #if os(iOS)
@@ -304,15 +296,7 @@ private struct TodayHeader: View {
     let date: Date
     @Binding var showTimeline: Bool
     let onHistoryTap: () -> Void
-    let onFitnessTap: (() -> Void)?
     private var isToday: Bool { Calendar.current.isDateInToday(date) }
-
-    init(date: Date, showTimeline: Binding<Bool>, onHistoryTap: @escaping () -> Void, onFitnessTap: (() -> Void)? = nil) {
-        self.date = date
-        self._showTimeline = showTimeline
-        self.onHistoryTap = onHistoryTap
-        self.onFitnessTap = onFitnessTap
-    }
 
     var body: some View {
         HStack(alignment: .center, spacing: 6) {
@@ -326,20 +310,8 @@ private struct TodayHeader: View {
             }
             Spacer()
 
-            // Single icon cluster — fitness (optional) · list · timeline · history
+            // Icon cluster — list · timeline · history
             HStack(spacing: 0) {
-                if isToday, let tap = onFitnessTap {
-                    Button(action: tap) {
-                        Image(systemName: "figure.strengthtraining.traditional")
-                            .font(.system(size: 13, weight: .medium))
-                            .foregroundStyle(Theme.Color.accent)
-                            .frame(width: 32, height: 30)
-                    }
-                    .accessibilityLabel("Fitness")
-
-                    Divider().frame(height: 16)
-                }
-
                 Button { withAnimation(.easeInOut(duration: 0.2)) { showTimeline = false } } label: {
                     Image(systemName: "list.bullet")
                         .font(.system(size: 13, weight: showTimeline ? .regular : .semibold))
@@ -883,11 +855,22 @@ private struct CompletedSection: View {
 
                         Button { onTap(item) } label: {
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(item.title)
-                                    .font(.system(size: 15, weight: .medium))
-                                    .foregroundStyle(Theme.Color.textSecondary)
-                                    .strikethrough(true, color: Theme.Color.textSecondary)
-                                    .lineLimit(1)
+                                HStack(spacing: 5) {
+                                    if item is WorkoutItem {
+                                        Image(systemName: "figure.strengthtraining.traditional")
+                                            .font(.system(size: 11))
+                                            .foregroundStyle(Theme.Color.warning.opacity(0.7))
+                                    } else if item is MealItem {
+                                        Image(systemName: "fork.knife")
+                                            .font(.system(size: 11))
+                                            .foregroundStyle(Theme.Color.accent.opacity(0.7))
+                                    }
+                                    Text(item.title)
+                                        .font(.system(size: 15, weight: .medium))
+                                        .foregroundStyle(Theme.Color.textSecondary)
+                                        .strikethrough(true, color: Theme.Color.textSecondary)
+                                        .lineLimit(1)
+                                }
                                 if let timeStr = completionTimeString(item) {
                                     Text(timeStr)
                                         .font(.system(size: 12))

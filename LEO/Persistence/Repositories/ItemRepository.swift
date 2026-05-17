@@ -61,6 +61,19 @@ actor ItemRepository {
         postChange()
     }
 
+    /// Delete many items in a single SwiftData transaction and post one change notification.
+    func deleteBatch(ids: [UUID]) async throws {
+        guard !ids.isEmpty else { return }
+        let context = controller.newBackgroundContext()
+        for id in ids {
+            try deleteStored(id: id, context: context)
+        }
+        try context.save()
+        logger.info("Batch-deleted \(ids.count) items")
+        await refreshWidgetSnapshot()
+        postChange()
+    }
+
     /// Insert many items in a single SwiftData transaction and post one change notification.
     func addBatch(_ items: [any Item]) async throws {
         guard !items.isEmpty else { return }

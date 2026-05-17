@@ -50,6 +50,33 @@ actor HabitRepository {
         }
     }
 
+    func deleteAll() async throws {
+        let context = controller.newBackgroundContext()
+        let stored = try context.fetch(FetchDescriptor<StoredHabit>())
+        stored.forEach { context.delete($0) }
+        try context.save()
+        postChange()
+    }
+
+    func addInstanceBatch(_ instances: [HabitInstanceItem]) async throws {
+        guard !instances.isEmpty else { return }
+        let context = controller.newBackgroundContext()
+        for instance in instances {
+            let s = StoredHabitInstance(
+                id: instance.id, title: instance.title, notes: instance.notes,
+                createdAt: instance.createdAt, updatedAt: instance.updatedAt,
+                importanceRaw: instance.importance.rawValue,
+                anchorData: try instance.anchor.encoded(),
+                completionData: try instance.completion.encoded(),
+                habitID: instance.habitID,
+                targetDurationSeconds: instance.targetDuration.map { Double($0.components.seconds) }
+            )
+            context.insert(s)
+        }
+        try context.save()
+        postChange()
+    }
+
     func archive(id: UUID) async throws {
         let context = controller.newBackgroundContext()
         let stored = try context.fetch(FetchDescriptor<StoredHabit>())

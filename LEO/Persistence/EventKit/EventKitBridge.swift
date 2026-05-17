@@ -106,6 +106,70 @@ actor EventKitBridge {
         subscribedReminderListIDs = reminderListIDs
     }
 
+    // MARK: - Import modes
+
+    /// Deletes every EventKit-sourced item from LEO's store, then runs a fresh sync.
+    /// Use when the user wants a clean re-import rather than an incremental merge.
+    func cleanSlateSync() async throws -> EKSyncReport {
+        let all = try await itemRepository.fetch()
+        let ids = all.filter { item -> Bool in
+            if let ev = item as? EventItem { return ev.externalRef?.source == .eventKit }
+            if let rm = item as? ReminderItem { return rm.externalRef?.source == .eventKit }
+            return false
+        }.map(\.id)
+        try await itemRepository.deleteBatch(ids: ids)
+        logger.info("Clean slate: removed \(ids.count) EK-sourced items before re-sync")
+        return try await sync()
+    }
+
+    // MARK: - Export
+
+    /// Calendars the user can write to (excludes read-only subscribed/birthday calendars).
+    func writableCalendars() -> [EKCalendar] {
+        store.calendars(for: .event).filter { $0.allowsContentModifications }
+    }
+
+    /// Pushes LEO-native EventItems (no externalRef) that have a timed anchor to the
+    /// specified system calendar. Returns the count of items written.
+    func exportToSystem(items: [any Item], calendarID: String?) async throws -> Int {
+        guard EKEventStore.authorizationStatus(for: .event) == .fullAccess else {
+            throw CalendarExportError.accessDenied
+        }
+        let targetCal: EKCalendar?
+        if let id = calendarID, let cal = store.calendar(withIdentifier: id) {
+            targetCal = cal
+        } else {
+            targetCal = store.defaultCalendarForNewEvents
+        }
+
+        var written = 0
+        for item in items {
+            guard let event = item as? EventItem, event.externalRef == nil else { continue }
+            let startDate: Date
+            let endDate: Date
+            switch event.anchor {
+            case .timeBlock(let s, let e):
+                startDate = s; endDate = e
+            case .point(let d):
+                startDate = d; endDate = d.addingTimeInterval(3600)
+            default:
+                continue
+            }
+            let ekEvent = EKEvent(eventStore: store)
+            ekEvent.calendar = targetCal
+            ekEvent.title = event.title
+            ekEvent.notes = event.notes
+            ekEvent.startDate = startDate
+            ekEvent.endDate = endDate
+            ekEvent.location = event.location
+            try store.save(ekEvent, span: .thisEvent, commit: false)
+            written += 1
+        }
+        if written > 0 { try store.commit() }
+        logger.info("Exported \(written) LEO events to EventKit")
+        return written
+    }
+
     // MARK: - Sync
 
     func sync() async throws -> EKSyncReport {
@@ -354,6 +418,13 @@ actor EventKitBridge {
         return String(format: "%04d%02d%02dT%02d%02d",
                       c.year ?? 0, c.month ?? 0, c.day ?? 0, c.hour ?? 0, c.minute ?? 0)
     }
+}
+
+// MARK: - Export error
+
+enum CalendarExportError: LocalizedError {
+    case accessDenied
+    var errorDescription: String? { "Calendar access is not granted. Go to Settings to allow access." }
 }
 
 // MARK: - EKEvent → EventItem

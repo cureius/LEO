@@ -20,6 +20,9 @@ struct SettingsRootView: View {
                 NavigationLink("Calendars & Reminders") {
                     CalendarSettingsView()
                 }
+                NavigationLink("Import & Export") {
+                    CalendarImportExportView()
+                }
             }
 
             Section("Fitness") {
@@ -51,6 +54,12 @@ struct SettingsRootView: View {
             Section("Notifications") {
                 Button("Request permission") {
                     Task { _ = await appEnv.notificationManager.requestAuthorization() }
+                }
+            }
+
+            Section("Data") {
+                NavigationLink("Backup & Restore") {
+                    DataSnapshotView()
                 }
             }
 

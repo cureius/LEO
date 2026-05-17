@@ -12,6 +12,7 @@ final class TodayViewModel {
     private(set) var untimedItems: [any Item] = []
     private(set) var completedTodayItems: [any Item] = []
     private(set) var isLoading = false
+    private(set) var hasLoaded = false
     private(set) var error: String? = nil
 
     // Week strip & month grid data
@@ -72,7 +73,7 @@ final class TodayViewModel {
     // MARK: - Load
 
     func loadItems() async {
-        isLoading = true
+        if !hasLoaded { isLoading = true }
         error = nil
         defer { isLoading = false }
         do {
@@ -93,10 +94,11 @@ final class TodayViewModel {
             } else {
                 untimedItems = []
             }
-            completedTodayItems = all.filter { $0.isCompleted && !($0 is WorkoutItem) && !($0 is MealItem) }.sorted {
+            completedTodayItems = all.filter { $0.isCompleted }.sorted {
                 ($0.anchor.sortDate ?? .distantPast) < ($1.anchor.sortDate ?? .distantPast)
             }
             await loadWeekCounts()
+            hasLoaded = true
         } catch {
             self.error = error.localizedDescription
             logger.error("TodayViewModel load failed: \(error)")

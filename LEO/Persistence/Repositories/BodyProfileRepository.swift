@@ -51,6 +51,28 @@ actor BodyProfileRepository {
         return stored.map(BodyMeasurement.from)
     }
 
+    func allMeasurements() async -> [BodyMeasurement] {
+        let context = controller.newBackgroundContext()
+        let stored = (try? context.fetch(FetchDescriptor<StoredMeasurement>(
+            sortBy: [SortDescriptor(\.date, order: .forward)]
+        ))) ?? []
+        return stored.map(BodyMeasurement.from)
+    }
+
+    func deleteAllMeasurements() async throws {
+        let context = controller.newBackgroundContext()
+        let stored = try context.fetch(FetchDescriptor<StoredMeasurement>())
+        stored.forEach { context.delete($0) }
+        try context.save()
+    }
+
+    func appendMeasurementBatch(_ measurements: [BodyMeasurement]) async throws {
+        guard !measurements.isEmpty else { return }
+        let context = controller.newBackgroundContext()
+        measurements.forEach { context.insert(StoredMeasurement(from: $0)) }
+        try context.save()
+    }
+
     func deleteMeasurement(id: UUID) async throws {
         let context = controller.newBackgroundContext()
         let all = try context.fetch(FetchDescriptor<StoredMeasurement>())
