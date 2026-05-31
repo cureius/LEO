@@ -1198,6 +1198,64 @@ struct DayTimelineView: View {
             .sorted { $0.title.localizedCompare($1.title) == .orderedAscending }
     }
     private var scheduledItems: [any Item] { timedItems.filter { !$0.anchor.isAllDayBlock } }
+
+    // MARK: - Overlap layout
+
+    private struct LayoutEvent: Identifiable {
+        let id: UUID
+        let item: any Item
+        let startMin: CGFloat
+        let endMin: CGFloat
+        var column: Int
+        var columnCount: Int
+    }
+
+    private func computeLayout(_ items: [any Item]) -> [LayoutEvent] {
+        guard !items.isEmpty else { return [] }
+
+        // Build raw events sorted by start time
+        var events: [LayoutEvent] = items.compactMap { item -> LayoutEvent? in
+            guard let sm = startMinutes(item) else { return nil }
+            let em: CGFloat
+            if case .timeBlock(let s, let e) = item.anchor {
+                em = sm + CGFloat(e.timeIntervalSince(s) / 60)
+            } else {
+                em = sm + 44  // point/due items get a virtual 44-min footprint
+            }
+            return LayoutEvent(id: item.id, item: item, startMin: sm, endMin: em, column: 0, columnCount: 1)
+        }.sorted { $0.startMin < $1.startMin }
+
+        // Greedy column assignment
+        var colEnds: [CGFloat] = []
+        for i in events.indices {
+            let col = colEnds.firstIndex(where: { $0 <= events[i].startMin }) ?? colEnds.count
+            if col == colEnds.count { colEnds.append(0) }
+            colEnds[col] = events[i].endMin
+            events[i].column = col
+        }
+
+        // BFS cluster detection: events that transitively overlap share the same columnCount
+        var visited = Set<Int>()
+        for i in events.indices where !visited.contains(i) {
+            var cluster = [i]
+            var queue = [i]
+            visited.insert(i)
+            while !queue.isEmpty {
+                let cur = queue.removeFirst()
+                for j in events.indices where !visited.contains(j) {
+                    if events[cur].startMin < events[j].endMin && events[j].startMin < events[cur].endMin {
+                        visited.insert(j)
+                        cluster.append(j)
+                        queue.append(j)
+                    }
+                }
+            }
+            let maxCol = cluster.map { events[$0].column }.max()! + 1
+            for idx in cluster { events[idx].columnCount = maxCol }
+        }
+
+        return events
+    }
     private var isToday: Bool { Calendar.current.isDateInToday(selectedDate) }
 
     private var nowMinutes: CGFloat {
@@ -1232,19 +1290,20 @@ struct DayTimelineView: View {
                         // 24 * hourHeight), giving correct coordinates for event blocks.
                         GeometryReader { geo in
                             ZStack(alignment: .topLeading) {
-                                ForEach(scheduledItems, id: \.id) { item in
-                                    if let sm = startMinutes(item) {
-                                        let eX = Self.timeColWidth + Self.eventLeadPad
-                                        let eW = max(0, geo.size.width - eX - Theme.Spacing.md)
-                                        TimelineEventBlock(
-                                            item: item,
-                                            color: itemColor(item),
-                                            onComplete: onComplete,
-                                            onTap: onTap
-                                        )
-                                        .frame(width: eW, height: blockHeight(item))
-                                        .offset(x: eX, y: sm / 60 * Self.hourHeight)
-                                    }
+                                let layout = computeLayout(scheduledItems)
+                                ForEach(layout) { ev in
+                                    let eX = Self.timeColWidth + Self.eventLeadPad
+                                    let totalW = max(0, geo.size.width - eX - Theme.Spacing.md)
+                                    let colW = totalW / CGFloat(ev.columnCount)
+                                    let eW = max(0, colW - 4)
+                                    TimelineEventBlock(
+                                        item: ev.item,
+                                        color: itemColor(ev.item),
+                                        onComplete: onComplete,
+                                        onTap: onTap
+                                    )
+                                    .frame(width: eW, height: blockHeight(ev.item))
+                                    .offset(x: eX + CGFloat(ev.column) * colW, y: ev.startMin / 60 * Self.hourHeight)
                                 }
 
                                 if isToday && nowMinutes >= 0 {

@@ -8,6 +8,7 @@ struct SettingsRootView: View {
     @State private var monthlyTokens: (input: Int, output: Int) = (0, 0)
     @State private var hasAPIKey = false
     @State private var routingOverride = "none"
+    @AppStorage("persistentRemindersEnabled") private var persistentRemindersEnabled: Bool = true
     private var appVersion: String {
         let v = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?"
         let b = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "?"
@@ -54,6 +55,20 @@ struct SettingsRootView: View {
             Section("Notifications") {
                 Button("Request permission") {
                     Task { _ = await appEnv.notificationManager.requestAuthorization() }
+                }
+                Toggle(isOn: $persistentRemindersEnabled) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Persistent reminders")
+                        Text("Re-notify every minute until you act on a reminder")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .onChange(of: persistentRemindersEnabled) { _, _ in
+                    Task {
+                        guard let items = try? await appEnv.itemRepository.fetch() else { return }
+                        await appEnv.notificationManager.sync(for: items)
+                    }
                 }
             }
 

@@ -48,6 +48,16 @@ enum NotificationAction {
     static let skipWkt    = "SKIP_WORKOUT"
 }
 
+// MARK: - User preference keys
+
+extension UserDefaults {
+    /// When false, only the primary (on-time) notification fires — no follow-up burst.
+    var persistentRemindersEnabled: Bool {
+        get { object(forKey: "persistentRemindersEnabled") as? Bool ?? true }
+        set { set(newValue, forKey: "persistentRemindersEnabled") }
+    }
+}
+
 // MARK: - NotificationManager
 
 /// All UNUserNotificationCenter interactions route through this actor.
@@ -178,6 +188,7 @@ actor NotificationManager {
 
     private func buildDesiredRequests(for items: [any Item]) async -> [UNNotificationRequest] {
         let horizon = Date.now.addingTimeInterval(30 * 86400)
+        let burstEnabled = UserDefaults.standard.persistentRemindersEnabled
         var requests: [UNNotificationRequest] = []
 
         for item in items where !item.isCompleted {
@@ -187,7 +198,7 @@ actor NotificationManager {
             // Users set timed reminders as TaskItems too (QuickAdd fallback).
             let needsBurst: Bool
             switch item.anchor {
-            case .point, .dueAt: needsBurst = true
+            case .point, .dueAt: needsBurst = burstEnabled
             default:             needsBurst = false
             }
 
