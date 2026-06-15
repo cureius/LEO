@@ -14,6 +14,13 @@ struct MeasurementsChartView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
+                #if os(macOS)
+                HStack {
+                    Spacer()
+                    Button("Done") { dismiss() }
+                }
+                .padding(12)
+                #endif
                 if last12Weeks.isEmpty {
                     LEOEmptyState(
                         title: "No measurements yet",

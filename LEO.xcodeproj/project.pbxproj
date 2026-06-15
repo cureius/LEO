@@ -65,6 +65,7 @@
 		2C0864E0F997C76BB22752AB /* WidgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9277166E6950652AD179AA27 /* WidgetSnapshot.swift */; };
 		2C72792649B498D0FBD51A99 /* ReminderActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 190470FDE5BD768C95EF781B /* ReminderActionSheet.swift */; };
 		2C9F8DDB75D9AD08EB125FAF /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8484854A0F226E8CED08BFDA /* TodayView.swift */; };
+		2CC412246C25904BF011DFCA /* CloudSyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6533DC91B94E428F312A890 /* CloudSyncView.swift */; };
 		2CD250367C134C28AA8BFFA9 /* LocationReminderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308021BC734D2C1D054ACF04 /* LocationReminderManager.swift */; };
 		2D268335A587DF2E68116041 /* Seeder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D88E284E7D2B910CA9A1B12 /* Seeder.swift */; };
 		2DB47C9A6414945208899D86 /* PlanPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE4C8566C3E572267358696 /* PlanPreferences.swift */; };
@@ -122,6 +123,8 @@
 		500E9019951990FAF8C7CD57 /* DeterministicParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86D061374805775FE7FE37E /* DeterministicParser.swift */; };
 		500F3EF6735936FB5BC1983E /* ConversationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B596621F6F0FC4364E7980CF /* ConversationStore.swift */; };
 		52A52E8B96B5BF7E97FF00D8 /* HabitInstanceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDEB4D2A60BF1F43267C938 /* HabitInstanceItem.swift */; };
+		543C48534662827D64542724 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = FA1FC7B844F2A9C9CB77821A /* Supabase */; };
+		55C58B0BA7FD2F77977A5A4A /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = D5C23F325C16CC55011E405E /* Supabase */; };
 		55C736231C6A94E7B480F26B /* ProposeWorkoutPlanTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F72CBF1CD04092257D959FA /* ProposeWorkoutPlanTool.swift */; };
 		574B3257B5E8220CAD4F6930 /* GetBodyProfileTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC98C8417F14CF9B93F4766F /* GetBodyProfileTool.swift */; };
 		580D08F87EAC74AEE1817435 /* SchemaSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6703057FC03BE90004E6920 /* SchemaSync.swift */; };
@@ -220,10 +223,12 @@
 		9758738E32F02EFFE46AB63B /* LocationReminderProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DBCDF518BBB34E336CE148B /* LocationReminderProviding.swift */; };
 		976B4E0D1F597D1A2597093A /* CalendarSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18E3C14F2FC147B39FB7101 /* CalendarSettingsView.swift */; };
 		97C6D1E13E05833F7AEA2FE6 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4EE2E13B02ABF60D43FF5D /* PersistenceController.swift */; };
+		97E078FC6E8C222D51AFF22C /* SupabaseSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98ECFD23C5D67E184284B1D /* SupabaseSync.swift */; };
 		9800B454987C833E55F7AE3F /* SchemaV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9A3945E100823F761B25A9 /* SchemaV2.swift */; };
 		9877E1CE41AA70BD38F4FF9C /* CalendarSyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FABB1A42F22728190BEE61 /* CalendarSyncCoordinator.swift */; };
 		995870704743260F9C784A53 /* LEOUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD05EE81B197FF782C7B9D2 /* LEOUITests.swift */; };
 		998394ABBE78E699C88D79B7 /* Environment+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70A711B26C01011C7A6F0BF /* Environment+Keys.swift */; };
+		9A5B551C5B8FD94249B8D440 /* CloudSyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6533DC91B94E428F312A890 /* CloudSyncView.swift */; };
 		9A62CD1EC25A63A801AC54DA /* TagRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAA17A0030150282CCF2F6B /* TagRepository.swift */; };
 		9BF58F11637F0264FD953F06 /* ItemPredicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96D45E3AC90F740DDB8D88FB /* ItemPredicate.swift */; };
 		9C06F07C0E64EC350496E076 /* Exercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F0D002EC30F436BD1EE4798 /* Exercise.swift */; };
@@ -255,6 +260,7 @@
 		B5C393A1574BC7F60E89DF87 /* MigrationPlanV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8B3D834A12A1D7E51E1D4F9 /* MigrationPlanV1.swift */; };
 		B65D68AA78680B53520CF333 /* AlarmItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A9EF78DEEB8AF960521D417 /* AlarmItem.swift */; };
 		B975B0D2B56EB0C21E04BDAA /* LEOSkeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EB22DC22016F5BD68B326D /* LEOSkeleton.swift */; };
+		BA53F7179C42FE0894ADFE60 /* SupabaseSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98ECFD23C5D67E184284B1D /* SupabaseSync.swift */; };
 		BA55B11D08AEEEEFF1BE199C /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345761AFFCBA4899D1C3E2F9 /* Theme.swift */; };
 		BBEE0297CE10592815FE589B /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43ABC2B208D5C9B20C0E927 /* AppEnvironment.swift */; };
 		BCBBF62B60AF97406AE2BE66 /* HabitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA78D895C326F49AB9786F4 /* HabitsView.swift */; };
@@ -564,6 +570,7 @@
 		BD461BCAD252B2BAEE49BCD9 /* AlarmActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmActivity.swift; sourceTree = "<group>"; };
 		BDCF1AD178CAF77C45FAB66A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		C18E3C14F2FC147B39FB7101 /* CalendarSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSettingsView.swift; sourceTree = "<group>"; };
+		C3CF28AEDFD369A96021E1BB /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		C4063A95DD050D6E564F2F27 /* ReadTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadTools.swift; sourceTree = "<group>"; };
 		C596A584A0D5E9ADCB45F128 /* SeriesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesRepository.swift; sourceTree = "<group>"; };
 		C6C510162DC5DB676935E113 /* MacInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacInspector.swift; sourceTree = "<group>"; };
@@ -585,6 +592,7 @@
 		D86D061374805775FE7FE37E /* DeterministicParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeterministicParser.swift; sourceTree = "<group>"; };
 		D8BEBB98EBB5B605CAC1EB38 /* USFederalHolidays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = USFederalHolidays.swift; sourceTree = "<group>"; };
 		D8DC63E139DCDA53796C3A5C /* WidgetSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSnapshot.swift; sourceTree = "<group>"; };
+		D98ECFD23C5D67E184284B1D /* SupabaseSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseSync.swift; sourceTree = "<group>"; };
 		D9C86EC4F7B043B686D34B80 /* AlarmEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmEngine.swift; sourceTree = "<group>"; };
 		DBDA461076CB012640201BB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DBDEB4D2A60BF1F43267C938 /* HabitInstanceItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitInstanceItem.swift; sourceTree = "<group>"; };
@@ -597,6 +605,7 @@
 		E3554E35DEC29D6D81A6E714 /* ClaudeModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaudeModels.swift; sourceTree = "<group>"; };
 		E39C1521B7B960FB167A2B0F /* LEO-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LEO-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B4A46536AB621F8AFF8761 /* ProGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProGate.swift; sourceTree = "<group>"; };
+		E6533DC91B94E428F312A890 /* CloudSyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSyncView.swift; sourceTree = "<group>"; };
 		E871CF4B3BFE1D9CCCDB51AD /* PersistenceControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceControllerTests.swift; sourceTree = "<group>"; };
 		E8B3D834A12A1D7E51E1D4F9 /* MigrationPlanV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationPlanV1.swift; sourceTree = "<group>"; };
 		E9893317230019227E7DB3AF /* QuickAddParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAddParser.swift; sourceTree = "<group>"; };
@@ -625,12 +634,28 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4B64E34BCEFFFC5DE4202216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55C58B0BA7FD2F77977A5A4A /* Supabase in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7DB56CDAAA581E15A7E00A78 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				5A16DBAFD9240067B35A8181 /* WidgetKit.framework in Frameworks */,
 				DC5812ACE0F1972294E7160F /* SwiftUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AF25FFCEEC5D83FE14E3AFE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				543C48534662827D64542724 /* Supabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -661,11 +686,12 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		04FB1CBE22D1D39DABA22C97 /* OnDevice */ = {
+		037E594988A2BC5063771AED /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				C3CF28AEDFD369A96021E1BB /* Secrets.xcconfig */,
 			);
-			path = OnDevice;
+			path = Config;
 			sourceTree = "<group>";
 		};
 		071FE11417AD2C159D822E93 /* Today */ = {
@@ -729,27 +755,6 @@
 			path = Review;
 			sourceTree = "<group>";
 		};
-		1602020A966B8889F4CDCEBA /* Commands */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Commands;
-			sourceTree = "<group>";
-		};
-		180B77878787F8CE32CCEC5A /* AI */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = AI;
-			sourceTree = "<group>";
-		};
-		19231EE9858A1A95763D3403 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
 		1AEC37897620D37DB09715D5 /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
@@ -761,7 +766,6 @@
 		222F5D087E0C10BCB75B8095 /* LEOTests */ = {
 			isa = PBXGroup;
 			children = (
-				180B77878787F8CE32CCEC5A /* AI */,
 				273E0542EE3663148A608AEB /* Domain */,
 				6CFE0041AD51969B2EDCC063 /* Persistence */,
 			);
@@ -789,9 +793,7 @@
 				8297A4B7B344DDC8DE93F15E /* Capture */,
 				7747FA148E820CDC869F7594 /* Diff */,
 				69032DC1E3F2B37BAF3F98C1 /* Fitness */,
-				AFDF62EE418D4430FB135A11 /* Habits */,
 				9FC865C84D63BD8C58F6CC34 /* Items */,
-				74D957BB1788AADE215A61BC /* Recurrence */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -815,13 +817,6 @@
 				4E5EF1F96C1267E51C7957E0 /* QuickAddBar.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		2DEF80E092B53D6967771655 /* Notifications */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Notifications;
 			sourceTree = "<group>";
 		};
 		2E232D2C69B8AB6E1745481E /* ViewModels */ = {
@@ -918,7 +913,6 @@
 		40C91D7AF330C834DB484117 /* Paywall */ = {
 			isa = PBXGroup;
 			children = (
-				19231EE9858A1A95763D3403 /* ViewModels */,
 				A6BE7FFCF450763AAC2C48B3 /* Views */,
 			);
 			path = Paywall;
@@ -928,7 +922,6 @@
 			isa = PBXGroup;
 			children = (
 				EF01CDF2ACD4733A8ABE0AD5 /* Cloud */,
-				04FB1CBE22D1D39DABA22C97 /* OnDevice */,
 				735AE281F33E525C3D701BF0 /* Prompts */,
 				4411733D4CB79D378A5AC6B3 /* Review */,
 				75C0110D67296CC8312635C6 /* Routing */,
@@ -1039,13 +1032,6 @@
 			path = Recurrence;
 			sourceTree = "<group>";
 		};
-		5352980361006369B054FA53 /* LiveActivities */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = LiveActivities;
-			sourceTree = "<group>";
-		};
 		537C3106C3A6B1E0BFB93B4B /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -1056,13 +1042,6 @@
 				A302E4337FA9BC3AD40AA525 /* WorkoutDetailSheet.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		54E61EF54242DC57904A4538 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		56FB0689C0983BFF6EEC085E /* Fitness */ = {
@@ -1087,6 +1066,7 @@
 			children = (
 				3B52434D26911F1E50F787DC /* CalendarImportExportView.swift */,
 				C18E3C14F2FC147B39FB7101 /* CalendarSettingsView.swift */,
+				E6533DC91B94E428F312A890 /* CloudSyncView.swift */,
 				FD8A44A27DEAFC4A057E0735 /* DataSnapshotView.swift */,
 				0803801D7555F1BD1861FAE3 /* FeedbackView.swift */,
 				51CA63A1FD8F614510C1527E /* FitnessSettingsView.swift */,
@@ -1107,9 +1087,6 @@
 			isa = PBXGroup;
 			children = (
 				CEB8295F9137C46C92F8D848 /* AppIntents */,
-				F1CEDCE6415C5C8917D6DE28 /* Focus */,
-				5352980361006369B054FA53 /* LiveActivities */,
-				9BCD633A7A52C808C6EACB81 /* Shortcuts */,
 				1AEC37897620D37DB09715D5 /* Widgets */,
 			);
 			path = Integrations;
@@ -1166,13 +1143,6 @@
 			path = EventKit;
 			sourceTree = "<group>";
 		};
-		6F643C3088B4B854BD9CF1E6 /* Alarms */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Alarms;
-			sourceTree = "<group>";
-		};
 		7190323D1EE958F3463D42AE /* Domain */ = {
 			isa = PBXGroup;
 			children = (
@@ -1182,16 +1152,8 @@
 				873A881F315125050DC0D8CB /* Habits */,
 				48E4D8E4ACADAE876FF5E430 /* Items */,
 				B94C4EDEEFF7762CEF587847 /* Recurrence */,
-				7DA09D82FABA6FDD2CAD85BB /* Scheduling */,
 			);
 			path = Domain;
-			sourceTree = "<group>";
-		};
-		72057CD52EDEB79E10C12520 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		735AE281F33E525C3D701BF0 /* Prompts */ = {
@@ -1200,13 +1162,6 @@
 				51516AEDB3A5FF10DB1162CB /* SystemPrompt.swift */,
 			);
 			path = Prompts;
-			sourceTree = "<group>";
-		};
-		74D957BB1788AADE215A61BC /* Recurrence */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Recurrence;
 			sourceTree = "<group>";
 		};
 		75C0110D67296CC8312635C6 /* Routing */ = {
@@ -1250,13 +1205,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		7DA09D82FABA6FDD2CAD85BB /* Scheduling */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Scheduling;
-			sourceTree = "<group>";
-		};
 		80CDE1DC2633DC54B983AF6C /* Inbox */ = {
 			isa = PBXGroup;
 			children = (
@@ -1285,7 +1233,6 @@
 		84BBCFD843A0D30C58D3D515 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
-				72057CD52EDEB79E10C12520 /* ViewModels */,
 				8C9556CC18D01680283E5310 /* Views */,
 			);
 			path = Onboarding;
@@ -1304,7 +1251,6 @@
 		8747F21EB639595EAF4FB38D /* Inbox */ = {
 			isa = PBXGroup;
 			children = (
-				B57663F5D05578E10D910316 /* ViewModels */,
 				90868660CF92891CDABE77F3 /* Views */,
 			);
 			path = Inbox;
@@ -1399,7 +1345,6 @@
 		989C4661B58326D29E47273C /* PlatformIOS */ = {
 			isa = PBXGroup;
 			children = (
-				FA5B310351EBB4B19CF6C981 /* Features */,
 				8E954CC713602D0B1C8D2655 /* Integrations */,
 				D2E2D0369C6709943C2B066D /* Services */,
 			);
@@ -1417,13 +1362,6 @@
 				8A66B7BD3B9E0FC7919166CD /* UserBodyProfile.swift */,
 			);
 			path = Fitness;
-			sourceTree = "<group>";
-		};
-		9BCD633A7A52C808C6EACB81 /* Shortcuts */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Shortcuts;
 			sourceTree = "<group>";
 		};
 		9FC865C84D63BD8C58F6CC34 /* Items */ = {
@@ -1471,33 +1409,12 @@
 			path = Persistence;
 			sourceTree = "<group>";
 		};
-		AFDF62EE418D4430FB135A11 /* Habits */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Habits;
-			sourceTree = "<group>";
-		};
-		B0CCAA959104DA444E528042 /* Onboarding */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Onboarding;
-			sourceTree = "<group>";
-		};
 		B4B500D41369C797E40728B0 /* Capture */ = {
 			isa = PBXGroup;
 			children = (
 				F0497849A128902B09DB8723 /* Parsers */,
 			);
 			path = Capture;
-			sourceTree = "<group>";
-		};
-		B57663F5D05578E10D910316 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		B5EC7AB595EBD44A94B6A68C /* Models */ = {
@@ -1531,7 +1448,6 @@
 		B757AFE9E740178E54191C49 /* Review */ = {
 			isa = PBXGroup;
 			children = (
-				D38EF977335582C20F76BC43 /* ViewModels */,
 				A6E6CDB338140094DC55C51C /* Views */,
 			);
 			path = Review;
@@ -1564,7 +1480,6 @@
 			isa = PBXGroup;
 			children = (
 				4135DAC6AEF60D901B57D4B1 /* AI */,
-				6F643C3088B4B854BD9CF1E6 /* Alarms */,
 				02FAD01A504250E9616CD72A /* App */,
 				448BC9DCD1392662518F99FA /* DesignSystem */,
 				7190323D1EE958F3463D42AE /* Domain */,
@@ -1576,6 +1491,7 @@
 				989C4661B58326D29E47273C /* PlatformIOS */,
 				FE2E8622A3EA162E0DABCB5B /* PlatformMac */,
 				3E5646E162712BBBAEAA741E /* Resources */,
+				C5797369635654CF170CF038 /* Sync */,
 				072570896AB08E5DDC2CEC60 /* Utilities */,
 			);
 			path = LEO;
@@ -1613,6 +1529,14 @@
 				82F4E5E38DAA6085002335F2 /* RecurrenceBuilderViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		C5797369635654CF170CF038 /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				D98ECFD23C5D67E184284B1D /* SupabaseSync.swift */,
+			);
+			path = Sync;
 			sourceTree = "<group>";
 		};
 		CD7027D72D69AB520CD73922 /* AssistantChat */ = {
@@ -1668,13 +1592,6 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		D38EF977335582C20F76BC43 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
 		D519BD3EF02EDD48082BACF5 /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -1694,7 +1611,6 @@
 		DE7842DBE585D0347C131FC6 /* Habits */ = {
 			isa = PBXGroup;
 			children = (
-				54E61EF54242DC57904A4538 /* ViewModels */,
 				82C2A552BE96FD7A98EA7493 /* Views */,
 			);
 			path = Habits;
@@ -1703,7 +1619,6 @@
 		DEE43299F689A56EFACED06B /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				FA07404CFA13456A744CBB13 /* ViewModels */,
 				5D3177D40EB7C212B3A8B175 /* Views */,
 			);
 			path = Settings;
@@ -1724,7 +1639,6 @@
 			isa = PBXGroup;
 			children = (
 				79C1DC81F94713C2B055C5D0 /* Models */,
-				B0CCAA959104DA444E528042 /* Onboarding */,
 				A269F34740F76D88DD829CBD /* Services */,
 				91B399C3DD58C994B04861BC /* ViewModels */,
 				537C3106C3A6B1E0BFB93B4B /* Views */,
@@ -1749,7 +1663,6 @@
 				DE7842DBE585D0347C131FC6 /* Habits */,
 				8747F21EB639595EAF4FB38D /* Inbox */,
 				C2168D89F7703826CE15DD46 /* ItemDetail */,
-				2DEF80E092B53D6967771655 /* Notifications */,
 				84BBCFD843A0D30C58D3D515 /* Onboarding */,
 				40C91D7AF330C834DB484117 /* Paywall */,
 				4F446A0B45E7FEC038B88254 /* Recurrence */,
@@ -1789,13 +1702,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		F1CEDCE6415C5C8917D6DE28 /* Focus */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Focus;
-			sourceTree = "<group>";
-		};
 		F2AFEFD03F5C423D615DC811 /* Mapping */ = {
 			isa = PBXGroup;
 			children = (
@@ -1808,6 +1714,7 @@
 		F331CAC7E16E031F7BEBBEDF = {
 			isa = PBXGroup;
 			children = (
+				037E594988A2BC5063771AED /* Config */,
 				BE01922FEF74324968A7CA5F /* LEO */,
 				D90935695878F7FC0B17079F /* LEOMacTests */,
 				222F5D087E0C10BCB75B8095 /* LEOTests */,
@@ -1837,25 +1744,10 @@
 			path = Vision;
 			sourceTree = "<group>";
 		};
-		FA07404CFA13456A744CBB13 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		FA5B310351EBB4B19CF6C981 /* Features */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Features;
-			sourceTree = "<group>";
-		};
 		FE2E8622A3EA162E0DABCB5B /* PlatformMac */ = {
 			isa = PBXGroup;
 			children = (
 				799EC23E5E80554B4F8D02F3 /* Capture */,
-				1602020A966B8889F4CDCEBA /* Commands */,
 				4B20892145073A902904DBD8 /* Features */,
 				0110D7DC79C40910C66529F5 /* Services */,
 			);
@@ -1925,6 +1817,7 @@
 			buildPhases = (
 				1BF749834C03C99753F5AA1A /* Sources */,
 				04FCBD7EDC19ED83E23C38E0 /* Resources */,
+				AF25FFCEEC5D83FE14E3AFE1 /* Frameworks */,
 				8275AEDFBA1A36F6BD752EC2 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -1934,6 +1827,7 @@
 			);
 			name = LEO;
 			packageProductDependencies = (
+				FA1FC7B844F2A9C9CB77821A /* Supabase */,
 			);
 			productName = LEO;
 			productReference = DEE302472A2676B650163AF2 /* LEO.app */;
@@ -1963,6 +1857,7 @@
 			buildPhases = (
 				E3F24F362D32517F501715C8 /* Sources */,
 				D3D004E2F1D8E572081AC4D7 /* Resources */,
+				4B64E34BCEFFFC5DE4202216 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1970,6 +1865,7 @@
 			);
 			name = "LEO-Mac";
 			packageProductDependencies = (
+				D5C23F325C16CC55011E405E /* Supabase */,
 			);
 			productName = "LEO-Mac";
 			productReference = E39C1521B7B960FB167A2B0F /* LEO-Mac.app */;
@@ -2020,6 +1916,9 @@
 			);
 			mainGroup = F331CAC7E16E031F7BEBBEDF;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A077A8C2DF32428F6F2604E3 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 3265093FE201B94B1C5FDF57 /* Products */;
 			projectDirPath = "";
@@ -2091,6 +1990,7 @@
 				0A6080A673F74CE660738310 /* ChatSessionView.swift in Sources */,
 				3F423FCDFCC1822763943761 /* ClaudeClient.swift in Sources */,
 				1B54F17AA93FAD6A493E0D24 /* ClaudeModels.swift in Sources */,
+				9A5B551C5B8FD94249B8D440 /* CloudSyncView.swift in Sources */,
 				E5F37D10A4703D29A7784061 /* Completion.swift in Sources */,
 				931FA540E72196DEBB234BA8 /* CompositeParser.swift in Sources */,
 				500F3EF6735936FB5BC1983E /* ConversationStore.swift in Sources */,
@@ -2209,6 +2109,7 @@
 				93425393A1F77DA8A1858B67 /* StoredTask.swift in Sources */,
 				E66DD4E5FF1B773F483D2C04 /* StoredWorkoutItem.swift in Sources */,
 				CB29CB77146D16900351B1FA /* StreakEngine.swift in Sources */,
+				97E078FC6E8C222D51AFF22C /* SupabaseSync.swift in Sources */,
 				957F6FD0C9CB9BC7B5657D8D /* SystemPrompt.swift in Sources */,
 				F14B586D0896E49EC3FE4AFE /* Tag.swift in Sources */,
 				9A62CD1EC25A63A801AC54DA /* TagRepository.swift in Sources */,
@@ -2297,6 +2198,7 @@
 				0BD44A2DF9BA7DB9BDBC23DF /* ChatSessionView.swift in Sources */,
 				D6DCFBD2D1A7622416B51AB2 /* ClaudeClient.swift in Sources */,
 				FCBCE12D6509286D3D28FE78 /* ClaudeModels.swift in Sources */,
+				2CC412246C25904BF011DFCA /* CloudSyncView.swift in Sources */,
 				4CBA7F45AB8A550229E32829 /* Completion.swift in Sources */,
 				EED35E0DE9CDF335B8E98E3D /* CompositeParser.swift in Sources */,
 				8C2249BD2013A639AA24AE27 /* ConversationStore.swift in Sources */,
@@ -2423,6 +2325,7 @@
 				FA5400BF03E15EA27BA4C783 /* StoredTask.swift in Sources */,
 				92239C1F63D12C6BE2376F2A /* StoredWorkoutItem.swift in Sources */,
 				44E4726EFB10EA5D1125E260 /* StreakEngine.swift in Sources */,
+				BA53F7179C42FE0894ADFE60 /* SupabaseSync.swift in Sources */,
 				39D67C0EA0EF96CE8E5FD4C8 /* SystemPrompt.swift in Sources */,
 				EAFC37312C267354E363B1D3 /* Tag.swift in Sources */,
 				74EEF6DCF24D1CBF53E3760E /* TagRepository.swift in Sources */,
@@ -2623,6 +2526,7 @@
 		};
 		357B7E956B8FD4C47C18F6AB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C3CF28AEDFD369A96021E1BB /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "LEO/Resources/LEO-mac-debug.entitlements";
@@ -2685,6 +2589,7 @@
 		};
 		5AC8BB98817CF4410C5847B3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C3CF28AEDFD369A96021E1BB /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "LEO/Resources/LEO-debug.entitlements";
@@ -2706,6 +2611,7 @@
 		};
 		629693E2B4122C6096ED12D1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C3CF28AEDFD369A96021E1BB /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = LEO/Resources/LEO.entitlements;
@@ -2727,6 +2633,7 @@
 		};
 		674458EBED277E32CF6349AD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C3CF28AEDFD369A96021E1BB /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "LEO/Resources/LEO-mac.entitlements";
@@ -2909,6 +2816,30 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A077A8C2DF32428F6F2604E3 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D5C23F325C16CC55011E405E /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A077A8C2DF32428F6F2604E3 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+		FA1FC7B844F2A9C9CB77821A /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A077A8C2DF32428F6F2604E3 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B4D55EA941B5FA656D56FCE6 /* Project object */;
 }

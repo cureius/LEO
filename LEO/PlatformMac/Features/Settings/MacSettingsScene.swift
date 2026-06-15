@@ -72,9 +72,16 @@ private struct MacSyncPane: View {
     @Environment(AppEnvironment.self) private var appEnv
     @State private var syncing = false
     @State private var cloudKitDisabled = UserDefaults.standard.bool(forKey: "LEODisableCloudKitSync")
+    @State private var showCloudSync = false
 
     var body: some View {
         Form {
+            Section("Cloud Sync") {
+                Text("Sign in to sync tasks, events, habits and more across your devices in real time.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Button("Open Cloud Sync…") { showCloudSync = true }
+            }
             Section("iCloud Sync") {
                 if let token = FileManager.default.ubiquityIdentityToken {
                     Label("Signed in to iCloud", systemImage: "checkmark.icloud")
@@ -92,12 +99,14 @@ private struct MacSyncPane: View {
                         NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.appleIDPreferences")!)
                     }
                 }
+                #if DEBUG
                 Toggle("Disable CloudKit sync (debug)", isOn: $cloudKitDisabled)
                     .onChange(of: cloudKitDisabled) { _, val in
                         UserDefaults.standard.set(val, forKey: "LEODisableCloudKitSync")
                     }
+                #endif
             }
-            Section("EventKit") {
+            Section("Calendar & Reminders") {
                 Button(syncing ? "Syncing…" : "Sync calendars and reminders now") {
                     Task {
                         syncing = true
@@ -106,9 +115,27 @@ private struct MacSyncPane: View {
                     }
                 }
                 .disabled(syncing)
+                Button("Add Google / Exchange account…") {
+                    NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.InternetAccounts")!)
+                }
+                Button("Grant calendar access…") {
+                    NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Calendars")!)
+                }
             }
         }
         .formStyle(.grouped)
+        .sheet(isPresented: $showCloudSync) {
+            NavigationStack {
+                CloudSyncView()
+                    .environment(appEnv)
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("Done") { showCloudSync = false }
+                        }
+                    }
+            }
+            .frame(minWidth: 460, minHeight: 540)
+        }
     }
 }
 
@@ -175,6 +202,7 @@ private struct MacKeyboardSettingsPane: View {
         .init(label: "Habits", combo: "⌘3"),
         .init(label: "Ask LEO", combo: "⌘4"),
         .init(label: "Fitness", combo: "⌘5"),
+        .init(label: "Open History", combo: "⌘⇧H"),
         .init(label: "Complete item", combo: "⌘."),
         .init(label: "Reschedule item", combo: "⌘⇧R"),
         .init(label: "Delete item", combo: "⌘⌫"),

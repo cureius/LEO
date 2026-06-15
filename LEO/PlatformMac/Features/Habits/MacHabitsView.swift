@@ -6,33 +6,54 @@ struct MacHabitsView: View {
     @Environment(MacNavigationModel.self) private var nav
     @State private var instances: [HabitInstanceItem] = []
     @State private var showAll = false
+    @State private var showAddHabit = false
 
     var body: some View {
         Group {
             if instances.isEmpty {
-                LEOEmptyState(
-                    title: "No habits yet",
-                    message: "Habits you track will appear here.",
-                    icon: "repeat.circle"
-                )
+                VStack(spacing: 16) {
+                    LEOEmptyState(
+                        title: "No habits yet",
+                        message: "Track recurring activities to build streaks.",
+                        icon: "repeat.circle"
+                    )
+                    Button("Create Habit") { showAddHabit = true }
+                        .buttonStyle(.borderedProminent)
+                }
             } else {
                 habitsContent
             }
         }
         .navigationTitle("Habits")
         .toolbar {
-            ToolbarItem(placement: .leoTopBarLeading) {
+            ToolbarItem(placement: .leoTopBarTrailing) {
+                Button { showAddHabit = true } label: {
+                    Image(systemName: "plus")
+                }
+                .help("Create habit")
+            }
+            ToolbarItem(placement: .leoTopBarTrailing) {
                 Picker("", selection: $showAll) {
                     Text("Today").tag(false)
                     Text("All").tag(true)
                 }
                 .pickerStyle(.segmented)
                 .frame(width: 120)
+                .help("Filter habits")
             }
         }
         .task { await load() }
+        .onChange(of: showAll) { _, _ in Task { await load() } }
         .onReceive(NotificationCenter.default.publisher(for: .leoDataDidChange)) { _ in
             Task { await load() }
+        }
+        .sheet(isPresented: $showAddHabit) {
+            HabitEditView(habit: nil) { newHabit in
+                Task {
+                    try? await appEnv.habitRepository.add(newHabit)
+                    await load()
+                }
+            }
         }
     }
 
@@ -43,7 +64,23 @@ struct MacHabitsView: View {
             }
             .onTapGesture { nav.selectedItemID = instance.id }
             .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+            .contextMenu {
+                Button("Edit") { nav.selectedItemID = instance.id }
+                Divider()
+                Button(instance.isCompleted ? "Mark Incomplete" : "Complete") {
+                    Task { await toggle(instance) }
+                }
+                Button("Delete", role: .destructive) {
+                    Task { await deleteInstance(instance) }
+                }
+            }
         }
+    }
+
+    private func deleteInstance(_ instance: HabitInstanceItem) async {
+        try? await appEnv.itemRepository.delete(id: instance.id)
+        if nav.selectedItemID == instance.id { nav.selectedItemID = nil }
+        await load()
     }
 
     private func load() async {

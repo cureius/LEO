@@ -37,6 +37,7 @@ private struct ItemDetailFormView: View {
     @State private var recurrenceBuilderVM: RecurrenceBuilderViewModel = RecurrenceBuilderViewModel()
     @State private var notesEditorHeight: CGFloat = MarkdownTextEditor.minHeight
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
 
     var body: some View {
         NavigationStack {
@@ -46,14 +47,42 @@ private struct ItemDetailFormView: View {
                         .font(Theme.Typography.headline)
                 }
 
-                Section("Description") {
-                    MarkdownTextEditor(
-                        text: $vm.notes,
-                        placeholder: "Notes, links, or formatting…",
-                        dynamicHeight: $notesEditorHeight
-                    )
-                    .frame(height: notesEditorHeight)
-                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                if let url = MeetingLinkDetector.detect(notes: vm.notes, location: vm.location, title: vm.title) {
+                    Section {
+                        Button {
+                            openURL(url)
+                        } label: {
+                            Label("Join \(MeetingLinkDetector.provider(for: url))", systemImage: "video.fill")
+                                .frame(maxWidth: .infinity)
+                                .font(.system(size: 16, weight: .semibold))
+                        }
+                        .listRowBackground(Theme.Color.accent)
+                        .foregroundStyle(.white)
+                    }
+                }
+
+                if vm.originalItem is EventItem {
+                    // Synced invite notes — cleaned, read-only (Apple Calendar style).
+                    let clean = EventNotes.cleaned(vm.notes)
+                    if !clean.isEmpty {
+                        Section("Notes") {
+                            Text(clean)
+                                .font(.system(size: 15))
+                                .foregroundStyle(Theme.Color.textPrimary)
+                                .textSelection(.enabled)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                    }
+                } else {
+                    Section("Description") {
+                        MarkdownTextEditor(
+                            text: $vm.notes,
+                            placeholder: "Notes, links, or formatting…",
+                            dynamicHeight: $notesEditorHeight
+                        )
+                        .frame(height: notesEditorHeight)
+                        .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+                    }
                 }
 
                 Section("Time") {
@@ -197,50 +226,158 @@ private struct AnchorPicker: View {
     @State private var mode: AnchorMode = .untimed
 
     var body: some View {
-        VStack(spacing: Theme.Spacing.sm) {
-            Picker("Time type", selection: $mode) {
-                Text("Inbox").tag(AnchorMode.untimed)
-                Text("Due by").tag(AnchorMode.dueAt)
-                Text("Event").tag(AnchorMode.timeBlock)
-                Text("Reminder").tag(AnchorMode.point)
-            }
-            .pickerStyle(.segmented)
-            .onChange(of: mode) { _, _ in applyMode() }
-
-            switch mode {
-            case .untimed: EmptyView()
-
-            case .dueAt:
-                DatePicker("Due date", selection: $dueDate, displayedComponents: [.date, .hourAndMinute])
-                    .onChange(of: dueDate) { _, v in anchor = .dueAt(v) }
-
-            case .timeBlock:
-                // All-day toggle — same as Apple Calendar
-                Toggle("All day", isOn: $isAllDay)
-                    .onChange(of: isAllDay) { _, _ in applyMode() }
-
-                if isAllDay {
-                    DatePicker("Date", selection: $allDayDate, displayedComponents: .date)
-                        .onChange(of: allDayDate) { _, _ in applyMode() }
-                    Toggle("Multi-day", isOn: $isMultiDay)
-                        .onChange(of: isMultiDay) { _, _ in applyMode() }
-                    if isMultiDay {
-                        DatePicker("End date", selection: $allDayEndDate, in: allDayDate..., displayedComponents: .date)
-                            .onChange(of: allDayEndDate) { _, _ in applyMode() }
-                    }
-                } else {
-                    DatePicker("Start", selection: $startDate, displayedComponents: [.date, .hourAndMinute])
-                        .onChange(of: startDate) { _, _ in applyMode() }
-                    DatePicker("End", selection: $endDate, in: startDate..., displayedComponents: [.date, .hourAndMinute])
-                        .onChange(of: endDate) { _, _ in applyMode() }
+        VStack(alignment: .leading, spacing: Theme.Spacing.md) {
+            // Mode selector — icon chips
+            HStack(spacing: 6) {
+                ForEach(AnchorMode.allCases, id: \.self) { m in
+                    modeChip(m)
                 }
-
-            case .point:
-                DatePicker("Time", selection: $pointDate, displayedComponents: [.date, .hourAndMinute])
-                    .onChange(of: pointDate) { _, v in anchor = .point(v) }
             }
+            .sensoryFeedback(.selection, trigger: mode)
+
+            // Contextual pickers
+            Group {
+                switch mode {
+                case .untimed:
+                    Label("Stays in your Inbox until you give it a time.", systemImage: "tray")
+                        .font(.system(size: 13))
+                        .foregroundStyle(Theme.Color.textSecondary)
+                        .padding(.vertical, 2)
+
+                case .dueAt:
+                    pickerRow("Due", icon: "flag.fill") {
+                        DatePicker("", selection: $dueDate, displayedComponents: [.date, .hourAndMinute])
+                            .labelsHidden()
+                            .onChange(of: dueDate) { _, v in anchor = .dueAt(v) }
+                    }
+
+                case .timeBlock:
+                    toggleRow("All day", icon: "sun.max.fill", isOn: $isAllDay)
+                        .onChange(of: isAllDay) { _, _ in applyMode() }
+
+                    if isAllDay {
+                        pickerRow("Date", icon: "calendar") {
+                            DatePicker("", selection: $allDayDate, displayedComponents: .date)
+                                .labelsHidden()
+                                .onChange(of: allDayDate) { _, _ in applyMode() }
+                        }
+                        toggleRow("Multi-day", icon: "calendar.badge.plus", isOn: $isMultiDay)
+                            .onChange(of: isMultiDay) { _, _ in applyMode() }
+                        if isMultiDay {
+                            pickerRow("End", icon: "calendar") {
+                                DatePicker("", selection: $allDayEndDate, in: allDayDate..., displayedComponents: .date)
+                                    .labelsHidden()
+                                    .onChange(of: allDayEndDate) { _, _ in applyMode() }
+                            }
+                        }
+                    } else {
+                        pickerRow("Starts", icon: "play.fill") {
+                            DatePicker("", selection: $startDate, displayedComponents: [.date, .hourAndMinute])
+                                .labelsHidden()
+                                .onChange(of: startDate) { _, _ in applyMode() }
+                        }
+                        pickerRow("Ends", icon: "stop.fill") {
+                            DatePicker("", selection: $endDate, in: startDate..., displayedComponents: [.date, .hourAndMinute])
+                                .labelsHidden()
+                                .onChange(of: endDate) { _, _ in applyMode() }
+                        }
+                    }
+
+                case .point:
+                    pickerRow("Remind at", icon: "bell.fill") {
+                        DatePicker("", selection: $pointDate, displayedComponents: [.date, .hourAndMinute])
+                            .labelsHidden()
+                            .onChange(of: pointDate) { _, v in anchor = .point(v) }
+                    }
+                }
+            }
+            .tint(Theme.Color.accent)
         }
         .onAppear { syncFromAnchor() }
+    }
+
+    // MARK: - Modern picker building blocks
+
+    private func modeChip(_ m: AnchorMode) -> some View {
+        let selected = mode == m
+        return Button {
+            withAnimation(.spring(duration: 0.3, bounce: 0.2)) { mode = m }
+            applyMode()
+        } label: {
+            VStack(spacing: 4) {
+                Image(systemName: icon(for: m))
+                    .font(.system(size: 15, weight: .semibold))
+                Text(title(for: m))
+                    .font(.system(size: 11, weight: .semibold, design: .rounded))
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .foregroundStyle(selected ? Color.white : Theme.Color.textSecondary)
+            .background {
+                if selected {
+                    LinearGradient(
+                        colors: [Theme.Color.accent, Theme.Color.accent.opacity(0.8)],
+                        startPoint: .top, endPoint: .bottom
+                    )
+                } else {
+                    Theme.Color.surface
+                }
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .strokeBorder(selected ? Color.clear : Theme.Color.divider, lineWidth: 1)
+            )
+            .shadow(color: selected ? Theme.Color.accent.opacity(0.3) : .clear, radius: 6, y: 3)
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func pickerRow<Content: View>(
+        _ label: String, icon: String, @ViewBuilder content: () -> Content
+    ) -> some View {
+        HStack {
+            Label(label, systemImage: icon)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundStyle(Theme.Color.textPrimary)
+            Spacer()
+            content()
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(Theme.Color.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+    }
+
+    private func toggleRow(_ label: String, icon: String, isOn: Binding<Bool>) -> some View {
+        Toggle(isOn: isOn) {
+            Label(label, systemImage: icon)
+                .font(.system(size: 14, weight: .medium))
+                .foregroundStyle(Theme.Color.textPrimary)
+        }
+        .tint(Theme.Color.accent)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 4)
+        .background(Theme.Color.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+    }
+
+    private func title(for m: AnchorMode) -> String {
+        switch m {
+        case .untimed:   return "Inbox"
+        case .dueAt:     return "Due by"
+        case .timeBlock: return "Event"
+        case .point:     return "Reminder"
+        }
+    }
+
+    private func icon(for m: AnchorMode) -> String {
+        switch m {
+        case .untimed:   return "tray"
+        case .dueAt:     return "flag.fill"
+        case .timeBlock: return "calendar"
+        case .point:     return "bell.fill"
+        }
     }
 
     private func syncFromAnchor() {

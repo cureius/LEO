@@ -60,3 +60,6 @@ __MACOSX
 # SwiftFormat / SwiftLint cache
 .swiftformat-cache
 .swiftlint-cache
+
+# Supabase local secrets
+Config/Secrets.xcconfig

@@ -41,8 +41,8 @@ struct MacSidebar: View {
                     .foregroundStyle(selected ? Theme.Color.accent : .secondary)
                     .frame(width: 18)
                 Text(section.label)
-                    .font(.system(size: 13))
-                    .foregroundStyle(selected ? .primary : .primary)
+                    .font(.system(size: 13, weight: selected ? .semibold : .regular))
+                    .foregroundStyle(selected ? Theme.Color.accent : Color.primary)
                 Spacer()
                 if let badge, badge > 0 {
                     Text("\(badge)")
@@ -69,14 +69,12 @@ struct MacSidebar: View {
     // MARK: - Counts
 
     private func refreshCounts() async {
-        guard let items = try? await appEnv.itemRepository.fetch() else { return }
-        let cal = Calendar.current
-        let today = cal.startOfDay(for: .now)
-        let tomorrow = cal.date(byAdding: .day, value: 1, to: today)!
-        todayCount = items.filter { item in
-            guard let d = item.anchor.sortDate else { return false }
-            return d >= today && d < tomorrow && !item.isCompleted
-        }.count
-        inboxCount = items.filter { $0.anchor.isUntimed && !$0.isCompleted }.count
+        // Bug 5: targeted fetches instead of a full-table scan
+        async let todayItems = appEnv.itemRepository.fetch(predicate: .onDay(.now))
+        async let inboxItems = appEnv.itemRepository.fetch(predicate: .untimed)
+        let (todayResult, inboxResult) = await (try? todayItems, try? inboxItems)
+        // Bug 9: exclude HabitInstanceItem — those render in Habits, not Today
+        todayCount = (todayResult ?? []).filter { !($0 is HabitInstanceItem) && !$0.isCompleted }.count
+        inboxCount = (inboxResult ?? []).filter { !$0.isCompleted }.count
     }
 }

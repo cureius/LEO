@@ -7,7 +7,6 @@ struct InboxView: View {
     @State private var isLoading = false
     @State private var error: String? = nil
     @State private var selectedItemID: UUID? = nil
-    @State private var showAddTask = false
     @State private var captureText = ""
     @State private var isSavingCapture = false
     @State private var sort: InboxSort = .priority
@@ -46,35 +45,35 @@ struct InboxView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                captureRow
+            VStack(spacing: 0) {
+                inboxHeader
 
-                if allItems.isEmpty {
-                    emptyStateSection
-                } else if sort == .priority {
-                    priorityGroupedSections
-                } else {
-                    flatSection
+                List {
+                    if allItems.isEmpty {
+                        emptyStateSection
+                    } else if sort == .priority {
+                        priorityGroupedSections
+                    } else {
+                        flatSection
+                    }
                 }
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
+                .contentMargins(.top, 6, for: .scrollContent)
+                .refreshable { await loadItems() }
             }
-            .listStyle(.plain)
-            .scrollContentBackground(.hidden)
             .background(Theme.Color.background)
-            .navigationTitle("Inbox")
-            .toolbar { toolbarContent }
-            .overlay(alignment: .bottom) {
+            #if os(iOS)
+            .navigationBarHidden(true)
+            #endif
+            .safeAreaInset(edge: .bottom) { captureBar }
+            .overlay(alignment: .top) {
                 if let msg = error {
                     ErrorBanner(message: msg, retry: { Task { await loadItems() } })
                         .padding(Theme.Spacing.lg)
                 }
             }
             #if os(iOS)
-            .sheet(isPresented: $showAddTask) {
-                ItemDetailSheet(item: nil, onSave: { _ in
-                    showAddTask = false
-                    Task { await loadItems() }
-                })
-            }
             .sheet(isPresented: Binding(
                 get: { selectedItemID != nil },
                 set: { if !$0 { selectedItemID = nil } }
@@ -94,7 +93,6 @@ struct InboxView: View {
                     }
                 }
             }
-            .refreshable { await loadItems() }
         }
         .task { await loadItems() }
         .onReceive(NotificationCenter.default.publisher(for: .leoDataDidChange)) { _ in
@@ -102,69 +100,102 @@ struct InboxView: View {
         }
     }
 
-    // MARK: - Toolbar
+    // MARK: - Docked capture bar (bottom, one-handed)
 
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .leoTopBarLeading) {
-            if !allItems.isEmpty {
-                Text("\(allItems.count)")
-                    .font(Theme.Typography.caption)
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .background(Theme.Color.accent)
-                    .clipShape(Capsule())
-            }
-        }
-        ToolbarItem(placement: .leoTopBarTrailing) {
-            HStack(spacing: 14) {
-                Menu {
-                    ForEach(InboxSort.allCases, id: \.self) { s in
-                        Button {
-                            withAnimation { sort = s }
-                        } label: {
-                            Label(s.rawValue, systemImage: sort == s ? "checkmark" : "")
-                        }
+    private var captureBar: some View {
+        VStack(spacing: 0) {
+            Divider().overlay(Theme.Color.divider)
+            HStack(spacing: 10) {
+                Image(systemName: "plus.circle.fill")
+                    .font(.system(size: 22))
+                    .foregroundStyle(Theme.Color.accent)
+
+                TextField("Capture a task…", text: $captureText)
+                    .font(.system(size: 16))
+                    .submitLabel(.done)
+                    .onSubmit { Task { await captureTask() } }
+
+                if !captureText.isEmpty {
+                    Button { Task { await captureTask() } } label: {
+                        Image(systemName: isSavingCapture ? "circle.dashed" : "arrow.up.circle.fill")
+                            .font(.system(size: 26))
+                            .foregroundStyle(isSavingCapture ? Theme.Color.textSecondary : Theme.Color.accent)
                     }
-                } label: {
-                    Image(systemName: "arrow.up.arrow.down")
-                        .foregroundStyle(Theme.Color.textSecondary)
-                }
-
-                Button { showAddTask = true } label: {
-                    Image(systemName: "plus")
+                    .buttonStyle(.plain)
+                    .disabled(isSavingCapture)
+                    .transition(.scale.combined(with: .opacity))
                 }
             }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 11)
+            .background(Theme.Color.surface)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .strokeBorder(Theme.Color.divider, lineWidth: 1)
+            )
+            .shadow(color: .black.opacity(0.06), radius: 8, y: -2)
+            .padding(.horizontal, 16)
+            .padding(.top, 8)
+            .padding(.bottom, 6)
+            .animation(.easeInOut(duration: 0.15), value: captureText.isEmpty)
+            .sensoryFeedback(.success, trigger: isSavingCapture) { old, new in old && !new }
         }
+        .background(Theme.Color.background)
     }
 
-    // MARK: - Quick capture row
+    // MARK: - Header (title + count + inline sort)
 
-    private var captureRow: some View {
-        HStack(spacing: 10) {
-            Image(systemName: "plus.circle.fill")
-                .font(.system(size: 20))
-                .foregroundStyle(Theme.Color.accent)
+    private var urgentCount: Int { allItems.filter { $0.importance == .urgent }.count }
 
-            TextField("Capture a task…", text: $captureText)
-                .font(.system(size: 15))
-                .submitLabel(.done)
-                .onSubmit { Task { await captureTask() } }
-
-            if !captureText.isEmpty {
-                Button { Task { await captureTask() } } label: {
-                    Image(systemName: isSavingCapture ? "circle.dashed" : "arrow.up.circle.fill")
-                        .font(.system(size: 20))
-                        .foregroundStyle(isSavingCapture ? Theme.Color.textSecondary : Theme.Color.accent)
+    private var inboxHeader: some View {
+        HStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Inbox")
+                    .font(.system(size: 30, weight: .heavy, design: .rounded))
+                    .foregroundStyle(Theme.Color.textPrimary)
+                if !allItems.isEmpty {
+                    HStack(spacing: 5) {
+                        Text("\(allItems.count) " + (allItems.count == 1 ? "task" : "tasks"))
+                            .foregroundStyle(Theme.Color.textSecondary)
+                        if urgentCount > 0 {
+                            Text("·").foregroundStyle(Theme.Color.textSecondary.opacity(0.5))
+                            Text("\(urgentCount) urgent").foregroundStyle(Theme.Color.danger)
+                        }
+                    }
+                    .font(.system(size: 13, weight: .semibold, design: .rounded))
                 }
-                .buttonStyle(.plain)
-                .disabled(isSavingCapture)
             }
+            Spacer()
+            if !allItems.isEmpty { sortMenu }
         }
-        .padding(.vertical, 6)
-        .listRowBackground(Theme.Color.surface)
-        .listRowSeparatorTint(Theme.Color.divider)
+        .padding(.horizontal, 18)
+        .padding(.top, 10)
+        .padding(.bottom, 10)
+    }
+
+    private var sortMenu: some View {
+        Menu {
+            ForEach(InboxSort.allCases, id: \.self) { s in
+                Button {
+                    withAnimation { sort = s }
+                } label: {
+                    Label(s.rawValue, systemImage: sort == s ? "checkmark" : "")
+                }
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Image(systemName: "arrow.up.arrow.down")
+                    .font(.system(size: 11, weight: .bold))
+                Text(sort.rawValue)
+                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+            }
+            .foregroundStyle(Theme.Color.accent)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .background(Theme.Color.accent.opacity(0.12))
+            .clipShape(Capsule())
+        }
     }
 
     // MARK: - Empty state
@@ -172,22 +203,28 @@ struct InboxView: View {
     @ViewBuilder
     private var emptyStateSection: some View {
         Section {
-            VStack(spacing: 14) {
-                Image(systemName: "tray")
-                    .font(.system(size: 42))
-                    .foregroundStyle(Theme.Color.textSecondary.opacity(0.35))
+            VStack(spacing: 16) {
+                ZStack {
+                    Circle()
+                        .fill(Theme.Color.accent.opacity(0.1))
+                        .frame(width: 88, height: 88)
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 36, weight: .bold))
+                        .foregroundStyle(Theme.Color.accent)
+                }
                 VStack(spacing: 6) {
-                    Text("Inbox is clear")
-                        .font(.system(size: 17, weight: .semibold))
+                    Text("Inbox Zero")
+                        .font(.system(size: 20, weight: .bold, design: .rounded))
                         .foregroundStyle(Theme.Color.textPrimary)
-                    Text("Type above to quickly capture a task, or tap + for full details.")
+                    Text("Nothing to triage. Capture a new task from the box below.")
                         .font(.system(size: 14))
                         .foregroundStyle(Theme.Color.textSecondary)
                         .multilineTextAlignment(.center)
+                        .padding(.horizontal, 32)
                 }
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 48)
+            .padding(.top, 64)
             .listRowBackground(Color.clear)
             .listRowSeparator(.hidden)
         }
@@ -256,8 +293,9 @@ struct InboxView: View {
             }
             .tint(Theme.Color.success)
         }
-        .listRowBackground(Theme.Color.background)
-        .listRowSeparatorTint(Theme.Color.divider)
+        .listRowBackground(Color.clear)
+        .listRowSeparator(.hidden)
+        .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
     }
 
     // MARK: - Actions
@@ -337,37 +375,35 @@ private struct InboxItemRow: View {
     let onPickDate: () -> Void
     let onSetPriority: (Importance) -> Void
 
+    /// Accent color for the leading stripe — only urgent/high get a visible bar.
+    private var stripeColor: Color {
+        switch item.importance {
+        case .urgent: return Theme.Color.danger
+        case .high:   return Theme.Color.warning
+        default:      return .clear
+        }
+    }
+
     var body: some View {
         HStack(spacing: 12) {
             // Completion toggle
             Button(action: onComplete) {
                 Image(systemName: item.isCompleted ? "checkmark.circle.fill" : "circle")
-                    .font(.system(size: 22))
+                    .font(.system(size: 23))
                     .foregroundStyle(
-                        item.isCompleted ? Theme.Color.success : Theme.Color.textSecondary.opacity(0.35)
+                        item.isCompleted ? Theme.Color.success : Theme.Color.textSecondary.opacity(0.4)
                     )
-                    .contentShape(Circle().scale(1.3))
+                    .contentShape(Circle().scale(1.4))
             }
             .buttonStyle(.plain)
 
             // Text content
             VStack(alignment: .leading, spacing: 3) {
-                HStack(spacing: 5) {
-                    if item.importance == .urgent {
-                        Image(systemName: "exclamationmark.2")
-                            .font(.system(size: 10, weight: .bold))
-                            .foregroundStyle(Theme.Color.danger)
-                    } else if item.importance == .high {
-                        Image(systemName: "exclamationmark")
-                            .font(.system(size: 10, weight: .bold))
-                            .foregroundStyle(Theme.Color.warning)
-                    }
-                    Text(item.title)
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundStyle(item.isCompleted ? Theme.Color.textSecondary : Theme.Color.textPrimary)
-                        .strikethrough(item.isCompleted, color: Theme.Color.textSecondary)
-                        .lineLimit(2)
-                }
+                Text(item.title)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(item.isCompleted ? Theme.Color.textSecondary : Theme.Color.textPrimary)
+                    .strikethrough(item.isCompleted, color: Theme.Color.textSecondary)
+                    .lineLimit(2)
                 if let notes = item.notes, !notes.isEmpty {
                     Text(notes)
                         .font(.system(size: 12))
@@ -375,17 +411,31 @@ private struct InboxItemRow: View {
                         .lineLimit(1)
                 }
                 Text(item.createdAt.formatted(.relative(presentation: .named)))
-                    .font(.system(size: 11))
+                    .font(.system(size: 11, weight: .medium))
                     .foregroundStyle(Theme.Color.textSecondary.opacity(0.6))
             }
 
             Spacer(minLength: 0)
 
             Image(systemName: "chevron.right")
-                .font(.system(size: 12, weight: .medium))
-                .foregroundStyle(Theme.Color.textSecondary.opacity(0.3))
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundStyle(Theme.Color.textSecondary.opacity(0.35))
         }
-        .padding(.vertical, 6)
+        .padding(.vertical, 12)
+        .padding(.horizontal, 14)
+        .background(
+            ZStack(alignment: .leading) {
+                Theme.Color.surface
+                Rectangle()
+                    .fill(stripeColor)
+                    .frame(width: 4)
+            }
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .strokeBorder(Theme.Color.divider, lineWidth: 0.5)
+        )
         .contentShape(Rectangle())
         .onTapGesture { onEdit() }
         .contextMenu {
@@ -427,23 +477,27 @@ private struct PriorityHeader: View {
     let count: Int
 
     var body: some View {
-        HStack(spacing: 6) {
-            Image(systemName: importance.systemImage)
-                .font(.system(size: 11, weight: .semibold))
-                .foregroundStyle(headerColor)
+        HStack(spacing: 8) {
+            Capsule()
+                .fill(headerColor)
+                .frame(width: 3, height: 13)
             Text(importance.displayName.uppercased())
-                .font(.system(size: 11, weight: .semibold))
+                .font(.system(size: 12, weight: .bold, design: .rounded))
                 .foregroundStyle(headerColor)
-                .tracking(0.5)
-            Spacer()
+                .tracking(0.6)
             Text("\(count)")
-                .font(.system(size: 11, weight: .medium))
-                .foregroundStyle(Theme.Color.textSecondary.opacity(0.6))
-                .padding(.horizontal, 6)
-                .padding(.vertical, 2)
-                .background(Theme.Color.surface)
+                .font(.system(size: 11, weight: .bold, design: .rounded))
+                .foregroundStyle(headerColor.opacity(0.9))
+                .padding(.horizontal, 7)
+                .padding(.vertical, 1)
+                .background(headerColor.opacity(0.14))
                 .clipShape(Capsule())
+            Spacer()
         }
+        .padding(.vertical, 2)
+        .padding(.leading, 2)
+        .listRowInsets(EdgeInsets(top: 10, leading: 16, bottom: 4, trailing: 16))
+        .listRowBackground(Color.clear)
     }
 
     private var headerColor: Color {

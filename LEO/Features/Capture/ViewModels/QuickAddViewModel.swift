@@ -33,7 +33,7 @@ final class QuickAddViewModel {
         parseState = .parsing
         debounceTask = Task { [weak self, text] in
             guard let self else { return }
-            try? await Task.sleep(for: .milliseconds(250))
+            try? await Task.sleep(for: .milliseconds(300))
             guard !Task.isCancelled else { return }
             let result = await self.parser.parse(text)
             self.parseState = .parsed(result)

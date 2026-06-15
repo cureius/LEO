@@ -23,13 +23,15 @@ struct CalendarSettingsView: View {
                     Text(authStatus)
                         .foregroundStyle(Theme.Color.warning)
                         .font(.caption)
+                    Button("Open Privacy Settings") { openCalendarPrivacySettings() }
+                        .font(.caption)
                 }
             }
 
-            // Add-account section — deep links to iOS Settings → Calendar → Accounts
+            // Add-account section
             Section {
                 Button {
-                    openIOSCalendarSettings()
+                    openAddAccountSettings()
                 } label: {
                     HStack(spacing: 12) {
                         Image(systemName: "person.crop.circle.badge.plus")
@@ -39,9 +41,15 @@ struct CalendarSettingsView: View {
                             Text("Add Google or other account")
                                 .font(Theme.Typography.body.weight(.semibold))
                                 .foregroundStyle(Theme.Color.textPrimary)
+                            #if os(iOS)
                             Text("Opens iOS Settings → Calendar → Accounts. Then come back to enable the new calendars below.")
                                 .font(.caption)
                                 .foregroundStyle(Theme.Color.textSecondary)
+                            #else
+                            Text("Opens System Settings → Internet Accounts. Add Google, Exchange, or other CalDAV accounts, then come back to enable them below.")
+                                .font(.caption)
+                                .foregroundStyle(Theme.Color.textSecondary)
+                            #endif
                         }
                         Spacer()
                         Image(systemName: "arrow.up.right.square")
@@ -176,8 +184,29 @@ struct CalendarSettingsView: View {
 
     private func loadCalendars() async {
         let bridge = appEnv.eventKitBridge
-        let eventsStatus = await bridge.requestEventsAccess()
-        let remindersStatus = await bridge.requestRemindersAccess()
+
+        // Request access on the main actor using the completion-based API.
+        // requestFullAccessToEvents() silently fails on macOS 26; requestAccess(to:)
+        // reliably creates the TCC entry and shows the system dialog.
+        #if os(macOS)
+        let permStore = EKEventStore()
+        if EKEventStore.authorizationStatus(for: .event) != .fullAccess {
+            await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+                permStore.requestAccess(to: .event) { _, _ in cont.resume() }
+            }
+        }
+        if EKEventStore.authorizationStatus(for: .reminder) != .fullAccess {
+            await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+                permStore.requestAccess(to: .reminder) { _, _ in cont.resume() }
+            }
+        }
+        #else
+        _ = await bridge.requestEventsAccess()
+        _ = await bridge.requestRemindersAccess()
+        #endif
+
+        let eventsStatus = EKEventStore.authorizationStatus(for: .event)
+        let remindersStatus = EKEventStore.authorizationStatus(for: .reminder)
 
         if eventsStatus != .fullAccess && remindersStatus != .fullAccess {
             authStatus = "Calendar and Reminders access not granted. Go to Settings to enable."
@@ -189,7 +218,7 @@ struct CalendarSettingsView: View {
             authStatus = ""
         }
 
-        // Ask iOS to pull latest from CalDAV (Google, iCloud) so newly-added accounts show up.
+        // Ask the system to pull latest from CalDAV (Google, iCloud) so newly-added accounts show up.
         await bridge.refreshSources()
         calendarGroups = await bridge.calendarsGroupedBySource()
         reminderLists = await bridge.availableReminderLists()
@@ -236,7 +265,20 @@ struct CalendarSettingsView: View {
         }
     }
 
-    private func openIOSCalendarSettings() {
+    /// Opens the right place to ADD a new Google / Exchange / CalDAV account.
+    private func openAddAccountSettings() {
+        #if os(iOS)
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(url)
+        }
+        #else
+        // Internet Accounts — where users add Google, Exchange, iCloud, etc. on Mac
+        NSWorkspace.shared.open(URL(string: "x-apple.systempreferences:com.apple.InternetAccounts")!)
+        #endif
+    }
+
+    /// Opens the right place to GRANT calendar/reminders privacy access.
+    private func openCalendarPrivacySettings() {
         #if os(iOS)
         if let url = URL(string: UIApplication.openSettingsURLString) {
             UIApplication.shared.open(url)

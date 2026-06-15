@@ -139,6 +139,9 @@ struct BodyProfileFormView: View {
     var body: some View {
         NavigationStack {
             Form {
+                #if os(macOS)
+                Section { Button("Cancel") { dismiss() } }
+                #endif
                 Section("Body metrics") {
                     HStack {
                         Text("Height")

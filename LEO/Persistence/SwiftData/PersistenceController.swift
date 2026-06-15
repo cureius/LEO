@@ -23,12 +23,24 @@ final class PersistenceController {
 
         do {
             container = try Self.makeContainer(schema: schema, useInMemory: useInMemory, cloudKit: ckEnabled)
-            logger.info("PersistenceController ready")
+            logger.info("PersistenceController ready (cloudKit=\(ckEnabled))")
         } catch {
+            // CloudKit init can fail on personal developer teams that lack the iCloud
+            // capability entitlement. Retry without CloudKit before touching the store.
+            if ckEnabled {
+                logger.warning("CloudKit container init failed, retrying without CloudKit: \(error)")
+                do {
+                    container = try Self.makeContainer(schema: schema, useInMemory: useInMemory, cloudKit: false)
+                    logger.warning("PersistenceController running without CloudKit sync")
+                    return
+                } catch {
+                    logger.fault("Local-only container init also failed: \(error)")
+                }
+            }
             logger.fault("ModelContainer init failed: \(error) — attempting store reset")
             do {
                 try Self.deleteOnDiskStore()
-                container = try Self.makeContainer(schema: schema, useInMemory: false, cloudKit: ckEnabled)
+                container = try Self.makeContainer(schema: schema, useInMemory: false, cloudKit: false)
                 logger.warning("Store was reset after migration failure")
             } catch {
                 logger.fault("Store reset also failed: \(error) — falling back to in-memory")

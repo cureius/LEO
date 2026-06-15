@@ -19,7 +19,11 @@ struct MacQuickAddView: View {
                     .textFieldStyle(.plain)
                     .focused($focused)
                     .onSubmit {
-                        Task { _ = await vm.submit(); onCommit?() }
+                        Task {
+                            _ = await vm.submit()
+                            vm.text = ""  // Bug 12: clear unconditionally on any submit attempt
+                            onCommit?()
+                        }
                     }
 
                 if let summary = vm.parsedSummary {
@@ -35,7 +39,11 @@ struct MacQuickAddView: View {
 
                 if !vm.text.isEmpty {
                     Button {
-                        Task { _ = await vm.submit(); onCommit?() }
+                        Task {
+                            _ = await vm.submit()
+                            vm.text = ""
+                            onCommit?()
+                        }
                     } label: {
                         Image(systemName: "arrow.right.circle.fill")
                             .foregroundStyle(Theme.Color.accent)

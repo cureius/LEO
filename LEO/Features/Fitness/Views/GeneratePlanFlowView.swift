@@ -21,6 +21,12 @@ struct GeneratePlanFlowView: View {
     var body: some View {
         NavigationStack {
             content
+                #if os(macOS)
+                .overlay(alignment: .topTrailing) {
+                    Button("Close") { dismiss() }
+                        .padding(12)
+                }
+                #endif
                 .navigationTitle(navTitle)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {

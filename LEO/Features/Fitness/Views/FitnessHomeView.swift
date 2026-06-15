@@ -528,6 +528,9 @@ private struct AddMeasurementSheet: View {
     var body: some View {
         NavigationStack {
             Form {
+                #if os(macOS)
+                Section { Button("Cancel") { dismiss() } }
+                #endif
                 Section("Weight (kg)") {
                     TextField("e.g. 75.5", text: $weightText)
                         .keyboardType(.decimalPad)

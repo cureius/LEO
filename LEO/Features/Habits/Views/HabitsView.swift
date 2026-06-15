@@ -109,28 +109,36 @@ struct HabitsView: View {
                 SectionLabel("All Habits")
                     .padding(.top, 8)
 
-                ForEach(activeHabits) { habit in
-                    NavigationLink {
-                        HabitDetailView(
-                            habit: habit,
-                            instances: instancesByHabit[habit.id] ?? [],
-                            streak: streakState(for: habit),
-                            onComplete: { Task { await completeToday(habit: habit) } }
-                        )
-                    } label: {
-                        HabitListRow(
-                            habit: habit,
-                            streak: streakState(for: habit),
-                            instances: instancesByHabit[habit.id] ?? [],
-                            completedToday: todayCompleted(for: habit)
-                        )
-                        .padding(.horizontal)
-                        .padding(.vertical, 10)
+                VStack(spacing: 10) {
+                    ForEach(activeHabits) { habit in
+                        NavigationLink {
+                            HabitDetailView(
+                                habit: habit,
+                                instances: instancesByHabit[habit.id] ?? [],
+                                streak: streakState(for: habit),
+                                onComplete: { Task { await completeToday(habit: habit) } },
+                                onDelete: { Task { await deleteHabit(habit) } }
+                            )
+                        } label: {
+                            HabitListRow(
+                                habit: habit,
+                                streak: streakState(for: habit),
+                                instances: instancesByHabit[habit.id] ?? [],
+                                completedToday: todayCompleted(for: habit)
+                            )
+                            .leoCard()
+                        }
+                        .buttonStyle(.plain)
+                        .contextMenu {
+                            Button(role: .destructive) {
+                                Task { await deleteHabit(habit) }
+                            } label: {
+                                Label("Delete Habit", systemImage: "trash")
+                            }
+                        }
                     }
-                    .buttonStyle(.plain)
-
-                    Divider().padding(.leading)
                 }
+                .padding(.horizontal)
 
                 Spacer().frame(height: 32)
             }
@@ -218,6 +226,11 @@ struct HabitsView: View {
             try? await appEnv.habitRepository.addInstance(newInstance)
         }
 
+        await loadData()
+    }
+
+    private func deleteHabit(_ habit: Habit) async {
+        try? await appEnv.habitRepository.delete(id: habit.id)
         await loadData()
     }
 
@@ -602,8 +615,10 @@ struct HabitDetailView: View {
     let instances: [HabitInstanceItem]
     let streak: StreakState
     let onComplete: () -> Void
+    var onDelete: () -> Void = {}
 
     @Environment(\.dismiss) private var dismiss
+    @State private var showDeleteConfirm = false
 
     private var completedToday: Bool {
         instances.contains {
@@ -641,12 +656,52 @@ struct HabitDetailView: View {
 
                 // Heatmap
                 heatmapSection
+
+                // Delete
+                deleteButton
             }
             .padding()
         }
         .navigationTitle(habit.name)
         .navigationBarTitleDisplayMode(.large)
         .background(Theme.Color.background)
+        .toolbar {
+            ToolbarItem(placement: .leoTopBarTrailing) {
+                Button(role: .destructive) { showDeleteConfirm = true } label: {
+                    Image(systemName: "trash")
+                }
+            }
+        }
+        .confirmationDialog(
+            "Delete “\(habit.name)”?",
+            isPresented: $showDeleteConfirm,
+            titleVisibility: .visible
+        ) {
+            Button("Delete Habit", role: .destructive) {
+                onDelete()
+                dismiss()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This permanently removes the habit and its entire history. This can’t be undone.")
+        }
+    }
+
+    private var deleteButton: some View {
+        Button(role: .destructive) {
+            showDeleteConfirm = true
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "trash")
+                Text("Delete Habit")
+                    .font(.system(size: 16, weight: .semibold))
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+            .background(Theme.Color.danger.opacity(0.1))
+            .foregroundStyle(Theme.Color.danger)
+            .clipShape(RoundedRectangle(cornerRadius: Theme.Radius.md))
+        }
     }
 
     // MARK: - Sections

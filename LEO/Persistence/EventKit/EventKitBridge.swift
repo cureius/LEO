@@ -219,7 +219,11 @@ actor EventKitBridge {
 
         let existingEventItems = existingItems.compactMap { $0 as? EventItem }
         for ekEvent in ekEvents {
-            let eid = ekEvent.eventIdentifier ?? ""
+            // Recurring events return one EKEvent per occurrence, but every
+            // occurrence shares the same `eventIdentifier`. Keying solely on that
+            // collapses a whole series into a single LEO item, so we qualify the
+            // identifier with the occurrence's start time (mirrors reminder sync).
+            let eid = externalID(for: ekEvent)
             if existingExternalIDs.contains(eid) {
                 // EventKit is source of truth — always overwrite scheduling data.
                 // Preserve LEO-only fields: id, createdAt, importance, completion, tags.
@@ -232,7 +236,7 @@ actor EventKitBridge {
                         importance: existing.importance, anchor: fromEK.anchor,
                         completion: existing.completion, tags: existing.tags,
                         location: fromEK.location, attendees: fromEK.attendees,
-                        externalRef: fromEK.externalRef
+                        externalRef: ExternalRef(source: .eventKit, identifier: eid)
                     )
                     // Skip write if nothing changed (title + anchor are the likely diffs)
                     if merged.title != existing.title
@@ -244,14 +248,15 @@ actor EventKitBridge {
                     }
                 }
             } else {
-                let item = EventItem(from: ekEvent)
+                var item = EventItem(from: ekEvent)
+                item.externalRef = ExternalRef(source: .eventKit, identifier: eid)
                 try await itemRepository.add(item)
                 report.imported += 1
             }
         }
 
         // Remove items whose external events no longer exist
-        let activeEKIDs = Set(ekEvents.compactMap(\.eventIdentifier))
+        let activeEKIDs = Set(ekEvents.map { externalID(for: $0) })
         let toRemove = existingItems.compactMap { $0 as? EventItem }
             .filter { item -> Bool in
                 guard let ref = item.externalRef, ref.source == .eventKit else { return false }
@@ -263,6 +268,17 @@ actor EventKitBridge {
         }
 
         return report
+    }
+
+    /// Stable external identifier for an EKEvent.
+    /// For recurring events EventKit reuses one `eventIdentifier` across every
+    /// occurrence, so we qualify it with the occurrence start time to keep each
+    /// occurrence distinct. Non-recurring events keep their plain identifier so
+    /// previously-synced items aren't re-imported as duplicates.
+    private func externalID(for ekEvent: EKEvent) -> String {
+        let base = ekEvent.eventIdentifier ?? ""
+        guard ekEvent.hasRecurrenceRules, let start = ekEvent.startDate else { return base }
+        return "\(base)/\(occurrenceKey(for: start))"
     }
 
     // MARK: - Private: reminder sync

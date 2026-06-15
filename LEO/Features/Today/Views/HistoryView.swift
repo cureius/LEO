@@ -3,6 +3,7 @@ import SwiftUI
 /// Shows all completed items grouped by day, in reverse chronological order.
 struct HistoryView: View {
     @Environment(AppEnvironment.self) private var appEnv
+    @Environment(\.dismiss) private var dismiss
     @State private var grouped: [(day: Date, items: [any Item])] = []
     @State private var isLoading = false
 
@@ -24,6 +25,7 @@ struct HistoryView: View {
                             Section(header: DayHeader(date: section.day, count: section.items.count)) {
                                 ForEach(section.items, id: \.id) { item in
                                     HistoryRow(item: item)
+                                        #if os(iOS)
                                         .swipeActions(edge: .leading) {
                                             Button {
                                                 Task { await reopen(item) }
@@ -32,6 +34,7 @@ struct HistoryView: View {
                                             }
                                             .tint(Theme.Color.accent)
                                         }
+                                        #endif
                                         .contextMenu {
                                             Button("Mark incomplete", systemImage: "arrow.uturn.backward.circle") {
                                                 Task { await reopen(item) }
@@ -43,14 +46,33 @@ struct HistoryView: View {
                     }
                     #if os(iOS)
                     .listStyle(.insetGrouped)
+                    .refreshable { await load() }
                     #else
                     .listStyle(.inset)
                     #endif
                 }
             }
             .navigationTitle("History")
+            #if os(iOS)
             .navigationBarTitleDisplayMode(.large)
-            .refreshable { await load() }
+            #endif
+            .toolbar {
+                #if os(macOS)
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Close") { dismiss() }
+                        .keyboardShortcut(.escape, modifiers: [])
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        Task { await load() }
+                    } label: {
+                        Image(systemName: "arrow.clockwise")
+                    }
+                    .help("Refresh history")
+                    .disabled(isLoading)
+                }
+                #endif
+            }
         }
         .task { await load() }
     }
@@ -78,7 +100,6 @@ struct HistoryView: View {
         let all = (try? await appEnv.itemRepository.fetch(predicate: .inDateInterval(window))) ?? []
         let completed = all.filter(\.isCompleted)
 
-        // Group by the item's scheduled day (anchor date)
         let cal = Calendar.current
         var byDay = [Date: [any Item]]()
         for item in completed {
@@ -93,7 +114,6 @@ struct HistoryView: View {
             byDay[day, default: []].append(item)
         }
 
-        // Sort each day's items by anchor time, sort days newest first
         grouped = byDay
             .map { day, items in
                 let sorted = items.sorted {
@@ -138,7 +158,6 @@ private struct HistoryRow: View {
 
     var body: some View {
         HStack(spacing: Theme.Spacing.md) {
-            // Type + completion indicator
             ZStack {
                 Circle()
                     .fill(typeColor.opacity(0.12))
@@ -186,21 +205,21 @@ private struct HistoryRow: View {
 
     private var typeName: String {
         switch item {
-        case is EventItem:    return "Event"
-        case is ReminderItem: return "Reminder"
-        case is AlarmItem:    return "Alarm"
+        case is EventItem:         return "Event"
+        case is ReminderItem:      return "Reminder"
+        case is AlarmItem:         return "Alarm"
         case is HabitInstanceItem: return "Habit"
-        default:              return "Task"
+        default:                   return "Task"
         }
     }
 
     private var typeColor: Color {
         switch item {
-        case is EventItem:    return Theme.Color.accent
-        case is ReminderItem: return Theme.Color.success
-        case is AlarmItem:    return Theme.Color.danger
+        case is EventItem:         return Theme.Color.accent
+        case is ReminderItem:      return Theme.Color.success
+        case is AlarmItem:         return Theme.Color.danger
         case is HabitInstanceItem: return Theme.Color.warning
-        default:              return Theme.Color.textSecondary
+        default:                   return Theme.Color.textSecondary
         }
     }
 

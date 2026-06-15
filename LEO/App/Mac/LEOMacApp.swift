@@ -1,11 +1,13 @@
 import SwiftUI
 import SwiftData
+import EventKit
 import OSLog
 
 private let logger = Logger(subsystem: "com.theblueman.leo.mac", category: "app")
 
 @main
 struct LEOMacApp: App {
+    @Environment(\.scenePhase) private var scenePhase
     @State private var appEnvironment: AppEnvironment? = nil
     @State private var hotkeyManager = GlobalHotkeyManager()
     @State private var captureWindowController = FloatingCaptureWindowController()
@@ -28,6 +30,10 @@ struct LEOMacApp: App {
         .windowToolbarStyle(.unified)
         .commands {
             MacCommands()
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            guard newPhase == .active, let env = appEnvironment else { return }
+            Task { await env.calendarSyncCoordinator.syncOnForeground() }
         }
 
         // MenuBar status + capture
@@ -70,6 +76,13 @@ struct LEOMacApp: App {
             await env.notificationManager.sync(for: items)
         }
 
+        // Request calendar/reminder access on the main actor.
+        // EKEventStore.requestFullAccessToEvents/Reminders must run on the main thread
+        // on macOS to trigger the system permission dialog. Routing through the
+        // EventKitBridge actor (which uses a background executor) silently skips
+        // the dialog — the app never appears in System Settings → Calendars.
+        await requestCalendarAccess()
+
         let savedCalIDs = Set(UserDefaults.standard.stringArray(forKey: "ek_subscribed_calendar_ids") ?? [])
         let savedRemIDs = Set(UserDefaults.standard.stringArray(forKey: "ek_subscribed_reminder_list_ids") ?? [])
         await env.eventKitBridge.subscribe(calendarIDs: savedCalIDs, reminderListIDs: savedRemIDs)
@@ -105,6 +118,32 @@ struct LEOMacApp: App {
             logger.info("leoDataDidChange → re-syncing \(items.count) items")
             await env.notificationManager.sync(for: items)
         }
+    }
+
+    /// Requests calendar and reminder access on the main actor.
+    /// Uses the completion-based requestAccess(to:) — more reliable than
+    /// requestFullAccessToEvents() on macOS 26 where the async variant silently
+    /// fails to create a TCC entry.
+    @MainActor
+    private func requestCalendarAccess() async {
+        let store = EKEventStore()
+        if EKEventStore.authorizationStatus(for: .event) != .fullAccess {
+            await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+                store.requestAccess(to: .event) { granted, error in
+                    logger.info("Calendar access result: granted=\(granted), error=\(String(describing: error))")
+                    cont.resume()
+                }
+            }
+        }
+        if EKEventStore.authorizationStatus(for: .reminder) != .fullAccess {
+            await withCheckedContinuation { (cont: CheckedContinuation<Void, Never>) in
+                store.requestAccess(to: .reminder) { granted, error in
+                    logger.info("Reminders access result: granted=\(granted), error=\(String(describing: error))")
+                    cont.resume()
+                }
+            }
+        }
+        logger.info("Post-request: calendar=\(EKEventStore.authorizationStatus(for: .event).rawValue) reminders=\(EKEventStore.authorizationStatus(for: .reminder).rawValue)")
     }
 
     private var loadingView: some View {

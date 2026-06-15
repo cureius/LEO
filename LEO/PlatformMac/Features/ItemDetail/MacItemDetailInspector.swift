@@ -23,10 +23,17 @@ struct MacItemDetailInspector: View {
         }
         .frame(minWidth: 280, idealWidth: 320)
         .onChange(of: nav.selectedItemID) { _, newID in
+            vm = nil  // Bug 4: synchronously clear to prevent flash of prior item
             Task { await loadItem(id: newID) }
         }
         .onAppear {
             Task { await loadItem(id: nav.selectedItemID) }
+        }
+        .onDisappear {
+            // Bug 3: flush any pending auto-save immediately on disappear
+            autoSaveTask?.cancel()
+            autoSaveTask = nil
+            Task { _ = await vm?.save() }
         }
     }
 
@@ -52,9 +59,28 @@ struct MacItemDetailInspector: View {
                 .font(.caption)
                 .foregroundStyle(.tertiary)
                 .multilineTextAlignment(.center)
+            VStack(spacing: 6) {
+                shortcutHint("⌘N", label: "New item")
+                shortcutHint("↑↓", label: "Navigate items")
+            }
+            .padding(.top, 4)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
+    }
+
+    private func shortcutHint(_ key: String, label: String) -> some View {
+        HStack(spacing: 6) {
+            Text(key)
+                .font(.system(size: 11, design: .monospaced))
+                .padding(.horizontal, 5)
+                .padding(.vertical, 2)
+                .background(.secondary.opacity(0.12))
+                .cornerRadius(4)
+            Text(label)
+                .font(.caption)
+                .foregroundStyle(.tertiary)
+        }
     }
 
     // MARK: - Helpers
@@ -127,10 +153,12 @@ struct MacItemDetailInspector: View {
 
     private func typeColor(_ item: any Item) -> Color {
         switch item {
-        case is EventItem:    return Theme.Color.accent
-        case is AlarmItem:    return Theme.Color.danger
-        case is ReminderItem: return Theme.Color.warning
-        default:              return .secondary
+        case is EventItem:         return Theme.Color.accent
+        case is AlarmItem:         return Theme.Color.danger
+        case is ReminderItem:      return Theme.Color.warning
+        case is TaskItem:          return Theme.Color.success
+        case is HabitInstanceItem: return Theme.Color.warning
+        default:                   return .secondary
         }
     }
 }
@@ -143,11 +171,23 @@ private struct MacItemDetailForm<Badge: View>: View {
     let onTriggerAutoSave: () -> Void
     let onDeleteItem: () async -> Void
     @ViewBuilder let typeBadge: () -> Badge
+    @Environment(\.openURL) private var openURL
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 typeBadge().padding(.top, 12)
+
+                if let url = MeetingLinkDetector.detect(notes: vm.notes, location: vm.location, title: vm.title) {
+                    Button {
+                        openURL(url)
+                    } label: {
+                        Label("Join \(MeetingLinkDetector.provider(for: url))", systemImage: "video.fill")
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                }
 
                 field("Title") {
                     TextField("Title", text: $vm.title)
@@ -156,14 +196,50 @@ private struct MacItemDetailForm<Badge: View>: View {
                         .onChange(of: vm.title) { _, _ in onTriggerAutoSave() }
                 }
 
-                field("Notes") {
-                    TextEditor(text: $vm.notes)
-                        .font(.body)
-                        .frame(minHeight: 60, maxHeight: 120)
-                        .scrollContentBackground(.hidden)
-                        .background(Theme.Color.surface.opacity(0.5))
-                        .cornerRadius(6)
-                        .onChange(of: vm.notes) { _, _ in onTriggerAutoSave() }
+                if vm.originalItem is EventItem {
+                    // Synced invite notes — show cleaned, read-only (Apple Calendar style).
+                    let clean = EventNotes.cleaned(vm.notes)
+                    if !clean.isEmpty {
+                        field("Notes") {
+                            Text(clean)
+                                .font(.body)
+                                .textSelection(.enabled)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                } else {
+                    field("Notes") {
+                        TextEditor(text: $vm.notes)
+                            .font(.body)
+                            .frame(minHeight: 60, maxHeight: 240)
+                            .scrollContentBackground(.hidden)
+                            .background(Theme.Color.surface.opacity(0.5))
+                            .cornerRadius(6)
+                            .onChange(of: vm.notes) { _, _ in onTriggerAutoSave() }
+                    }
+                }
+
+                // Event-specific details (location + attendees) — dynamic per type.
+                if vm.originalItem is EventItem {
+                    if !vm.location.trimmingCharacters(in: .whitespaces).isEmpty {
+                        field("Location") {
+                            Label(vm.location, systemImage: "mappin.and.ellipse")
+                                .font(.body)
+                                .textSelection(.enabled)
+                        }
+                    }
+                    if !vm.attendees.isEmpty {
+                        field("Attendees (\(vm.attendees.count))") {
+                            VStack(alignment: .leading, spacing: 3) {
+                                ForEach(vm.attendees, id: \.self) { person in
+                                    Label(person, systemImage: "person.crop.circle")
+                                        .font(.callout)
+                                        .foregroundStyle(Theme.Color.textSecondary)
+                                }
+                            }
+                        }
+                    }
                 }
 
                 field("Importance") {
@@ -225,10 +301,26 @@ private struct MacItemDetailForm<Badge: View>: View {
             case .dueAt(let d):
                 DatePicker("Due", selection: Binding(get: { d }, set: { vm.anchor = .dueAt($0) })).labelsHidden()
             case .timeBlock(let s, let e):
-                DatePicker("Start", selection: Binding(get: { s }, set: { vm.anchor = .timeBlock(start: $0, end: e) }))
-                DatePicker("End",   selection: Binding(get: { e }, set: { vm.anchor = .timeBlock(start: s, end: $0) }))
+                // Bug 6: preserve duration when start changes so end never precedes start
+                DatePicker("Start", selection: Binding(get: { s }, set: { newStart in
+                    let duration = e.timeIntervalSince(s)
+                    let newEnd = max(e, newStart.addingTimeInterval(duration))
+                    vm.anchor = .timeBlock(start: newStart, end: newEnd)
+                }))
+                DatePicker("End", selection: Binding(get: { e }, set: { vm.anchor = .timeBlock(start: s, end: $0) }))
             case .point(let d):
                 DatePicker("At", selection: Binding(get: { d }, set: { vm.anchor = .point($0) })).labelsHidden()
+            case .location(let loc):
+                // Bug 7: show location details and allow clearing
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(String(format: "%.4f, %.4f", loc.coordinate.latitude, loc.coordinate.longitude))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Button("Clear location") { vm.anchor = .untimed }
+                        .buttonStyle(.plain)
+                        .foregroundStyle(Theme.Color.danger)
+                        .font(.caption)
+                }
             default: EmptyView()
             }
         }
@@ -255,20 +347,65 @@ private struct MacItemDetailForm<Badge: View>: View {
     }
 }
 
-// MARK: - Simple wrapping HStack for tags
+// MARK: - Tag wrapping layout (Bug 14: real line-breaking flow)
 
 private struct WrappingHStack<Data: RandomAccessCollection, Content: View>: View where Data.Element: Hashable {
     let data: Data
     let content: (Data.Element) -> Content
-    init(_ data: Data, @ViewBuilder content: @escaping (Data.Element) -> Content) {
-        self.data = data; self.content = content
+    let spacing: CGFloat
+
+    init(_ data: Data, spacing: CGFloat = 4, @ViewBuilder content: @escaping (Data.Element) -> Content) {
+        self.data = data; self.spacing = spacing; self.content = content
     }
+
     var body: some View {
-        // Simple horizontal flow — adequate for small tag sets
-        HStack(spacing: 4) {
+        FlowLayout(spacing: spacing) {
             ForEach(Array(data.enumerated()), id: \.element) { _, item in
                 content(item)
             }
+        }
+    }
+}
+
+private struct FlowLayout: Layout {
+    var spacing: CGFloat = 4
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout Void) -> CGSize {
+        let maxWidth = proposal.width ?? .infinity
+        var origin = CGPoint.zero
+        var lineHeight: CGFloat = 0
+        var totalHeight: CGFloat = 0
+
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+            if origin.x + size.width > maxWidth, origin.x > 0 {
+                origin.x = 0
+                origin.y += lineHeight + spacing
+                lineHeight = 0
+            }
+            origin.x += size.width + spacing
+            lineHeight = max(lineHeight, size.height)
+            totalHeight = origin.y + lineHeight
+        }
+        return CGSize(width: maxWidth, height: totalHeight)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout Void) {
+        let maxWidth = bounds.width
+        var origin = CGPoint(x: bounds.minX, y: bounds.minY)
+        var lineHeight: CGFloat = 0
+
+        for subview in subviews {
+            let size = subview.sizeThatFits(.unspecified)
+            if origin.x + size.width > bounds.maxX, origin.x > bounds.minX {
+                origin.x = bounds.minX
+                origin.y += lineHeight + spacing
+                lineHeight = 0
+            }
+            _ = maxWidth  // suppress warning
+            subview.place(at: origin, proposal: ProposedViewSize(size))
+            origin.x += size.width + spacing
+            lineHeight = max(lineHeight, size.height)
         }
     }
 }

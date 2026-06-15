@@ -82,6 +82,19 @@ actor HabitRepository {
         let stored = try context.fetch(FetchDescriptor<StoredHabit>())
         stored.filter { $0.id == id }.forEach { $0.isArchived = true }
         try context.save()
+        postChange()
+    }
+
+    /// Permanently deletes a habit and all of its logged instances.
+    func delete(id: UUID) async throws {
+        let context = controller.newBackgroundContext()
+        let habits = try context.fetch(FetchDescriptor<StoredHabit>())
+        habits.filter { $0.id == id }.forEach { context.delete($0) }
+        // Defensively remove instances in case the relationship cascade doesn't fire.
+        let instances = try context.fetch(FetchDescriptor<StoredHabitInstance>())
+        instances.filter { $0.habitID == id }.forEach { context.delete($0) }
+        try context.save()
+        postChange()
     }
 
     func allActive() async -> [Habit] {

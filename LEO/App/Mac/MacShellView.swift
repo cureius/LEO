@@ -48,10 +48,17 @@ struct MacShellView: View {
                 nav.selectedItemID = nil
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .leoRescheduleSelectedItem)) { _ in
+            // Bug 2: open inspector so user can edit the anchor
+            guard nav.selectedItemID != nil else { return }
+            nav.inspectorVisible = true
+            columnVisibility = .all
+        }
         .onAppear {
             if let restored = SidebarSection(rawValue: sectionRaw) {
                 nav.selection = restored
             }
+            nav.inspectorVisible = inspectorVisible  // sync model with persisted value (Bug 1)
             columnVisibility = inspectorVisible ? .all : .doubleColumn
         }
         .onChange(of: nav.selection) { _, new in sectionRaw = new.rawValue }

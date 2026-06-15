@@ -1,0 +1,3046 @@
+{
+  "version": 1,
+  "exportedAt": "2026-06-14T11:01:49Z",
+  "appVersion": "1.0.0",
+  "tasks": [],
+  "events": [],
+  "reminders": [],
+  "alarms": [],
+  "habitInstances": [],
+  "workouts": [
+    {
+      "id": "fef9745c-a9c0-48e7-9aec-4f21a73004d9",
+      "title": "W1D1 Push",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA2LTE1VDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDYtMTVUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "48e84663-b9b6-4649-9b59-dd20923cdcaa",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDIyIiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDA0Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA3Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA4Iiwic2V0cyI6MywicmVwcyI6MTV9LHsiZXhlcmNpc2VJRCI6ImV4MDM1Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDE3Iiwic2V0cyI6MiwicmVwcyI6MTV9XQ==",
+      "estimatedKcal": 300,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "ec3bfcb8-3a0d-49bd-a4c6-58b879750d7f",
+      "title": "W1D2 Pull",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA2LTE2VDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDYtMTZUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "2b5096c3-2cd3-4463-abc0-c12779ac7b26",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDI1Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA1Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDE3Iiwic2V0cyI6MywicmVwcyI6MTh9LHsiZXhlcmNpc2VJRCI6ImV4MDExIiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDI3Iiwic2V0cyI6MiwicmVwcyI6MTJ9XQ==",
+      "estimatedKcal": 300,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "37122ce0-9e84-4540-b5b9-7e964bf9a54a",
+      "title": "W1D3 Legs",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA2LTE3VDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDYtMTdUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "6fcf3989-56aa-4fbd-9bb1-fe218c8c4a3f",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDI0Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA2Iiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDM0Iiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDIxIiwic2V0cyI6NCwicmVwcyI6MTV9LHsiZXhlcmNpc2VJRCI6ImV4MDEzIiwic2V0cyI6MywicmVwcyI6MX1d",
+      "estimatedKcal": 350,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "c8252a49-6d38-4321-934f-ee0ad0868e7c",
+      "title": "W1D5 Upper",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA2LTE5VDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDYtMTlUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "b0b02c9f-f16b-47d2-808d-90d69065d4a2",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDA0Iiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDAyIiwic2V0cyI6MywicmVwcyI6OH0seyJleGVyY2lzZUlEIjoiZXgwMjIiLCJzZXRzIjozLCJyZXBzIjoxMn0seyJleGVyY2lzZUlEIjoiZXgwMDUiLCJzZXRzIjozLCJyZXBzIjoxMn0seyJleGVyY2lzZUlEIjoiZXgwMDgiLCJzZXRzIjozLCJyZXBzIjoxNX0seyJleGVyY2lzZUlEIjoiZXgwMTciLCJzZXRzIjozLCJyZXBzIjoyMH0seyJleGVyY2lzZUlEIjoiZXgwMTEiLCJzZXRzIjozLCJyZXBzIjoxMH0seyJleGVyY2lzZUlEIjoiZXgwMzUiLCJzZXRzIjozLCJyZXBzIjoxMn1d",
+      "estimatedKcal": 350,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "0931b6a3-85fc-40d6-a8fd-0d93b75dc1e1",
+      "title": "W1D6 Lower + Arms",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA2LTIwVDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDYtMjBUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "5274a38e-5835-473f-828f-bf8cc87c57ad",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDAzIiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA2Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDM0Iiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDIxIiwic2V0cyI6NCwicmVwcyI6MTV9LHsiZXhlcmNpc2VJRCI6ImV4MDExIiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDM1Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDE0Iiwic2V0cyI6MywicmVwcyI6MTJ9XQ==",
+      "estimatedKcal": 300,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "fa5b87dd-8a72-48cb-9451-dfe4f51eb0bd",
+      "title": "W2D1 Push",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA2LTIyVDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDYtMjJUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "43d93cf3-6ebc-4b1c-b748-ddc48d279993",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDIyIiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDA0Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA3Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA4Iiwic2V0cyI6MywicmVwcyI6MTV9LHsiZXhlcmNpc2VJRCI6ImV4MDM1Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDE3Iiwic2V0cyI6MiwicmVwcyI6MTV9XQ==",
+      "estimatedKcal": 300,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "7187e03f-f3bd-4510-a6a3-99174dcbf30f",
+      "title": "W2D2 Pull",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA2LTIzVDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDYtMjNUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "e9d6addb-d386-45ed-b38d-bbbde362e9fe",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDI1Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA1Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDE3Iiwic2V0cyI6MywicmVwcyI6MTh9LHsiZXhlcmNpc2VJRCI6ImV4MDExIiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDI3Iiwic2V0cyI6MiwicmVwcyI6MTJ9XQ==",
+      "estimatedKcal": 300,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "88f6f4f2-8599-413e-b26f-c6cbfefdd313",
+      "title": "W2D3 Legs",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA2LTI0VDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDYtMjRUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "1c36c0d9-7675-49c0-bf82-5a324673757d",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDI0Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA2Iiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDM0Iiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDIxIiwic2V0cyI6NCwicmVwcyI6MTV9LHsiZXhlcmNpc2VJRCI6ImV4MDEzIiwic2V0cyI6MywicmVwcyI6MX1d",
+      "estimatedKcal": 350,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "19bb0b3a-3be0-4b29-ad4a-8b7cb963d5ff",
+      "title": "W2D5 Upper",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA2LTI2VDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDYtMjZUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "0b95e8a3-c902-4e9a-8cf6-f5a6079ef27a",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDA0Iiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDAyIiwic2V0cyI6MywicmVwcyI6OH0seyJleGVyY2lzZUlEIjoiZXgwMjIiLCJzZXRzIjozLCJyZXBzIjoxMn0seyJleGVyY2lzZUlEIjoiZXgwMDUiLCJzZXRzIjozLCJyZXBzIjoxMn0seyJleGVyY2lzZUlEIjoiZXgwMDgiLCJzZXRzIjozLCJyZXBzIjoxNX0seyJleGVyY2lzZUlEIjoiZXgwMTciLCJzZXRzIjozLCJyZXBzIjoyMH0seyJleGVyY2lzZUlEIjoiZXgwMTEiLCJzZXRzIjozLCJyZXBzIjoxMH0seyJleGVyY2lzZUlEIjoiZXgwMzUiLCJzZXRzIjozLCJyZXBzIjoxMn1d",
+      "estimatedKcal": 350,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "57e32f15-5b4f-4db4-a034-ab4609aecd98",
+      "title": "W2D6 Lower + Arms",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA2LTI3VDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDYtMjdUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "c3b34e88-9f3e-4dca-91e9-817d90627025",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDAzIiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA2Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDM0Iiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDIxIiwic2V0cyI6NCwicmVwcyI6MTV9LHsiZXhlcmNpc2VJRCI6ImV4MDExIiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDM1Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDE0Iiwic2V0cyI6MywicmVwcyI6MTJ9XQ==",
+      "estimatedKcal": 300,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "f48f9f1b-dfd0-4f93-afd6-35ad2b91c9fb",
+      "title": "W3D1 Push",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA2LTI5VDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDYtMjlUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "d4adc888-2807-482b-a7f8-a71f1df493ae",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDIyIiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDA0Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA3Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA4Iiwic2V0cyI6MywicmVwcyI6MTV9LHsiZXhlcmNpc2VJRCI6ImV4MDM1Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDE3Iiwic2V0cyI6MiwicmVwcyI6MTV9XQ==",
+      "estimatedKcal": 300,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "e6c866e2-8b32-4017-8ec3-05959a012cc5",
+      "title": "W3D2 Pull",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA2LTMwVDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDYtMzBUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "24e7ddd3-1d43-4cac-9adb-f4d0bac829be",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDI1Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA1Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDE3Iiwic2V0cyI6MywicmVwcyI6MTh9LHsiZXhlcmNpc2VJRCI6ImV4MDExIiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDI3Iiwic2V0cyI6MiwicmVwcyI6MTJ9XQ==",
+      "estimatedKcal": 300,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "7e3d527f-ccf2-4e2c-a959-7676dcd4580c",
+      "title": "W3D3 Legs",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA3LTAxVDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDctMDFUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "aeefb64c-1a45-4bb7-99c4-881fcc003117",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDI0Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA2Iiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDM0Iiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDIxIiwic2V0cyI6NCwicmVwcyI6MTV9LHsiZXhlcmNpc2VJRCI6ImV4MDEzIiwic2V0cyI6MywicmVwcyI6MX1d",
+      "estimatedKcal": 350,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "6f31fa66-7024-490e-9e70-4428ad37fe8f",
+      "title": "W3D5 Upper",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA3LTAzVDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDctMDNUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "7768239e-058a-40c7-9463-ebfa82938428",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDA0Iiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDAyIiwic2V0cyI6MywicmVwcyI6OH0seyJleGVyY2lzZUlEIjoiZXgwMjIiLCJzZXRzIjozLCJyZXBzIjoxMn0seyJleGVyY2lzZUlEIjoiZXgwMDUiLCJzZXRzIjozLCJyZXBzIjoxMn0seyJleGVyY2lzZUlEIjoiZXgwMDgiLCJzZXRzIjozLCJyZXBzIjoxNX0seyJleGVyY2lzZUlEIjoiZXgwMTciLCJzZXRzIjozLCJyZXBzIjoyMH0seyJleGVyY2lzZUlEIjoiZXgwMTEiLCJzZXRzIjozLCJyZXBzIjoxMH0seyJleGVyY2lzZUlEIjoiZXgwMzUiLCJzZXRzIjozLCJyZXBzIjoxMn1d",
+      "estimatedKcal": 350,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "114c21a1-65b8-4f43-83e4-df43694db699",
+      "title": "W3D6 Lower + Arms",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA3LTA0VDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDctMDRUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "8632c2d7-1c73-4bee-8da4-01e5bd61fbeb",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDAzIiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA2Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDM0Iiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDIxIiwic2V0cyI6NCwicmVwcyI6MTV9LHsiZXhlcmNpc2VJRCI6ImV4MDExIiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDM1Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDE0Iiwic2V0cyI6MywicmVwcyI6MTJ9XQ==",
+      "estimatedKcal": 300,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "b89676a7-736b-488e-95e1-18f343fec49a",
+      "title": "W4D1 Push",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA3LTA2VDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDctMDZUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "b64de726-8d92-4f58-8358-ea5782f182e0",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDIyIiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDA0Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA3Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA4Iiwic2V0cyI6MywicmVwcyI6MTV9LHsiZXhlcmNpc2VJRCI6ImV4MDM1Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDE3Iiwic2V0cyI6MiwicmVwcyI6MTV9XQ==",
+      "estimatedKcal": 300,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "8c70ed02-2132-4295-ae66-3e33376d6b35",
+      "title": "W4D2 Pull",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA3LTA3VDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDctMDdUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "0ec9f330-7fb0-4884-b668-bb22f3a31c42",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDI1Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA1Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDE3Iiwic2V0cyI6MywicmVwcyI6MTh9LHsiZXhlcmNpc2VJRCI6ImV4MDExIiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDI3Iiwic2V0cyI6MiwicmVwcyI6MTJ9XQ==",
+      "estimatedKcal": 300,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "981064b3-fa15-4a33-8232-be19e69047e0",
+      "title": "W4D3 Legs",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA3LTA4VDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDctMDhUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "cecfa7fd-2df6-4f14-ac70-fe58449af948",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDI0Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA2Iiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDM0Iiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDIxIiwic2V0cyI6NCwicmVwcyI6MTV9LHsiZXhlcmNpc2VJRCI6ImV4MDEzIiwic2V0cyI6MywicmVwcyI6MX1d",
+      "estimatedKcal": 350,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "a46b76b6-3950-44bd-bfdd-ed276afce3b8",
+      "title": "W4D5 Upper",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA3LTEwVDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDctMTBUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "cdb9a7bc-ce0b-4008-83cf-2738ed9b495c",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDA0Iiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDAyIiwic2V0cyI6MywicmVwcyI6OH0seyJleGVyY2lzZUlEIjoiZXgwMjIiLCJzZXRzIjozLCJyZXBzIjoxMn0seyJleGVyY2lzZUlEIjoiZXgwMDUiLCJzZXRzIjozLCJyZXBzIjoxMn0seyJleGVyY2lzZUlEIjoiZXgwMDgiLCJzZXRzIjozLCJyZXBzIjoxNX0seyJleGVyY2lzZUlEIjoiZXgwMTciLCJzZXRzIjozLCJyZXBzIjoyMH0seyJleGVyY2lzZUlEIjoiZXgwMTEiLCJzZXRzIjozLCJyZXBzIjoxMH0seyJleGVyY2lzZUlEIjoiZXgwMzUiLCJzZXRzIjozLCJyZXBzIjoxMn1d",
+      "estimatedKcal": 350,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    },
+    {
+      "id": "24bd85fa-6e1a-4c00-9225-d9d9d05e1bf6",
+      "title": "W4D6 Lower + Arms",
+      "notes": "Log every set. Add weight when you hit the top of the rep range.",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwic3RhcnQiOiIyMDI2LTA3LTExVDAxOjMwOjAwWiIsImVuZCI6IjIwMjYtMDctMTFUMDI6MzA6MDBaIn0=",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "07ef1287-901a-4a2e-85ec-849d07b256ac",
+          "name": "#workout",
+          "colorRaw": "blue"
+        }
+      ],
+      "plannedExercisesB64": "W3siZXhlcmNpc2VJRCI6ImV4MDAzIiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDA2Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDM0Iiwic2V0cyI6MywicmVwcyI6MTB9LHsiZXhlcmNpc2VJRCI6ImV4MDIxIiwic2V0cyI6NCwicmVwcyI6MTV9LHsiZXhlcmNpc2VJRCI6ImV4MDExIiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDM1Iiwic2V0cyI6MywicmVwcyI6MTJ9LHsiZXhlcmNpc2VJRCI6ImV4MDE0Iiwic2V0cyI6MywicmVwcyI6MTJ9XQ==",
+      "estimatedKcal": 300,
+      "actualKcal": null,
+      "actualExercisesB64": null,
+      "healthKitWorkoutID": null
+    }
+  ],
+  "meals": [
+    {
+      "id": "25c0f097-0357-455f-b5d7-695aa659c19f",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xNVQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "f364914a-1274-43f0-bcff-585825514e49",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "429213d8-ba4f-41c4-bb96-19a6afcf36ba",
+      "title": "Chicken curry + rice + dal + curd",
+      "notes": "Lunch \u2014 858 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xNVQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "8aafdd17-2a22-4fac-b08b-df91f109f40d",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in013",
+      "servings": 1.0,
+      "targetKcal": 858,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "8618318d-5984-424c-adbc-004423a48f4c",
+      "title": "Whey shake + banana",
+      "notes": "Post-workout / Snack \u2014 340 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xNVQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "532ed262-9b81-4fcc-be15-cb9f9ea58e02",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 340,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "691f38c2-cadc-4e82-85c0-2e9befd552f6",
+      "title": "Soya chunk sabzi + roti + curd",
+      "notes": "Dinner \u2014 510 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xNVQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "1483f87f-b597-46d2-9da1-26ff540f0a66",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r008",
+      "servings": 1.0,
+      "targetKcal": 510,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "e851985b-17e7-4376-80da-fb0ae32d7235",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xNlQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "5ff10d8e-4298-4454-baa7-e2ead389775d",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "387b5c78-1be6-41a2-80ad-f95838594518",
+      "title": "Paneer + roti + dal + curd",
+      "notes": "Lunch \u2014 810 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xNlQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "d5eecaa7-66ae-42c1-916c-14dbb53993ee",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in012",
+      "servings": 1.0,
+      "targetKcal": 810,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "5eb319b2-a958-4b58-b89f-73b9901fa3f2",
+      "title": "3 boiled eggs + fruit",
+      "notes": "Post-workout / Snack \u2014 296 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xNlQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "5ce83823-f22e-489c-b6fe-8354f6c953b8",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r015",
+      "servings": 1.0,
+      "targetKcal": 296,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "da3c5877-7c79-47a0-ba21-c048a2bf5729",
+      "title": "Soya sabzi + roti + curd",
+      "notes": "Dinner \u2014 510 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xNlQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "5b402898-4c55-4bb2-a7ea-15bb441885da",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r008",
+      "servings": 1.0,
+      "targetKcal": 510,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "f119297d-339b-4f12-af87-b13230aeb943",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xN1QwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "7df55507-a979-47ea-8d16-e30ba03a94fd",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "ad7123bb-8834-4689-9cec-5db9b987e5ec",
+      "title": "Soya sabzi + dal + rice + curd",
+      "notes": "Lunch \u2014 910 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xN1QwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "cb32ab17-46f4-495d-976f-6e080c91002f",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in009",
+      "servings": 1.0,
+      "targetKcal": 910,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "2c9eae5b-f7c8-4a7e-a36e-b8f3979dbb7e",
+      "title": "Whey shake + banana",
+      "notes": "Post-workout / Snack \u2014 340 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xN1QxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "38b8ee9c-d206-4fd8-bb55-4d81a916803a",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 340,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "0958e2b9-7d76-4c00-ab07-aca14369650a",
+      "title": "Paneer bhurji + roti + curd",
+      "notes": "Dinner \u2014 525 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xN1QxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "a18c76c1-b85f-404d-86a9-39afce46fbd1",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in012",
+      "servings": 1.0,
+      "targetKcal": 525,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "d56f7f20-0464-4b3e-ae3d-ed8664989e72",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xOFQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "e2d18ac1-e9dc-4843-9d26-2e720a41fef7",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "2ff00734-bc08-42c8-bdd4-bccc5bc97306",
+      "title": "Egg bhurji + roti + dal + curd",
+      "notes": "Lunch \u2014 710 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xOFQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "91db6565-9dd7-4fb9-90c8-7e7fe2d39d73",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in014",
+      "servings": 1.0,
+      "targetKcal": 710,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "b8361ee8-0208-48ee-85e7-4ec11d4eb129",
+      "title": "Whey + fruit",
+      "notes": "Post-workout / Snack \u2014 200 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xOFQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "e6ff13ff-20ce-415b-bfca-eb63db03eab4",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 200,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "86b198b5-1ceb-400f-8b6e-fbafd25ce255",
+      "title": "Eat-out: paneer tikka + roti + dal",
+      "notes": "Dinner \u2014 650 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xOFQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "128c3e13-600f-4f71-ad6f-32a627b1a661",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in012",
+      "servings": 1.0,
+      "targetKcal": 650,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "600b380a-74af-4ad9-9da7-f42e54f14d18",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xOVQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "f44ba0bb-b21e-4379-882e-357d1c83c8b9",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "c6abb630-7354-46b1-aebb-9d9499e73597",
+      "title": "Soya + dal + rice + curd",
+      "notes": "Lunch \u2014 910 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xOVQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "c5ac1dac-35f9-4905-9cb4-2869c5c2e6a8",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in009",
+      "servings": 1.0,
+      "targetKcal": 910,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "a88effce-f680-4496-9d0f-0d0b7d9d881a",
+      "title": "Whey shake + banana",
+      "notes": "Post-workout / Snack \u2014 340 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xOVQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "262387d0-2577-4726-ae06-5d2d0f45587d",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 340,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "4caa7d87-cff8-4280-92e5-64acf0a42144",
+      "title": "Chicken curry + roti + curd",
+      "notes": "Dinner \u2014 458 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0xOVQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "b63c2711-85fd-4010-83bd-18fd2f429e11",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in013",
+      "servings": 1.0,
+      "targetKcal": 458,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "394c7109-2db8-4cfe-9094-8b86db34d8dd",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yMFQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "7b48ccf4-d193-4b7d-98db-dc3692f7d490",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "85fc9b2a-adfa-4341-a1b9-5e359fcf24e4",
+      "title": "Paneer + roti + dal + rice + curd",
+      "notes": "Lunch \u2014 1010 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yMFQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "aa60cfec-c6ed-4be7-9007-13fb7a320023",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in012",
+      "servings": 1.0,
+      "targetKcal": 1010,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "9f05cec6-544a-49a2-b002-a30445b02b66",
+      "title": "Whey + milk",
+      "notes": "Post-workout / Snack \u2014 240 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yMFQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "19a85565-8729-4e91-bc0b-88b09aecd99c",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 240,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "719d6d40-9bf3-4716-86f5-c75b269beec9",
+      "title": "Soya sabzi + roti + curd",
+      "notes": "Dinner \u2014 510 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yMFQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "12e43300-4635-40bc-aae9-70882da41c18",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r008",
+      "servings": 1.0,
+      "targetKcal": 510,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "8749cf6b-bfb0-404e-a29d-b6c9a6d902a9",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yMVQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "849cae01-b693-4d0f-a8d7-f3631caafa80",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "e08b6039-7d27-4457-bfe5-091c2623ab62",
+      "title": "Eat-out: egg/paneer + roti + dal",
+      "notes": "Lunch \u2014 650 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yMVQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "b833d262-ae1b-4e3d-9bef-5137e718863d",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in014",
+      "servings": 1.0,
+      "targetKcal": 650,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "cfccca6a-972f-4f0a-b772-271a91b3daf3",
+      "title": "3 boiled eggs + fruit",
+      "notes": "Post-workout / Snack \u2014 296 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yMVQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "89f76c76-f3dd-43a1-8199-88217b8fb9b9",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r015",
+      "servings": 1.0,
+      "targetKcal": 296,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "0d95e3c2-9c2e-4b0a-8c61-8f33e736937c",
+      "title": "Soya sabzi + dal + roti + curd",
+      "notes": "Dinner \u2014 710 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yMVQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "81311581-81fe-40f3-bdd5-70600c07ad5d",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r008",
+      "servings": 1.0,
+      "targetKcal": 710,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "2e7af8fe-b7ae-40c2-80a3-c769afed45c7",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yMlQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "16993ec3-e87c-4745-a9df-fe225b100fc2",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "5bbbd7f6-916b-4dd4-9448-80a5f276bbab",
+      "title": "Chicken curry + rice + dal + curd",
+      "notes": "Lunch \u2014 858 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yMlQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "8cf82838-a597-4bec-ac77-98982cb0f56a",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in013",
+      "servings": 1.0,
+      "targetKcal": 858,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "51106a61-d5ac-4dc6-9047-ef0f3a1949d4",
+      "title": "Whey shake + banana",
+      "notes": "Post-workout / Snack \u2014 340 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yMlQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "92178cb8-427a-4f65-945d-1535f02e11a6",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 340,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "1b163b8e-0e16-424b-9a5a-b8a895a97c48",
+      "title": "Soya chunk sabzi + roti + curd",
+      "notes": "Dinner \u2014 510 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yMlQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "0eb734c8-f0f4-422c-887d-45528c1b8fc6",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r008",
+      "servings": 1.0,
+      "targetKcal": 510,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "b7c16050-3d12-4c1c-aa1b-3c6918b6fab5",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yM1QwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "a4f34d4f-c932-4536-9f79-5cf354374beb",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "538eadd9-7bb3-4c11-8bfc-ec09f75a86e3",
+      "title": "Paneer + roti + dal + curd",
+      "notes": "Lunch \u2014 810 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yM1QwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "4d0300e6-bae6-487f-81e8-3c1ebf4c4efc",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in012",
+      "servings": 1.0,
+      "targetKcal": 810,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "fd2719d1-ac61-4257-8351-36480a11a4c7",
+      "title": "3 boiled eggs + fruit",
+      "notes": "Post-workout / Snack \u2014 296 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yM1QxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "f2dfe67a-f5b4-4000-abdf-5953f5a24304",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r015",
+      "servings": 1.0,
+      "targetKcal": 296,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "3afd309a-2289-4210-80ac-af4a5df9725b",
+      "title": "Soya sabzi + roti + curd",
+      "notes": "Dinner \u2014 510 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yM1QxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "83923026-1937-4481-956b-a0c5a078d680",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r008",
+      "servings": 1.0,
+      "targetKcal": 510,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "0e530846-3750-4af7-9498-621c791a725b",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yNFQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "9bc0c15a-6a0c-4c70-8033-6e8558827c5a",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "e263a0ea-06e5-4147-91c3-a38e525155d6",
+      "title": "Soya sabzi + dal + rice + curd",
+      "notes": "Lunch \u2014 910 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yNFQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "31ed360f-0ee4-40af-8de8-06536cea4013",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in009",
+      "servings": 1.0,
+      "targetKcal": 910,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "cff7027d-2b60-45a4-9877-8ee12ec05ade",
+      "title": "Whey shake + banana",
+      "notes": "Post-workout / Snack \u2014 340 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yNFQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "20998974-7e40-479f-9a0c-542966abaa17",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 340,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "399b6ba1-b4b4-4b4b-87ab-826fdd5725d1",
+      "title": "Paneer bhurji + roti + curd",
+      "notes": "Dinner \u2014 525 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yNFQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "9242bafc-b962-4475-b72f-c2212ad289ff",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in012",
+      "servings": 1.0,
+      "targetKcal": 525,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "0e9c6cb0-3364-479f-baee-bf129e2b9364",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yNVQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "3d753390-6b02-4186-b1da-64e8fdf2fb7f",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "66d932b1-de6b-4bc6-98f5-96c6ef634413",
+      "title": "Egg bhurji + roti + dal + curd",
+      "notes": "Lunch \u2014 710 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yNVQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "b57e2799-b633-4503-8b40-8233468bf7de",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in014",
+      "servings": 1.0,
+      "targetKcal": 710,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "58512be9-2450-49c3-affa-990b24ceb224",
+      "title": "Whey + fruit",
+      "notes": "Post-workout / Snack \u2014 200 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yNVQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "ee456149-39b7-4c9d-9de5-17c7f1070880",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 200,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "2c9f8eb2-e332-4d4c-9cd6-b98f593edc90",
+      "title": "Eat-out: paneer tikka + roti + dal",
+      "notes": "Dinner \u2014 650 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yNVQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "c3edb5ec-f240-4c4f-a7d7-0e9a1097769f",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in012",
+      "servings": 1.0,
+      "targetKcal": 650,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "a716b805-e3a5-443e-a5c3-f82c7c078f7c",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yNlQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "a9fdf60f-8d0f-40ba-bfdf-b71be24b3907",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "f2d478ed-306d-4b87-8808-97f4d7b85db8",
+      "title": "Soya + dal + rice + curd",
+      "notes": "Lunch \u2014 910 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yNlQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "efa07c66-7b1e-4e03-9bc9-7da31f19f96c",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in009",
+      "servings": 1.0,
+      "targetKcal": 910,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "1c51e369-ed74-4825-8704-28987bd63c9a",
+      "title": "Whey shake + banana",
+      "notes": "Post-workout / Snack \u2014 340 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yNlQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "e94a78d9-71ef-4b54-8e18-17b8dcc5a8fb",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 340,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "72b0dad7-c4b0-4554-84a3-a740da6a9306",
+      "title": "Chicken curry + roti + curd",
+      "notes": "Dinner \u2014 458 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yNlQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "3ded1f56-68a2-4cad-91bd-d3194b003544",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in013",
+      "servings": 1.0,
+      "targetKcal": 458,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "ec733ca9-74fc-4d91-ac02-9bfaa84e58fc",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yN1QwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "0b59ea71-4b44-4cad-af07-cb5a6e59ac39",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "7f73ee54-f81f-4da3-a228-b5f380308d78",
+      "title": "Paneer + roti + dal + rice + curd",
+      "notes": "Lunch \u2014 1010 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yN1QwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "df2a223c-df50-40ba-b585-9fea954f8b55",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in012",
+      "servings": 1.0,
+      "targetKcal": 1010,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "2a8b5c7b-683b-48be-b914-cdd1aed1dc9f",
+      "title": "Whey + milk",
+      "notes": "Post-workout / Snack \u2014 240 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yN1QxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "07ff356f-916d-40fe-a13c-2a170a4af75f",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 240,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "dfa2de27-4625-42c8-aba7-b99599d10429",
+      "title": "Soya sabzi + roti + curd",
+      "notes": "Dinner \u2014 510 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yN1QxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "fd9840c2-f642-49f0-95fa-38d68a8d800f",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r008",
+      "servings": 1.0,
+      "targetKcal": 510,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "938b4454-dc4d-42a8-9bc1-d978e53d1e83",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yOFQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "f6c31c15-10ec-4a2c-a4ae-0d395c6bedca",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "adb9afb5-bd3a-4029-b318-35b49ce92fd4",
+      "title": "Eat-out: egg/paneer + roti + dal",
+      "notes": "Lunch \u2014 650 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yOFQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "0a37d355-3a2b-4937-a9ff-1bc3fa4832ae",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in014",
+      "servings": 1.0,
+      "targetKcal": 650,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "4c5196bb-7972-4bff-8d4c-64673cceb1be",
+      "title": "3 boiled eggs + fruit",
+      "notes": "Post-workout / Snack \u2014 296 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yOFQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "40e80d29-5e1d-4293-a43c-5c41d882b8bd",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r015",
+      "servings": 1.0,
+      "targetKcal": 296,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "f05d78db-8ace-4b93-b081-7e6e48bd82ed",
+      "title": "Soya sabzi + dal + roti + curd",
+      "notes": "Dinner \u2014 710 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yOFQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "a99eedb1-9f72-404f-9a12-0640d45f55bc",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r008",
+      "servings": 1.0,
+      "targetKcal": 710,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "c619ed5c-0dc7-45c3-ae15-b257df476d56",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yOVQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "08172504-a362-4467-9d01-b162a35bf7a5",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "ed43028c-bfa8-495c-895f-4c187b2b2812",
+      "title": "Chicken curry + rice + dal + curd",
+      "notes": "Lunch \u2014 858 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yOVQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "c1b235d4-b868-4c41-ac07-5a14acd453dd",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in013",
+      "servings": 1.0,
+      "targetKcal": 858,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "53a99da3-9dbe-4c77-b586-b098c50f29a7",
+      "title": "Whey shake + banana",
+      "notes": "Post-workout / Snack \u2014 340 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yOVQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "710c3f03-e284-4a08-905e-9191f0c03358",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 340,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "484b172a-7e21-4ec7-a9fc-677b064917f3",
+      "title": "Soya chunk sabzi + roti + curd",
+      "notes": "Dinner \u2014 510 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yOVQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "e7f4fb9d-2f84-48d1-8e89-12ca8880abd0",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r008",
+      "servings": 1.0,
+      "targetKcal": 510,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "c15b1b14-c8ab-45ae-8fd7-a301127d7ecc",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0zMFQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "9360b0ec-7f13-42a8-ba5a-83e99e08f5d4",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "522ec9ee-b541-4e19-955c-6e619c7d5d5e",
+      "title": "Paneer + roti + dal + curd",
+      "notes": "Lunch \u2014 810 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0zMFQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "fd5cc710-6ed2-4caa-82a5-c77e9902493f",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in012",
+      "servings": 1.0,
+      "targetKcal": 810,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "cba7c4f5-d9a5-4b2e-96e4-45e976821e54",
+      "title": "3 boiled eggs + fruit",
+      "notes": "Post-workout / Snack \u2014 296 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0zMFQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "5930b692-d135-4b0a-a321-f8c879667a4c",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r015",
+      "servings": 1.0,
+      "targetKcal": 296,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "852a2c31-3d4b-403a-b06f-9c718f3a8490",
+      "title": "Soya sabzi + roti + curd",
+      "notes": "Dinner \u2014 510 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0zMFQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "241e2ba8-0e51-4ca1-b776-cadd040f16a8",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r008",
+      "servings": 1.0,
+      "targetKcal": 510,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "036e3cec-91c1-4b15-a25e-9e18f32ac5ec",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wMVQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "8ef973e4-9178-4da4-97da-7ef9f8241d8b",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "0562c085-70d4-44d0-9ff2-14c5726a328f",
+      "title": "Soya sabzi + dal + rice + curd",
+      "notes": "Lunch \u2014 910 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wMVQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "92da1d96-f036-4cd6-8694-f0d6e2b9e57e",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in009",
+      "servings": 1.0,
+      "targetKcal": 910,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "f2091fef-f0c1-47f1-b334-922eab0dfa7c",
+      "title": "Whey shake + banana",
+      "notes": "Post-workout / Snack \u2014 340 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wMVQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "8beb0dc4-35d8-4f47-8eb5-50eb3f58214d",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 340,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "a8ab720f-6688-455f-9038-f5dd0fe4bf5e",
+      "title": "Paneer bhurji + roti + curd",
+      "notes": "Dinner \u2014 525 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wMVQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "0e722b01-d175-48eb-a82d-df47f84858a7",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in012",
+      "servings": 1.0,
+      "targetKcal": 525,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "a8a0069a-8adf-4869-8561-d976a9d43d43",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wMlQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "e91eb6c6-caea-4987-bbf5-f1a21c379ed0",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "b0645cd2-d819-46e2-96c9-8376300e4daf",
+      "title": "Egg bhurji + roti + dal + curd",
+      "notes": "Lunch \u2014 710 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wMlQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "c0c2d69d-49a0-4a51-9d1d-f923150c006c",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in014",
+      "servings": 1.0,
+      "targetKcal": 710,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "294c3a82-e9f6-449e-8bb4-dfcf357f6023",
+      "title": "Whey + fruit",
+      "notes": "Post-workout / Snack \u2014 200 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wMlQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "b85049e4-b914-4bee-a8e2-217601b7fbe9",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 200,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "5468f80c-6a94-4b8e-b230-53ca5e4e79d3",
+      "title": "Eat-out: paneer tikka + roti + dal",
+      "notes": "Dinner \u2014 650 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wMlQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "b54dea00-0b00-4014-aadb-8ce56aa61c82",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in012",
+      "servings": 1.0,
+      "targetKcal": 650,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "9eded220-5cda-4884-b150-945095c7fd9d",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wM1QwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "887d5904-0c1f-41d1-9caf-899d77e106cb",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "8b96fbf9-e4dd-4011-b6bf-8367313fcee2",
+      "title": "Soya + dal + rice + curd",
+      "notes": "Lunch \u2014 910 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wM1QwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "b615f536-e076-4977-b919-0a23578f5fb4",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in009",
+      "servings": 1.0,
+      "targetKcal": 910,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "efbc0ec6-3009-4720-9f85-1ec70b141180",
+      "title": "Whey shake + banana",
+      "notes": "Post-workout / Snack \u2014 340 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wM1QxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "ce378d16-2bd9-4cbb-9565-757314cb3c98",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 340,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "e1d3de47-e99d-4708-9e38-d559b192e211",
+      "title": "Chicken curry + roti + curd",
+      "notes": "Dinner \u2014 458 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wM1QxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "249be243-6cb9-43b8-b513-31f923a33bea",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in013",
+      "servings": 1.0,
+      "targetKcal": 458,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "4876afb8-1649-48ab-b736-57006331c402",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wNFQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "3746f996-5961-4199-b01c-e4da52c69f4e",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "a16c49d1-5a7b-4df3-a438-7662fe76d3f4",
+      "title": "Paneer + roti + dal + rice + curd",
+      "notes": "Lunch \u2014 1010 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wNFQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "21cd9e62-bc16-4416-ac74-4710b1291b50",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in012",
+      "servings": 1.0,
+      "targetKcal": 1010,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "26e68b6f-6bfb-4a5f-83bc-b68e206ea02f",
+      "title": "Whey + milk",
+      "notes": "Post-workout / Snack \u2014 240 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wNFQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "67e0045f-08c8-4077-b14f-4f98edb4f4a8",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 240,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "505224a4-b788-4643-9374-faf49c4750f6",
+      "title": "Soya sabzi + roti + curd",
+      "notes": "Dinner \u2014 510 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wNFQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "d561835f-8397-4096-8913-d6fd6073e6bd",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r008",
+      "servings": 1.0,
+      "targetKcal": 510,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "e7ec559b-916f-46c0-9ef2-7d333901634e",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wNVQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "120e8743-0eb9-41f2-8027-383b87c1358c",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "c35ef6ed-c19d-49c5-a8cd-2370bd0bf213",
+      "title": "Eat-out: egg/paneer + roti + dal",
+      "notes": "Lunch \u2014 650 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wNVQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "400076e4-a9c5-4248-adc8-00b81779f9de",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in014",
+      "servings": 1.0,
+      "targetKcal": 650,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "b7f898cf-0682-4d79-8cb6-2e4773be0a60",
+      "title": "3 boiled eggs + fruit",
+      "notes": "Post-workout / Snack \u2014 296 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wNVQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "1289975a-57e7-4923-9ac2-b62e591319f2",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r015",
+      "servings": 1.0,
+      "targetKcal": 296,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "20418597-c538-43bf-8d35-05271f691327",
+      "title": "Soya sabzi + dal + roti + curd",
+      "notes": "Dinner \u2014 710 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wNVQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "15138fcb-6f17-49d4-84dd-e88543673d2a",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r008",
+      "servings": 1.0,
+      "targetKcal": 710,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "e445aadb-7301-4253-b8e0-59dabcdbc26b",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wNlQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "75a65450-62b7-4e7f-8bca-00b7dbb6c9a2",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "350fc33e-b3f7-48c7-97ea-6aa3a728d51c",
+      "title": "Chicken curry + rice + dal + curd",
+      "notes": "Lunch \u2014 858 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wNlQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "1058f4b9-0bfa-414d-b49c-30d64bb09d45",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in013",
+      "servings": 1.0,
+      "targetKcal": 858,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "11cf1903-ca44-4c88-a7c2-cac2e76616f1",
+      "title": "Whey shake + banana",
+      "notes": "Post-workout / Snack \u2014 340 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wNlQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "720b34a3-3d12-4a66-9451-dc4cf1b6d9f1",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 340,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "941063cb-01e2-4006-a635-dae84df51409",
+      "title": "Soya chunk sabzi + roti + curd",
+      "notes": "Dinner \u2014 510 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wNlQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "c0ed4be4-69c5-4c5e-847b-4478ed6d3c4a",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r008",
+      "servings": 1.0,
+      "targetKcal": 510,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "e2c69ba0-6bde-4998-a321-17110f91c16b",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wN1QwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "a7daba80-ba90-4153-bde8-280e347aba13",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "059e35c3-6b2e-47e2-9679-21181f6c8164",
+      "title": "Paneer + roti + dal + curd",
+      "notes": "Lunch \u2014 810 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wN1QwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "962b4184-91fb-48c8-bb28-465959ab470d",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in012",
+      "servings": 1.0,
+      "targetKcal": 810,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "dd84ff04-73bb-46ef-af76-71127e4a5653",
+      "title": "3 boiled eggs + fruit",
+      "notes": "Post-workout / Snack \u2014 296 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wN1QxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "7ba3bf4d-7855-4342-a2aa-2dff2f7e6746",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r015",
+      "servings": 1.0,
+      "targetKcal": 296,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "d038b9fb-ec34-4346-8861-305785c694f2",
+      "title": "Soya sabzi + roti + curd",
+      "notes": "Dinner \u2014 510 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wN1QxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "dfdf9641-75ae-49ff-937f-33d063d28409",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r008",
+      "servings": 1.0,
+      "targetKcal": 510,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "c3dc0d75-b55e-4b6b-9b73-f0655565475a",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wOFQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "ca73bad5-0fd2-438d-b098-2be08045aaa8",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "61a5d88f-00b7-4e8c-ab5d-a084f0edced1",
+      "title": "Soya sabzi + dal + rice + curd",
+      "notes": "Lunch \u2014 910 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wOFQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "c9c33777-a493-4995-b973-0ffed6a9499b",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in009",
+      "servings": 1.0,
+      "targetKcal": 910,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "14519766-41f4-4915-9a52-94fed3b222b2",
+      "title": "Whey shake + banana",
+      "notes": "Post-workout / Snack \u2014 340 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wOFQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "b0cc73b3-4afa-461a-ab2e-956c05fee0be",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 340,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "93c43366-1bc2-4b5e-88cd-5f4b7c87b242",
+      "title": "Paneer bhurji + roti + curd",
+      "notes": "Dinner \u2014 525 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wOFQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "36705d98-8bb9-4caa-a4ea-f8b18c6ed03c",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in012",
+      "servings": 1.0,
+      "targetKcal": 525,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "13c1a58d-bc21-4df0-86e7-90d3951465d4",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wOVQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "a02d2095-3e1d-4248-b521-09d5d946d146",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "d2c6c299-5c4b-45b3-9e25-82b688e85e9f",
+      "title": "Egg bhurji + roti + dal + curd",
+      "notes": "Lunch \u2014 710 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wOVQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "84498b24-ab44-4858-a2b8-88e340190462",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in014",
+      "servings": 1.0,
+      "targetKcal": 710,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "7c1cf01d-fc11-41de-9ba7-40dca2ba726a",
+      "title": "Whey + fruit",
+      "notes": "Post-workout / Snack \u2014 200 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wOVQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "3705a2bd-edbf-44c1-847d-3893eb36a129",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 200,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "383bcfaf-2f62-4bbb-8803-6179cc07cf3d",
+      "title": "Eat-out: paneer tikka + roti + dal",
+      "notes": "Dinner \u2014 650 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0wOVQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "ae58f087-0fbc-4328-9a75-915419450f6b",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in012",
+      "servings": 1.0,
+      "targetKcal": 650,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "18aef4bd-3643-46b7-a176-ee686d8680fd",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0xMFQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "af3ddbbe-daeb-470b-91b1-3bc684d47010",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "228b02dc-7642-4fd8-ba45-6fef7395bcd4",
+      "title": "Soya + dal + rice + curd",
+      "notes": "Lunch \u2014 910 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0xMFQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "fc364ab2-317c-4b99-9ce9-b02b0686e4b2",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in009",
+      "servings": 1.0,
+      "targetKcal": 910,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "789f4623-4fc3-4458-8ae1-78a5b5dbea98",
+      "title": "Whey shake + banana",
+      "notes": "Post-workout / Snack \u2014 340 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0xMFQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "beaa9d46-4e13-4b3d-a5eb-837ed6d17f52",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 340,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "f20898c5-83ac-441e-9eab-415b5e5ce123",
+      "title": "Chicken curry + roti + curd",
+      "notes": "Dinner \u2014 458 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0xMFQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "4c89e577-1399-4665-ad22-17f5761a286d",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in013",
+      "servings": 1.0,
+      "targetKcal": 458,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "880e73ef-4d02-4850-9c02-98c2ae760ec5",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0xMVQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "ee02962e-4e89-4557-98b4-391403a6fcdc",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "f14ab77b-94bd-404a-8145-0276d41fb7b4",
+      "title": "Paneer + roti + dal + rice + curd",
+      "notes": "Lunch \u2014 1010 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0xMVQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "e6516e1b-599a-4be3-bf83-ab28a1de4e69",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in012",
+      "servings": 1.0,
+      "targetKcal": 1010,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "6af5d741-e5b6-42cc-b42f-1f0f3dbe9db9",
+      "title": "Whey + milk",
+      "notes": "Post-workout / Snack \u2014 240 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0xMVQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "a9f18d74-aa6f-401c-9d5b-4abf2fe95179",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r026",
+      "servings": 1.0,
+      "targetKcal": 240,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "63773d3c-75ae-4f6c-bf13-899987b2bca8",
+      "title": "Soya sabzi + roti + curd",
+      "notes": "Dinner \u2014 510 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0xMVQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "37867b34-61ee-48a9-aed8-eda15450e1f6",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r008",
+      "servings": 1.0,
+      "targetKcal": 510,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "d8131cba-9de7-40d2-bcad-06a8e56ac1c1",
+      "title": "Smoothie (chana+oats+PB+whey+chia)",
+      "notes": "Breakfast \u2014 660 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0xMlQwMjozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "e579c989-0a92-4ead-8fb7-0072cfe0d0cd",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r004",
+      "servings": 1.0,
+      "targetKcal": 660,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "56a30bfa-769f-40dd-830e-631b8dadb14c",
+      "title": "Eat-out: egg/paneer + roti + dal",
+      "notes": "Lunch \u2014 650 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0xMlQwNzozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "c83ed78f-16e3-489b-ba72-4d7125e827bd",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "in014",
+      "servings": 1.0,
+      "targetKcal": 650,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "93be7fb0-a897-48fa-816b-5cb991190e73",
+      "title": "3 boiled eggs + fruit",
+      "notes": "Post-workout / Snack \u2014 296 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0xMlQxMDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "2996ee59-ea2c-4a97-a76c-2f6996fcf002",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r015",
+      "servings": 1.0,
+      "targetKcal": 296,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    },
+    {
+      "id": "538ba473-155b-4780-9f31-6dce6e665c9f",
+      "title": "Soya sabzi + dal + roti + curd",
+      "notes": "Dinner \u2014 710 kcal",
+      "createdAt": "2026-06-14T11:01:49Z",
+      "updatedAt": "2026-06-14T11:01:49Z",
+      "importanceRaw": 1,
+      "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNy0xMlQxNDozMDowMFoifQ==",
+      "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+      "tags": [
+        {
+          "id": "6ce3c0cd-41ce-47af-aa9b-f4ebcd8831e6",
+          "name": "#meal",
+          "colorRaw": "green"
+        }
+      ],
+      "recipeID": "r008",
+      "servings": 1.0,
+      "targetKcal": 710,
+      "actualKcal": null,
+      "loggedMacrosB64": null,
+      "healthKitCorrelationID": null
+    }
+  ],
+  "habits": [],
+  "bodyProfile": {
+    "heightCm": 180.0,
+    "weightKg": 74.0,
+    "sex": "male",
+    "bodyFatPct": 23.0,
+    "birthDate": "2001-01-01T00:00:00Z",
+    "activityLevel": "active",
+    "goalPhysique": "athletic",
+    "dietType": "omnivore",
+    "allergies": [],
+    "intolerances": [],
+    "medicalFlags": [],
+    "unitPreference": "metric"
+  },
+  "measurements": []
+}

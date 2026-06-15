@@ -45,6 +45,7 @@ struct MacInboxView: View {
                         Text(s.rawValue).tag(s)
                     }
                 }
+                .labelsHidden()  // Improvement 19: hide raw "Sort" label on macOS
                 .pickerStyle(.menu)
                 .frame(width: 110)
             }
@@ -59,8 +60,10 @@ struct MacInboxView: View {
         List(sorted, id: \.id) { item in
             MacItemRow(item: item, isSelected: nav.selectedItemID == item.id)
                 .onTapGesture { nav.selectedItemID = item.id }
-                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                .listRowInsets(EdgeInsets(top: 2, leading: 8, bottom: 2, trailing: 8))
                 .contextMenu {
+                    Button("Edit") { nav.selectedItemID = item.id }  // Bug 8
+                    Divider()
                     Button("Schedule for Today") {
                         Task { await schedule(item, to: Calendar.current.startOfDay(for: .now)) }
                     }

@@ -62,11 +62,19 @@ configs:
   Debug: debug
   Release: release
 
+packages:
+  Supabase:
+    url: https://github.com/supabase/supabase-swift
+    from: "2.0.0"
+
 targets:
   LEO:
     type: application
     platform: iOS
     deploymentTarget: "17.0"
+    configFiles:
+      Debug: Config/Secrets.xcconfig
+      Release: Config/Secrets.xcconfig
     sources:
       - path: LEO
         excludes:
@@ -96,6 +104,8 @@ targets:
     dependencies:
       - target: LEOWidgets
         embed: true
+      - package: Supabase
+        product: Supabase
     info:
       path: LEO/Resources/Info.plist
       properties:
@@ -103,6 +113,8 @@ targets:
         CFBundleDisplayName: LEO
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        SUPABASE_URL: https://ppyoxdurjdvzljlvcvij.supabase.co
+        SUPABASE_ANON_KEY: "$(SUPABASE_ANON_KEY)"
         LSRequiresIPhoneOS: true
         UIApplicationSupportsIndirectInputEvents: true
         UILaunchScreen:
@@ -136,6 +148,9 @@ targets:
     type: application
     platform: macOS
     deploymentTarget: "14.0"
+    configFiles:
+      Debug: Config/Secrets.xcconfig
+      Release: Config/Secrets.xcconfig
     sources:
       - path: LEO
         excludes:
@@ -182,6 +197,9 @@ targets:
           DEBUG_INFORMATION_FORMAT: "dwarf-with-dsym"
           SWIFT_ACTIVE_COMPILATION_CONDITIONS: ""
           CODE_SIGN_ENTITLEMENTS: LEO/Resources/LEO-mac.entitlements
+    dependencies:
+      - package: Supabase
+        product: Supabase
     info:
       path: LEO/Resources/Info-mac.plist
       properties:
@@ -189,6 +207,8 @@ targets:
         CFBundleDisplayName: LEO
         CFBundleShortVersionString: "$(MARKETING_VERSION)"
         CFBundleVersion: "$(CURRENT_PROJECT_VERSION)"
+        SUPABASE_URL: https://ppyoxdurjdvzljlvcvij.supabase.co
+        SUPABASE_ANON_KEY: "$(SUPABASE_ANON_KEY)"
         LSMinimumSystemVersion: "14.0"
         LSApplicationCategoryType: "public.app-category.productivity"
         NSPrincipalClass: NSApplication

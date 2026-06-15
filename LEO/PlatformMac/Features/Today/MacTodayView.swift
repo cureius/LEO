@@ -30,11 +30,9 @@ struct MacTodayView: View {
             Task { await vm?.loadItems() }
         }
         .sheet(isPresented: $showHistory) {
-            NavigationStack {
-                HistoryView()
-                    .environment(appEnv)
-            }
-            .frame(minWidth: 600, minHeight: 500)
+            HistoryView()
+                .environment(appEnv)
+                .frame(minWidth: 620, minHeight: 520)
         }
     }
 
@@ -48,7 +46,8 @@ struct MacTodayView: View {
             } label: {
                 Image(systemName: "clock.arrow.circlepath")
             }
-            .help("History")
+            .help("History (⌘⇧H)")
+            .keyboardShortcut("h", modifiers: [.command, .shift])
         }
         ToolbarItem(placement: .leoTopBarTrailing) {
             Picker("", selection: Binding(get: { mode }, set: { modeRaw = $0.rawValue })) {
@@ -64,39 +63,63 @@ struct MacTodayView: View {
     // MARK: - Date navigation bar
 
     private var dateToolbar: some View {
-        HStack(spacing: 10) {
+        HStack(spacing: 6) {
             Button {
-                vm?.weekOffset -= 1
+                shiftDay(-1)
             } label: {
                 Image(systemName: "chevron.left")
-                    .font(.system(size: 12, weight: .semibold))
+                    .font(.system(size: 11, weight: .semibold))
             }
-            .buttonStyle(.plain)
-
-            Text(vm?.selectedDate ?? .now, format: .dateTime.weekday(.abbreviated).month(.abbreviated).day())
-                .font(.subheadline.weight(.semibold))
-                .frame(minWidth: 140)
+            .buttonStyle(.bordered)
+            .controlSize(.small)
+            .help("Previous day")
 
             Button {
-                vm?.weekOffset += 1
+                shiftDay(1)
             } label: {
                 Image(systemName: "chevron.right")
-                    .font(.system(size: 12, weight: .semibold))
+                    .font(.system(size: 11, weight: .semibold))
             }
-            .buttonStyle(.plain)
+            .buttonStyle(.bordered)
+            .controlSize(.small)
+            .help("Next day")
 
-            if (vm?.weekOffset ?? 0) != 0 {
-                Button("Today") { vm?.weekOffset = 0 }
-                    .buttonStyle(.plain)
-                    .font(.subheadline)
-                    .foregroundStyle(Theme.Color.accent)
+            if let vm {
+                // Click to jump to any date.
+                DatePicker(
+                    "",
+                    selection: Binding(
+                        get: { vm.selectedDate },
+                        set: { vm.selectedDate = Calendar.current.startOfDay(for: $0) }
+                    ),
+                    displayedComponents: .date
+                )
+                .labelsHidden()
+                .datePickerStyle(.field)
+                .frame(minWidth: 130)
+                .padding(.leading, 4)
+
+                if !Calendar.current.isDateInToday(vm.selectedDate) {
+                    Button("Today") {
+                        vm.selectedDate = Calendar.current.startOfDay(for: .now)
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
+                    .tint(Theme.Color.accent)
+                }
             }
 
             Spacer()
         }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 6)
-        .background(Theme.Color.surface.opacity(0.4))
+        .padding(.horizontal, 12)
+        .padding(.vertical, 7)
+        .background(.bar)
+    }
+
+    private func shiftDay(_ delta: Int) {
+        guard let vm else { return }
+        let base = vm.selectedDate
+        vm.selectedDate = Calendar.current.date(byAdding: .day, value: delta, to: base) ?? base
     }
 
     // MARK: - Content
@@ -188,13 +211,14 @@ private struct MacTodayListContent: View {
 
     @ViewBuilder
     private func sectionHeader(_ title: String) -> some View {
-        Text(title)
-            .font(.caption.weight(.semibold))
-            .foregroundStyle(.secondary)
-            .textCase(.uppercase)
+        Text(title.uppercased())
+            .font(.system(size: 10, weight: .semibold))
+            .foregroundStyle(.tertiary)
+            .kerning(0.5)
             .padding(.horizontal, 14)
-            .padding(.top, 10)
-            .padding(.bottom, 3)
+            .padding(.top, 14)
+            .padding(.bottom, 4)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     @ViewBuilder

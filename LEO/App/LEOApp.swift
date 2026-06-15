@@ -2,6 +2,9 @@ import SwiftUI
 import SwiftData
 import BackgroundTasks
 import OSLog
+#if canImport(UIKit)
+import UIKit
+#endif
 
 private let logger = Logger(subsystem: "com.theblueman.leo", category: "app")
 
@@ -13,6 +16,20 @@ struct LEOApp: App {
     @State private var appEnvironment: AppEnvironment? = nil
     // Created on main thread after appEnvironment is ready
     @State private var locationReminderManager: LocationReminderManager? = nil
+
+    init() {
+        #if canImport(UIKit)
+        // App-wide navigation bar styling — bold Apple-style titles with the
+        // system material background that blurs content on scroll.
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithDefaultBackground()
+        appearance.largeTitleTextAttributes = [.font: UIFont.systemFont(ofSize: 34, weight: .bold)]
+        appearance.titleTextAttributes = [.font: UIFont.systemFont(ofSize: 17, weight: .semibold)]
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
+        #endif
+    }
 
     var body: some Scene {
         WindowGroup {

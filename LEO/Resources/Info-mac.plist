@@ -26,5 +26,9 @@
 	<string>14.0</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>SUPABASE_ANON_KEY</key>
+	<string>$(SUPABASE_ANON_KEY)</string>
+	<key>SUPABASE_URL</key>
+	<string>https://ppyoxdurjdvzljlvcvij.supabase.co</string>
 </dict>
 </plist>

@@ -47,6 +47,10 @@
 	<string>LEO uses speech recognition to convert your voice to captured items.</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>LEO does not track you. This entry is required by iOS.</string>
+	<key>SUPABASE_ANON_KEY</key>
+	<string>$(SUPABASE_ANON_KEY)</string>
+	<key>SUPABASE_URL</key>
+	<string>https://ppyoxdurjdvzljlvcvij.supabase.co</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

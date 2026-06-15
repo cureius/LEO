@@ -103,10 +103,45 @@ struct TodayView: View {
             get: { selectedItem.map { IdentifiableItem($0) } },
             set: { selectedItem = $0?.item }
         )) { wrapper in
-            ItemDetailSheet(item: wrapper.item, onSave: { _ in
-                selectedItem = nil
-                Task { await vm.loadItems() }
-            })
+            // Fitness items route to their dedicated trackers; everything else
+            // opens the generic item editor.
+            switch wrapper.item {
+            case let workout as WorkoutItem:
+                WorkoutDetailSheet(
+                    workout: workout,
+                    onComplete: { updated in
+                        selectedItem = nil
+                        Task {
+                            try? await appEnv.itemRepository.update(updated)
+                            await vm.loadItems()
+                        }
+                    },
+                    onUncomplete: { reset in
+                        selectedItem = nil
+                        Task {
+                            try? await appEnv.itemRepository.update(reset)
+                            await vm.loadItems()
+                        }
+                    }
+                )
+            case let meal as MealItem:
+                MealDetailSheet(meal: meal, onComplete: { updatedMeal, servings in
+                    selectedItem = nil
+                    Task {
+                        var done = updatedMeal
+                        done.completion = .completed(at: .now)
+                        if let s = servings { done.servings = s }
+                        done.actualKcal = Int(Double(updatedMeal.targetKcal) * (servings ?? updatedMeal.servings) / updatedMeal.servings)
+                        try? await appEnv.itemRepository.update(done)
+                        await vm.loadItems()
+                    }
+                })
+            default:
+                ItemDetailSheet(item: wrapper.item, onSave: { _ in
+                    selectedItem = nil
+                    Task { await vm.loadItems() }
+                })
+            }
         }
         #endif
     }
@@ -132,9 +167,7 @@ private struct DateStrip: View {
 
                 // Month label — tap to expand/collapse month grid
                 Button {
-                    let opening = !showMonthGrid
-                    withAnimation(.spring(duration: 0.3, bounce: 0.1)) { showMonthGrid.toggle() }
-                    if opening { Task { await vm.loadMonthDates(for: vm.weekDays[3]) } }
+                    toggleGrid()
                 } label: {
                     HStack(spacing: 3) {
                         Text(vm.visibleMonthLabel)
@@ -201,28 +234,80 @@ private struct DateStrip: View {
             .padding(.horizontal, Theme.Spacing.xs)
             .padding(.vertical, Theme.Spacing.sm)
             .contentShape(Rectangle())
-            .gesture(
-                DragGesture(minimumDistance: 40, coordinateSpace: .local)
-                    .onEnded { value in
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            if value.translation.width < -40 { vm.weekOffset += 1 }
-                            else if value.translation.width > 40 { vm.weekOffset -= 1 }
-                        }
-                    }
-            )
+            .sensoryFeedback(.selection, trigger: vm.selectedDate)
+            .gesture(directionalDrag)
 
             // ── Expandable month grid ──────────────────────────────────
             if showMonthGrid {
                 MonthGridView(
                     vm: vm,
-                    onDismiss: {
-                        withAnimation(.spring(duration: 0.3, bounce: 0.1)) { showMonthGrid = false }
-                    }
+                    onDismiss: { collapse() }
                 )
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
+
+            // ── Drag handle (expand / collapse affordance) ─────────────
+            grabber
         }
         .background(Theme.Color.background)
+        .sensoryFeedback(.impact(weight: .light), trigger: showMonthGrid)
+    }
+
+    // MARK: - Gesture-driven expand / collapse
+
+    /// One drag handles both axes: horizontal pages weeks, a downward pull
+    /// expands the month grid and an upward pull collapses it.
+    private var directionalDrag: some Gesture {
+        DragGesture(minimumDistance: 18, coordinateSpace: .local)
+            .onEnded { value in
+                let dx = value.translation.width
+                let dy = value.translation.height
+                if abs(dx) > abs(dy) {
+                    withAnimation(.spring(duration: 0.35, bounce: 0.18)) {
+                        if dx < -28 { vm.weekOffset += 1 }
+                        else if dx > 28 { vm.weekOffset -= 1 }
+                    }
+                } else {
+                    if dy > 22 { expand() }
+                    else if dy < -22 { collapse() }
+                }
+            }
+    }
+
+    /// Slim pull-tab below the strip — tappable and draggable to toggle the grid.
+    private var grabber: some View {
+        Capsule()
+            .fill(Theme.Color.textSecondary.opacity(0.3))
+            .frame(width: 38, height: 5)
+            .padding(.top, 2)
+            .padding(.bottom, 8)
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+            .onTapGesture { toggleGrid() }
+            .gesture(
+                DragGesture(minimumDistance: 8)
+                    .onEnded { value in
+                        if value.translation.height > 18 { expand() }
+                        else if value.translation.height < -18 { collapse() }
+                    }
+            )
+            .accessibilityLabel(showMonthGrid ? "Collapse month view" : "Expand month view")
+            .accessibilityAddTraits(.isButton)
+    }
+
+    private func expand() {
+        guard !showMonthGrid else { return }
+        withAnimation(.spring(duration: 0.4, bounce: 0.16)) { showMonthGrid = true }
+        Task { await vm.loadMonthDates(for: vm.weekDays[3]) }
+    }
+
+    private func collapse() {
+        guard showMonthGrid else { return }
+        withAnimation(.spring(duration: 0.4, bounce: 0.16)) { showMonthGrid = false }
+    }
+
+    private func toggleGrid() {
+        showMonthGrid ? collapse() : expand()
     }
 }
 
@@ -236,57 +321,81 @@ private struct DayButton: View {
     private var dayLetter: String { date.formatted(.dateTime.weekday(.narrow)) }
     private var dayNumber: String { date.formatted(.dateTime.day()) }
 
+    // How many density dots to render under the number (capped at 3).
+    private var dotCount: Int {
+        if itemCount > 0 { return min(itemCount, 3) }
+        return (isToday && !isSelected) ? 1 : 0
+    }
+
     var body: some View {
         Button(action: onTap) {
-            VStack(spacing: 3) {
-                // Weekday letter
-                Text(dayLetter)
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundStyle(
-                        isSelected ? Theme.Color.accent
-                            : isToday  ? Theme.Color.accent
-                            : Theme.Color.textSecondary
-                    )
+            VStack(spacing: 5) {
+                Text(dayLetter.uppercased())
+                    .font(.system(size: 11, weight: .semibold, design: .rounded))
+                    .foregroundStyle(weekdayColor)
 
-                // Day number circle
-                ZStack {
-                    if isSelected {
+                Text(dayNumber)
+                    .font(.system(size: 17, weight: .bold, design: .rounded))
+                    .foregroundStyle(numberColor)
+                    .frame(height: 24)
+
+                // Density dots — white on the filled pill, accent otherwise.
+                HStack(spacing: 3) {
+                    ForEach(0..<max(dotCount, 1), id: \.self) { idx in
                         Circle()
-                            .fill(Theme.Color.accent)
-                            .frame(width: 34, height: 34)
-                    } else if isToday {
-                        Circle()
-                            .strokeBorder(Theme.Color.accent, lineWidth: 1.5)
-                            .frame(width: 34, height: 34)
+                            .fill(idx < dotCount ? dotColor : Color.clear)
+                            .frame(width: 4, height: 4)
                     }
-                    Text(dayNumber)
-                        .font(.system(size: 15, weight: isSelected || isToday ? .bold : .regular))
-                        .foregroundStyle(
-                            isSelected ? .white
-                                : isToday  ? Theme.Color.accent
-                                : Theme.Color.textPrimary
-                        )
                 }
-
-                // Density dot — shows when day has items OR is today-but-not-selected.
-                // White when selected (visible on filled background), accent otherwise.
-                let showDot = itemCount > 0 || (isToday && !isSelected)
-                Circle()
-                    .fill(showDot
-                          ? (isSelected ? Color.white.opacity(0.8) : Theme.Color.accent)
-                          : Color.clear)
-                    .frame(width: 4, height: 4)
+                .frame(height: 4)
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 4)
+            .padding(.vertical, 10)
+            .background(pillBackground)
+            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .strokeBorder(
+                        isToday && !isSelected ? Theme.Color.accent.opacity(0.45) : Color.clear,
+                        lineWidth: 1.5
+                    )
+            )
+            .shadow(color: isSelected ? Theme.Color.accent.opacity(0.35) : .clear,
+                    radius: 9, y: 5)
+            .scaleEffect(isSelected ? 1.05 : 1)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .animation(.spring(duration: 0.3, bounce: 0.28), value: isSelected)
         .accessibilityLabel(
             date.formatted(.dateTime.weekday(.wide).month().day())
             + (itemCount > 0 ? ", \(itemCount) items" : "")
         )
         .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+
+    @ViewBuilder
+    private var pillBackground: some View {
+        if isSelected {
+            LinearGradient(
+                colors: [Theme.Color.accent, Theme.Color.accent.opacity(0.8)],
+                startPoint: .top, endPoint: .bottom
+            )
+        } else if isToday {
+            Theme.Color.accent.opacity(0.08)
+        } else {
+            Color.clear
+        }
+    }
+
+    private var weekdayColor: Color {
+        isSelected ? .white.opacity(0.9) : (isToday ? Theme.Color.accent : Theme.Color.textSecondary)
+    }
+    private var numberColor: Color {
+        isSelected ? .white : (isToday ? Theme.Color.accent : Theme.Color.textPrimary)
+    }
+    private var dotColor: Color {
+        isSelected ? .white.opacity(0.85) : Theme.Color.accent
     }
 }
 
@@ -300,12 +409,29 @@ private struct TodayHeader: View {
 
     var body: some View {
         HStack(alignment: .center, spacing: 6) {
-            VStack(alignment: .leading, spacing: 1) {
-                Text(date, format: .dateTime.weekday(.wide))
-                    .font(.system(size: 22, weight: .bold))
-                    .foregroundStyle(isToday ? Theme.Color.accent : Theme.Color.textPrimary)
-                Text(date, format: .dateTime.month(.wide).day())
-                    .font(Theme.Typography.callout)
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 8) {
+                    Text(date, format: .dateTime.weekday(.wide))
+                        .font(.system(size: 28, weight: .heavy, design: .rounded))
+                        .foregroundStyle(isToday ? Theme.Color.accent : Theme.Color.textPrimary)
+                    if isToday {
+                        Text("TODAY")
+                            .font(.system(size: 10, weight: .bold, design: .rounded))
+                            .tracking(0.5)
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 3)
+                            .background(
+                                LinearGradient(
+                                    colors: [Theme.Color.accent, Theme.Color.accent.opacity(0.8)],
+                                    startPoint: .topLeading, endPoint: .bottomTrailing
+                                )
+                            )
+                            .clipShape(Capsule())
+                    }
+                }
+                Text(date, format: .dateTime.month(.wide).day().year())
+                    .font(.system(size: 14, weight: .medium, design: .rounded))
                     .foregroundStyle(Theme.Color.textSecondary)
             }
             Spacer()
@@ -1098,8 +1224,24 @@ private struct MonthGridView: View {
             }
             .padding(.horizontal, Theme.Spacing.xs)
             .padding(.bottom, Theme.Spacing.sm)
+            .contentShape(Rectangle())
+            .gesture(
+                DragGesture(minimumDistance: 24, coordinateSpace: .local)
+                    .onEnded { value in
+                        let dx = value.translation.width
+                        let dy = value.translation.height
+                        if abs(dx) > abs(dy) {
+                            withAnimation(.spring(duration: 0.35, bounce: 0.15)) {
+                                displayedMonth = cal.date(byAdding: .month, value: dx < 0 ? 1 : -1, to: displayedMonth)!
+                            }
+                        } else if dy < -24 {
+                            onDismiss()
+                        }
+                    }
+            )
         }
         .background(Theme.Color.background)
+        .sensoryFeedback(.selection, trigger: displayedMonth)
         .onAppear {
             displayedMonth = monthStart(for: vm.weekDays[3])
             Task { await vm.loadMonthDates(for: displayedMonth) }
@@ -1136,26 +1278,35 @@ private struct MonthDayCell: View {
 
     var body: some View {
         Button(action: onTap) {
-            VStack(spacing: 2) {
+            VStack(spacing: 3) {
                 ZStack {
                     if isSelected {
-                        Circle().fill(Theme.Color.accent)
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    colors: [Theme.Color.accent, Theme.Color.accent.opacity(0.8)],
+                                    startPoint: .top, endPoint: .bottom
+                                )
+                            )
+                            .shadow(color: Theme.Color.accent.opacity(0.4), radius: 6, y: 3)
                     } else if isToday {
                         Circle().strokeBorder(Theme.Color.accent, lineWidth: 1.5)
                     }
                     Text("\(Calendar.current.component(.day, from: date))")
-                        .font(.system(size: 13, weight: isSelected || isToday ? .semibold : .regular))
+                        .font(.system(size: 14, weight: isSelected || isToday ? .bold : .regular, design: .rounded))
                         .foregroundStyle(
                             isSelected ? .white
                                 : isToday ? Theme.Color.accent
                                 : Theme.Color.textPrimary
                         )
                 }
-                .frame(width: 32, height: 32)
+                .frame(width: 34, height: 34)
+                .scaleEffect(isSelected ? 1.05 : 1)
+                .animation(.spring(duration: 0.3, bounce: 0.25), value: isSelected)
 
                 Circle()
                     .fill(hasItems
-                          ? (isSelected ? Color.white.opacity(0.7) : Theme.Color.accent)
+                          ? (isSelected ? Theme.Color.accent : Theme.Color.accent)
                           : Color.clear)
                     .frame(width: 4, height: 4)
             }
