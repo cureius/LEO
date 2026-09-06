@@ -28,6 +28,7 @@
 		11C436209FC40D97DE208BF8 /* WidgetSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9277166E6950652AD179AA27 /* WidgetSnapshot.swift */; };
 		12411255C3C5F2190A04DB6F /* FitnessMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BF1865B01E25D8CFCD507C /* FitnessMapping.swift */; };
 		125CFD68D79A052525D8D7E1 /* SettingsRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FA5B4AFF834054CF306EDA /* SettingsRootView.swift */; };
+		1407FC61BA099BA78EE03E2B /* GetFitnessItemsTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2D6522E1C7E160524EF5EF /* GetFitnessItemsTool.swift */; };
 		14871722E539ACD9A0F4A6D0 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF236AF1F0A83A7B3EFB8832 /* Item.swift */; };
 		181D657314E79558AE166B20 /* ErrorBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACAD4D8D551475C747D3AF0B /* ErrorBanner.swift */; };
 		19EC85330B05CD9CA76E6B72 /* StoredBodyProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917028BB851AFDBECE23CEFF /* StoredBodyProfile.swift */; };
@@ -36,6 +37,7 @@
 		1B34831717591502E1331662 /* AlarmEngineMac.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD6D4E01EA0ADC85673306B2 /* AlarmEngineMac.swift */; };
 		1B54F17AA93FAD6A493E0D24 /* ClaudeModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3554E35DEC29D6D81A6E714 /* ClaudeModels.swift */; };
 		1BEF98A2346133EDBA9B314D /* LEOSkeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41EB22DC22016F5BD68B326D /* LEOSkeleton.swift */; };
+		1BFA401DCB8ECAA1B9964CE3 /* SetWorkoutExercisesTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088F9DDE3C0C47A881535E80 /* SetWorkoutExercisesTool.swift */; };
 		1D59241C73EED8E06CAA6119 /* StoredMealItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0019AB76B73C20279EC9BC /* StoredMealItem.swift */; };
 		1E90B4BACB4BFB7BBC16A76A /* Theme.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CDF0E5595AC99ABC020890E /* Theme.xcassets */; };
 		1F16E1423661FF3DB5E75ED9 /* DebugMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2F1B07EE649B091F6067A5 /* DebugMenu.swift */; };
@@ -123,6 +125,7 @@
 		500E9019951990FAF8C7CD57 /* DeterministicParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86D061374805775FE7FE37E /* DeterministicParser.swift */; };
 		500F3EF6735936FB5BC1983E /* ConversationStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B596621F6F0FC4364E7980CF /* ConversationStore.swift */; };
 		52A52E8B96B5BF7E97FF00D8 /* HabitInstanceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDEB4D2A60BF1F43267C938 /* HabitInstanceItem.swift */; };
+		539128063F97628AF2E98687 /* SyncPolicyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2117E0F0C3C80C6C297C83B /* SyncPolicyTests.swift */; };
 		543C48534662827D64542724 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = FA1FC7B844F2A9C9CB77821A /* Supabase */; };
 		55C58B0BA7FD2F77977A5A4A /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = D5C23F325C16CC55011E405E /* Supabase */; };
 		55C736231C6A94E7B480F26B /* ProposeWorkoutPlanTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F72CBF1CD04092257D959FA /* ProposeWorkoutPlanTool.swift */; };
@@ -274,6 +277,7 @@
 		C05A2A5E99E787B6E85B5B34 /* leo_alarm.caf in Resources */ = {isa = PBXBuildFile; fileRef = 41907E328C91F86B6CD008CB /* leo_alarm.caf */; };
 		C07A25B732EC2015AFF4C4EE /* MenuBarStatusProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F3D242CA9F831DDD1E11E10 /* MenuBarStatusProviding.swift */; };
 		C07FB2479DD1EED96AF78E73 /* FitnessPlanGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44C7DBF427EA177E6287ACB /* FitnessPlanGenerator.swift */; };
+		C1D1508570A8D891BD3BEFD6 /* ExternalRefTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3314338D665CCD1D9E7972C3 /* ExternalRefTests.swift */; };
 		C1E8F76BB72A279438E5FE95 /* GeneratePlanFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF784267058127C1D53FED27 /* GeneratePlanFlowView.swift */; };
 		C264582076220FDB79F086D8 /* CalendarSyncCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4FABB1A42F22728190BEE61 /* CalendarSyncCoordinator.swift */; };
 		C2D9321E9B41B734F6C2DF84 /* WorkoutItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482F0FDD9EEEB496394FF5C8 /* WorkoutItem.swift */; };
@@ -330,6 +334,7 @@
 		E8739246136E78E99B2E3125 /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F8B4A61A110231CCB1BBAF /* Measurement.swift */; };
 		E9154D966F390622256F4A6E /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B3E51847CF00F493786DD7 /* Habit.swift */; };
 		EA07D10B4B71C9D11AF6C29E /* USFederalHolidays.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8BEBB98EBB5B605CAC1EB38 /* USFederalHolidays.swift */; };
+		EA8BA5C5209FCEEFADA6637C /* GetFitnessItemsTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2D6522E1C7E160524EF5EF /* GetFitnessItemsTool.swift */; };
 		EAA1B8800C684A6E0ACFA550 /* BodyMathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA316E3283B663188E362D2 /* BodyMathTests.swift */; };
 		EAFC37312C267354E363B1D3 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F35D62E0AE159254B5A5593 /* Tag.swift */; };
 		EB79C26E0EA4A07319818808 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43ABC2B208D5C9B20C0E927 /* AppEnvironment.swift */; };
@@ -353,6 +358,7 @@
 		F4BAA26428606D4E0AF707F1 /* AppTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86E8664A21024526487C667E /* AppTabView.swift */; };
 		F4D3A01E0BB96D0AB77AC158 /* recipes.json in Resources */ = {isa = PBXBuildFile; fileRef = 5AF69A7441D9FA7733469CB1 /* recipes.json */; };
 		F696DFE7290DDF90F2DF11C4 /* SeriesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C596A584A0D5E9ADCB45F128 /* SeriesRepository.swift */; };
+		F6A54F8B254836890C538234 /* SetWorkoutExercisesTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088F9DDE3C0C47A881535E80 /* SetWorkoutExercisesTool.swift */; };
 		FA5400BF03E15EA27BA4C783 /* StoredTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = D21234BD488E3902ADC96A0A /* StoredTask.swift */; };
 		FACD59EA3AC90A97A3027934 /* StoredMeasurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0479C03D6F6721E436D383B /* StoredMeasurement.swift */; };
 		FC9477D54B95CA8D63A72455 /* SnapshotDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EE969363D518CF5E88DD65 /* SnapshotDTO.swift */; };
@@ -421,11 +427,13 @@
 		075A5C4021F07165D8712A8F /* RecurrenceFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecurrenceFormatter.swift; sourceTree = "<group>"; };
 		07E8A5798F002D4869949506 /* LEOWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LEOWidgetBundle.swift; sourceTree = "<group>"; };
 		0803801D7555F1BD1861FAE3 /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
+		088F9DDE3C0C47A881535E80 /* SetWorkoutExercisesTool.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SetWorkoutExercisesTool.swift; sourceTree = "<group>"; };
 		08F69DDACD7D055E475BC861 /* InboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
 		09F55ECF63CA111FE0B6071B /* MacRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRootView.swift; sourceTree = "<group>"; };
 		0BA316E3283B663188E362D2 /* BodyMathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyMathTests.swift; sourceTree = "<group>"; };
 		0C3B4FA4BB1720F75A300E1C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0DC787A24EAD4E12F5FC31F8 /* MacInboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacInboxView.swift; sourceTree = "<group>"; };
+		0E2D6522E1C7E160524EF5EF /* GetFitnessItemsTool.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GetFitnessItemsTool.swift; sourceTree = "<group>"; };
 		0F35D62E0AE159254B5A5593 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		0F3D242CA9F831DDD1E11E10 /* MenuBarStatusProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarStatusProviding.swift; sourceTree = "<group>"; };
 		0FF775267C4742345B2B77BA /* StoredHabitInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredHabitInstance.swift; sourceTree = "<group>"; };
@@ -459,6 +467,7 @@
 		31D0F713C579CCDE0B2406D1 /* NextEventActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextEventActivity.swift; sourceTree = "<group>"; };
 		32AFC4E5188AE84F6C366D47 /* SchemaV3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemaV3.swift; sourceTree = "<group>"; };
 		32D2B8B292E811D086ABE49E /* MacQuickAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacQuickAddView.swift; sourceTree = "<group>"; };
+		3314338D665CCD1D9E7972C3 /* ExternalRefTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExternalRefTests.swift; sourceTree = "<group>"; };
 		33976C4782FAA15815A4C211 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		345761AFFCBA4899D1C3E2F9 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		355D1E79D9169A72FB8606F2 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
@@ -586,6 +595,7 @@
 		CF4542ADE5D789BB791FA4F3 /* MenuBarStatusProvidingIOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarStatusProvidingIOS.swift; sourceTree = "<group>"; };
 		CF784267058127C1D53FED27 /* GeneratePlanFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePlanFlowView.swift; sourceTree = "<group>"; };
 		D1B73C5AC3C754052763DED3 /* WeeklyReviewGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyReviewGenerator.swift; sourceTree = "<group>"; };
+		D2117E0F0C3C80C6C297C83B /* SyncPolicyTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SyncPolicyTests.swift; sourceTree = "<group>"; };
 		D21234BD488E3902ADC96A0A /* StoredTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredTask.swift; sourceTree = "<group>"; };
 		D287050AF673F35357060D27 /* TodayWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayWidget.swift; sourceTree = "<group>"; };
 		D44C7DBF427EA177E6287ACB /* FitnessPlanGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FitnessPlanGenerator.swift; sourceTree = "<group>"; };
@@ -755,6 +765,15 @@
 			path = Review;
 			sourceTree = "<group>";
 		};
+		14D611D1C602D2269861D9AF /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				D2117E0F0C3C80C6C297C83B /* SyncPolicyTests.swift */,
+			);
+			name = Sync;
+			path = Sync;
+			sourceTree = "<group>";
+		};
 		1AEC37897620D37DB09715D5 /* Widgets */ = {
 			isa = PBXGroup;
 			children = (
@@ -768,6 +787,7 @@
 			children = (
 				273E0542EE3663148A608AEB /* Domain */,
 				6CFE0041AD51969B2EDCC063 /* Persistence */,
+				14D611D1C602D2269861D9AF /* Sync */,
 			);
 			path = LEOTests;
 			sourceTree = "<group>";
@@ -937,6 +957,8 @@
 				EC98C8417F14CF9B93F4766F /* GetBodyProfileTool.swift */,
 				48EFED15A05CFE8E195DC61A /* ProposeMealPlanTool.swift */,
 				8F72CBF1CD04092257D959FA /* ProposeWorkoutPlanTool.swift */,
+				0E2D6522E1C7E160524EF5EF /* GetFitnessItemsTool.swift */,
+				088F9DDE3C0C47A881535E80 /* SetWorkoutExercisesTool.swift */,
 			);
 			path = Fitness;
 			sourceTree = "<group>";
@@ -1368,6 +1390,7 @@
 			isa = PBXGroup;
 			children = (
 				889794EB2C78D9A71D74EE49 /* ItemTests.swift */,
+				3314338D665CCD1D9E7972C3 /* ExternalRefTests.swift */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -1769,8 +1792,6 @@
 				D93D679496758A2EC24E80C6 /* PBXTargetDependency */,
 			);
 			name = LEOUITests;
-			packageProductDependencies = (
-			);
 			productName = LEOUITests;
 			productReference = 14FF1DBB1CCE4FEB0E8FF169 /* LEOUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -1787,8 +1808,6 @@
 				8BC56ABBCD85C2F31B57AEAC /* PBXTargetDependency */,
 			);
 			name = LEOMacTests;
-			packageProductDependencies = (
-			);
 			productName = LEOMacTests;
 			productReference = 45336B56D5B25F07D77D9BEE /* LEOMacTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -1805,8 +1824,6 @@
 			dependencies = (
 			);
 			name = LEOWidgets;
-			packageProductDependencies = (
-			);
 			productName = LEOWidgets;
 			productReference = 81B0985B7D8A7894674C1139 /* LEOWidgets.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -1845,8 +1862,6 @@
 				D7ADB0D3F487A8A3600164B8 /* PBXTargetDependency */,
 			);
 			name = LEOTests;
-			packageProductDependencies = (
-			);
 			productName = LEOTests;
 			productReference = 99778E63993070879442F89F /* LEOTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -2128,6 +2143,8 @@
 				2C0864E0F997C76BB22752AB /* WidgetSnapshot.swift in Sources */,
 				FF8BC093D4E37DC6AEBAF70C /* WorkoutDetailSheet.swift in Sources */,
 				C2D9321E9B41B734F6C2DF84 /* WorkoutItem.swift in Sources */,
+				EA8BA5C5209FCEEFADA6637C /* GetFitnessItemsTool.swift in Sources */,
+				F6A54F8B254836890C538234 /* SetWorkoutExercisesTool.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2148,6 +2165,8 @@
 				4CE7922C333BEC8D03B46B02 /* DiffTests.swift in Sources */,
 				5931D1AA73088DF28C81ECF2 /* ItemTests.swift in Sources */,
 				07F51E20AE5316B7D0C8743B /* PersistenceControllerTests.swift in Sources */,
+				C1D1508570A8D891BD3BEFD6 /* ExternalRefTests.swift in Sources */,
+				539128063F97628AF2E98687 /* SyncPolicyTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2343,6 +2362,8 @@
 				11C436209FC40D97DE208BF8 /* WidgetSnapshot.swift in Sources */,
 				745BC2F96F5BDED73D27DD10 /* WorkoutDetailSheet.swift in Sources */,
 				0249A4E2771FA5EE112FEA5B /* WorkoutItem.swift in Sources */,
+				1407FC61BA099BA78EE03E2B /* GetFitnessItemsTool.swift in Sources */,
+				1BFA401DCB8ECAA1B9964CE3 /* SetWorkoutExercisesTool.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2556,6 +2577,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2574,6 +2596,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2583,7 +2606,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.theblueman.leo.mactests;
 				SDKROOT = macosx;
 				SWIFT_STRICT_CONCURRENCY = targeted;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LEO-Mac.app/Contents/MacOS/LEO-Mac";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LEO.app/Contents/MacOS/LEO";
 			};
 			name = Debug;
 		};
@@ -2663,6 +2686,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2682,6 +2706,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -2691,7 +2716,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.theblueman.leo.mactests;
 				SDKROOT = macosx;
 				SWIFT_STRICT_CONCURRENCY = targeted;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LEO-Mac.app/Contents/MacOS/LEO-Mac";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LEO.app/Contents/MacOS/LEO";
 			};
 			name = Release;
 		};
@@ -2699,6 +2724,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2736,6 +2762,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

@@ -63,3 +63,9 @@ __MACOSX
 
 # Supabase local secrets
 Config/Secrets.xcconfig
+
+# LEO Web (apps/web) — Node/Vite project
+apps/web/node_modules
+apps/web/dist
+apps/web/.env.local
+apps/web/*.tsbuildinfo

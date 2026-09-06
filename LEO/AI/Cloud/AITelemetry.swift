@@ -46,15 +46,22 @@ actor AITelemetry {
         records = load()
     }
 
-    func record(model: ClaudeModel, response: ClaudeResponse) {
+    /// Takes `usage` directly rather than a full `ClaudeResponse` so both the
+    /// one-shot `send()` path and the streaming `stream()` path (whose usage
+    /// only becomes available from the final `message_delta` event, never a
+    /// `ClaudeResponse`) can record through the same entry point. Previously
+    /// only `send()` called this — `stream()`, the path every normal turn
+    /// actually takes, never recorded anything, so the AI Usage screen was
+    /// effectively dead for real conversations.
+    func record(model: ClaudeModel, usage: ClaudeResponse.Usage?) {
         let r = AIRequestRecord(
             id: UUID(),
             timestamp: .now,
             model: model.rawValue,
-            inputTokens: response.usage?.inputTokens ?? 0,
-            outputTokens: response.usage?.outputTokens ?? 0,
-            cacheCreationTokens: response.usage?.cacheCreationInputTokens ?? 0,
-            cacheReadTokens: response.usage?.cacheReadInputTokens ?? 0
+            inputTokens: usage?.inputTokens ?? 0,
+            outputTokens: usage?.outputTokens ?? 0,
+            cacheCreationTokens: usage?.cacheCreationInputTokens ?? 0,
+            cacheReadTokens: usage?.cacheReadInputTokens ?? 0
         )
         records.append(r)
         // Rotate if needed

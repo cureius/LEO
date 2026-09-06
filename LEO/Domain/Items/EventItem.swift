@@ -1,4 +1,5 @@
 import Foundation
+import CryptoKit
 
 /// A time-blocked calendar event with optional location and attendees.
 public struct EventItem: Item {
@@ -146,5 +147,27 @@ public struct ExternalRef: Hashable, Sendable, Codable {
         self.source = source
         self.identifier = identifier
         self.lastSeen = lastSeen
+    }
+
+    /// A stable id derived purely from `source` + `identifier`, so every device that
+    /// independently mirrors the *same* external event/reminder computes the *same*
+    /// local item id — the prerequisite for pushing EventKit mirrors to the cloud
+    /// (SupabaseSync.push) without each device's random per-mirror id creating a
+    /// duplicate row for the same real event.
+    ///
+    /// Deliberately hashes ONLY `source`+`identifier`, never the whole struct —
+    /// `lastSeen` defaults to `.now` at construction, so hashing it in would make
+    /// every device (and every re-mirror) compute a different id, silently
+    /// reintroducing the exact duplication this exists to prevent.
+    ///
+    /// Not a spec-pure UUIDv5 (that mandates SHA-1); this only needs to be
+    /// internally stable and collision-resistant, not interoperable with an
+    /// external UUIDv5 generator.
+    public var deterministicItemID: UUID {
+        let digest = SHA256.hash(data: Data("\(source.rawValue):\(identifier)".utf8))
+        var bytes = Array(digest.prefix(16))
+        bytes[6] = (bytes[6] & 0x0F) | 0x50   // version 5 (name-based)
+        bytes[8] = (bytes[8] & 0x3F) | 0x80   // RFC 4122 variant
+        return NSUUID(uuidBytes: bytes) as UUID
     }
 }

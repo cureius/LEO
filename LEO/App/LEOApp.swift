@@ -85,6 +85,18 @@ struct LEOApp: App {
                 await env.calendarSyncCoordinator.start()
                 await env.calendarSyncCoordinator.syncOnForeground()
 
+                // Cloud sync (Supabase) — runs for the whole app lifetime, so
+                // edits made anywhere reach other devices, not just on the Cloud
+                // Sync screen.
+                #if canImport(Supabase)
+                LiveSyncController.shared.configure(
+                    itemRepository: env.itemRepository,
+                    habitRepository: env.habitRepository,
+                    bodyProfileRepository: env.bodyProfileRepository
+                )
+                await LiveSyncController.shared.startIfSignedIn()
+                #endif
+
                 // Re-sync notifications whenever an item changes in-app.
                 // Runs the whole body on @MainActor so no off-thread continuation surprise.
                 for await _ in NotificationCenter.default.notifications(named: .leoDataDidChange) {
@@ -97,6 +109,9 @@ struct LEOApp: App {
             .onChange(of: scenePhase) { _, newPhase in
                 guard newPhase == .active, let env = appEnvironment else { return }
                 Task { await env.calendarSyncCoordinator.syncOnForeground() }
+                #if canImport(Supabase)
+                Task { await LiveSyncController.shared.syncOnForeground() }
+                #endif
             }
         }
         .backgroundTask(.appRefresh(bgRefreshID)) {

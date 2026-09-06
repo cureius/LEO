@@ -127,7 +127,9 @@ struct ProposeWorkoutPlanTool: LEOTool {
                     type: "workout",
                     start: iso.string(from: workout.anchor.sortDate ?? sessionDate),
                     end: nil,
-                    notes: "Week \(week+1), Day \(dayIdx+1). Exercises: \(exercises.map(\.name).joined(separator: ", "))"
+                    notes: "Week \(week+1), Day \(dayIdx+1). Exercises: \(exercises.map(\.name).joined(separator: ", "))",
+                    exercises: planned,
+                    estimatedKcal: estimatedKcal
                 )
                 changes.append(DiffChange(
                     itemID: workout.id.uuidString,

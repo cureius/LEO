@@ -1,0 +1,20 @@
+{
+  "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+  "id": "0E9C6CB0-3364-479F-BAEE-BF129E2B9364",
+  "notes": "Redacted notes text.",
+  "tags": [
+    {
+      "colorRaw": "blue",
+      "name": "#meal",
+      "id": "C93223E7-F4CE-428A-A2CE-EE20961F20F2"
+    }
+  ],
+  "recipeID": "r004",
+  "createdAt": 803127709,
+  "anchorB64": "eyJ0eXBlIjoicG9pbnQiLCJkYXRlIjoiMjAyNi0wNi0yNVQwMjozMDowMFoifQ==",
+  "importanceRaw": 1,
+  "servings": 1,
+  "targetKcal": 660,
+  "title": "Redacted Title",
+  "updatedAt": 803127709
+}

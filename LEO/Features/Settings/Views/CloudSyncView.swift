@@ -28,7 +28,6 @@ private struct CloudSyncContent: View {
 
     @Environment(\.dismiss) private var dismiss
     @State private var manager = SupabaseManager.shared
-    @State private var service: CloudSyncService?
 
     @State private var email = ""
     @State private var password = ""
@@ -74,11 +73,9 @@ private struct CloudSyncContent: View {
         .navigationBarTitleDisplayMode(.inline)
         #endif
         .task {
-            if service == nil {
-                service = CloudSyncService(itemRepository: itemRepository,
-                                           habitRepository: habitRepository,
-                                           bodyProfileRepository: bodyProfileRepository)
-            }
+            LiveSyncController.shared.configure(itemRepository: itemRepository,
+                                                habitRepository: habitRepository,
+                                                bodyProfileRepository: bodyProfileRepository)
             await manager.restoreSession()
             if manager.isSignedIn { await runInitialSync() }
         }
@@ -147,20 +144,20 @@ private struct CloudSyncContent: View {
             } header: { Text("Status") }
 
             Section {
-                Button { Task { await action("Synced") { try await service?.sync() } } } label: {
+                Button { Task { await action("Synced") { try await LiveSyncController.shared.syncNow() } } } label: {
                     rowLabel("Sync now", "arrow.triangle.2.circlepath", busy: busy)
                 }
-                Button { Task { await action("Backed up to cloud") { try await service?.backupNow() } } } label: {
+                Button { Task { await action("Backed up to cloud") { try await LiveSyncController.shared.backupNow() } } } label: {
                     rowLabel("Back up to cloud now", "icloud.and.arrow.up", busy: busy)
                 }
-                Button { Task { await action("Restored from cloud") { try await service?.restoreFromCloud() } } } label: {
+                Button { Task { await action("Restored from cloud") { try await LiveSyncController.shared.restoreFromCloud() } } } label: {
                     rowLabel("Restore from cloud", "icloud.and.arrow.down", busy: busy)
                 }
             }
 
             Section {
                 Button(role: .destructive) {
-                    Task { service?.stopRealtime(); await manager.signOut(); status = nil }
+                    Task { LiveSyncController.shared.deactivate(); await manager.signOut(); status = nil }
                 } label: { Text("Sign Out") }
             }
         }
@@ -210,8 +207,8 @@ private struct CloudSyncContent: View {
     }
 
     private func runInitialSync() async {
-        await action("Synced") { try await service?.sync() }
-        service?.startRealtime()
+        await action("Synced") { try await LiveSyncController.shared.syncNow() }
+        LiveSyncController.shared.goLive()
     }
 
     private func action(_ successText: String, _ work: () async throws -> Void) async {

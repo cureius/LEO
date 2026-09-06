@@ -224,32 +224,51 @@ actor EventKitBridge {
             // collapses a whole series into a single LEO item, so we qualify the
             // identifier with the occurrence's start time (mirrors reminder sync).
             let eid = externalID(for: ekEvent)
+            let externalRef = ExternalRef(source: .eventKit, identifier: eid)
             if existingExternalIDs.contains(eid) {
                 // EventKit is source of truth — always overwrite scheduling data.
                 // Preserve LEO-only fields: id, createdAt, importance, completion, tags.
                 if let existing = existingEventItems.first(where: { $0.externalRef?.identifier == eid }) {
                     let fromEK = EventItem(from: ekEvent)
-                    let updatedAt = ekEvent.lastModifiedDate ?? existing.updatedAt
+                    // A pre-migration item still carries its old random per-device id —
+                    // see ExternalRef.deterministicItemID (EventItem.swift). Re-keying is
+                    // itself a reason to write, independent of whether EventKit's content
+                    // changed this run, and forces `updatedAt` to now (not preserved) so
+                    // the migrated item becomes push-eligible on the next sync
+                    // (SupabaseSync.push's `updatedAt > since` filter).
+                    let needsRekey = existing.id != externalRef.deterministicItemID
+                    let updatedAt = needsRekey ? Date.now : (ekEvent.lastModifiedDate ?? existing.updatedAt)
                     let merged = EventItem(
-                        id: existing.id, title: fromEK.title, notes: fromEK.notes,
+                        id: needsRekey ? externalRef.deterministicItemID : existing.id,
+                        title: fromEK.title, notes: fromEK.notes,
                         createdAt: existing.createdAt, updatedAt: updatedAt,
                         importance: existing.importance, anchor: fromEK.anchor,
                         completion: existing.completion, tags: existing.tags,
                         location: fromEK.location, attendees: fromEK.attendees,
-                        externalRef: ExternalRef(source: .eventKit, identifier: eid)
+                        externalRef: externalRef
                     )
-                    // Skip write if nothing changed (title + anchor are the likely diffs)
-                    if merged.title != existing.title
+                    let contentChanged = merged.title != existing.title
                         || merged.anchor != existing.anchor
                         || merged.location != existing.location
-                        || merged.notes != existing.notes {
-                        try await itemRepository.update(merged)
+                        || merged.notes != existing.notes
+                    if needsRekey {
+                        try await itemRepository.rekey(from: existing.id, to: merged)
+                        report.updated += 1
+                    } else if contentChanged {
+                        // EventKit is the source of truth here; keep the event's own
+                        // lastModified so cloud sync doesn't treat a passive mirror as a
+                        // fresh local edit.
+                        try await itemRepository.update(merged, preservingTimestamp: true)
                         report.updated += 1
                     }
                 }
             } else {
-                var item = EventItem(from: ekEvent)
-                item.externalRef = ExternalRef(source: .eventKit, identifier: eid)
+                let fromEK = EventItem(from: ekEvent)
+                let item = EventItem(
+                    id: externalRef.deterministicItemID, title: fromEK.title, notes: fromEK.notes,
+                    anchor: fromEK.anchor, location: fromEK.location, attendees: fromEK.attendees,
+                    externalRef: externalRef
+                )
                 try await itemRepository.add(item)
                 report.imported += 1
             }
@@ -321,17 +340,56 @@ actor EventKitBridge {
                 let occurrences = expandRecurringReminder(ekReminder, rule: rule, in: window)
                 for date in occurrences {
                     let eid = "\(baseID)/\(occurrenceKey(for: date))"
-                    guard !existingExternalIDs.contains(eid) else { continue }
-                    var item = ReminderItem(from: ekReminder)
-                    item.anchor      = .point(date)
-                    item.externalRef = ExternalRef(source: .eventKit, identifier: eid)
+                    let externalRef = ExternalRef(source: .eventKit, identifier: eid)
+                    if let existing = existingReminders.first(where: { $0.externalRef?.identifier == eid }) {
+                        // Unlike events, reminders were never re-merged once imported — only
+                        // added-if-missing or removed-if-gone. A rekey is the one case that
+                        // still needs a write here: migrating a pre-migration item (old
+                        // random id) onto ExternalRef.deterministicItemID so it converges
+                        // with every other device's mirror of the same occurrence.
+                        if existing.id != externalRef.deterministicItemID {
+                            let rekeyed = ReminderItem(
+                                id: externalRef.deterministicItemID, title: existing.title, notes: existing.notes,
+                                createdAt: existing.createdAt, updatedAt: .now,
+                                importance: existing.importance, anchor: .point(date),
+                                completion: existing.completion, tags: existing.tags,
+                                leadTime: existing.leadTime, externalRef: externalRef
+                            )
+                            try await itemRepository.rekey(from: existing.id, to: rekeyed)
+                            report.updated += 1
+                        }
+                        continue
+                    }
+                    let fromEK = ReminderItem(from: ekReminder)
+                    let item = ReminderItem(
+                        id: externalRef.deterministicItemID, title: fromEK.title, notes: fromEK.notes,
+                        anchor: .point(date), leadTime: fromEK.leadTime, externalRef: externalRef
+                    )
                     try await itemRepository.add(item)
                     report.imported += 1
                 }
             } else {
                 // Non-recurring — one item, deduplicated by EK identifier.
-                guard !existingExternalIDs.contains(baseID) else { continue }
-                let item = ReminderItem(from: ekReminder)
+                let externalRef = ExternalRef(source: .eventKit, identifier: baseID)
+                if let existing = existingReminders.first(where: { $0.externalRef?.identifier == baseID }) {
+                    if existing.id != externalRef.deterministicItemID {
+                        let rekeyed = ReminderItem(
+                            id: externalRef.deterministicItemID, title: existing.title, notes: existing.notes,
+                            createdAt: existing.createdAt, updatedAt: .now,
+                            importance: existing.importance, anchor: existing.anchor,
+                            completion: existing.completion, tags: existing.tags,
+                            leadTime: existing.leadTime, externalRef: externalRef
+                        )
+                        try await itemRepository.rekey(from: existing.id, to: rekeyed)
+                        report.updated += 1
+                    }
+                    continue
+                }
+                let fromEK = ReminderItem(from: ekReminder)
+                let item = ReminderItem(
+                    id: externalRef.deterministicItemID, title: fromEK.title, notes: fromEK.notes,
+                    anchor: fromEK.anchor, leadTime: fromEK.leadTime, externalRef: externalRef
+                )
                 try await itemRepository.add(item)
                 report.imported += 1
             }
@@ -429,6 +487,25 @@ actor EventKitBridge {
     }
 
     /// Stable key for a specific occurrence: "yyyyMMddTHHmm".
+    ///
+    /// Deliberately still keyed via `Calendar.current` (device-local timezone),
+    /// even though this string now also feeds `ExternalRef.deterministicItemID`
+    /// (EventItem.swift) for cloud-push id generation, where a device-local key
+    /// is a real latent gap: two devices in different timezones can compute
+    /// different keys — and so different cloud ids — for the same real recurring
+    /// occurrence. Changing the key's calendar/format was considered and
+    /// rejected: EVERY already-mirrored recurring occurrence's stored
+    /// `externalRef.identifier` was computed with the old key, so any change
+    /// here makes the next sync's `eid` fail to match it — the import loop above
+    /// then treats it as brand-new (fresh `EventItem(from: ekEvent)`, default
+    /// completion/tags/importance) while the deletion pass below removes the
+    /// old-keyed item as "no longer active." Net effect: every user's per-
+    /// occurrence local state (completion, tags, importance) on recurring items
+    /// would be silently reset on first sync after the change — a broader,
+    /// concrete regression traded for a narrower, speculative one (multi-device,
+    /// multi-timezone users specifically). Left as-is; the timezone gap for
+    /// recurring events/reminders is a documented, out-of-scope limitation (see
+    /// SupabaseSync.swift push-only rollout notes).
     private func occurrenceKey(for date: Date) -> String {
         let c = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute], from: date)
         return String(format: "%04d%02d%02dT%02d%02d",

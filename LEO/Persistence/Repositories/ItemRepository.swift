@@ -44,11 +44,51 @@ actor ItemRepository {
         postChange()
     }
 
-    func update(_ item: any Item) async throws {
+    /// Persist an edited item.
+    ///
+    /// `updatedAt` is refreshed to now by default, because a stale timestamp makes
+    /// the change invisible to cloud sync: the push filter is `updatedAt > lastSync`,
+    /// so an edit that doesn't advance the timestamp is never uploaded. Most callers
+    /// (completing, rescheduling, editing) previously had to remember to bump it and
+    /// many didn't — so completions silently failed to sync.
+    ///
+    /// Pass `preservingTimestamp: true` when applying a change that already carries an
+    /// authoritative timestamp from elsewhere — a row pulled from the cloud, or a
+    /// calendar event mirrored from EventKit — otherwise re-stamping it would defeat
+    /// last-writer-wins and bounce the row back to its origin on the next sync.
+    func update(_ item: any Item, preservingTimestamp: Bool = false) async throws {
+        var item = item
+        if !preservingTimestamp { item.updatedAt = .now }
         let context = controller.newBackgroundContext()
         try deleteStored(id: item.id, context: context)
         try insertItem(item, context: context)
         try context.save()
+        await refreshWidgetSnapshot()
+        postChange()
+    }
+
+    /// Change an item's id, atomically, preserving everything else about it.
+    ///
+    /// Used by EventKitBridge to migrate an already-mirrored calendar/reminders
+    /// item from its old random per-device id onto the new id derived from
+    /// `ExternalRef.deterministicItemID` — the id every device now converges on
+    /// for the same real external event, required before it's safe to push these
+    /// items to the cloud (SupabaseSync.push).
+    ///
+    /// Deliberately NOT implemented as `delete(id: oldID)` followed by
+    /// `add(newItem)` as two separate actor calls: if `add` throws after
+    /// `delete` succeeds, the local mirror is gone outright — not merely
+    /// duplicated, since EventKit will re-import it as fresh on the next sync,
+    /// silently dropping whatever local-only state (completion, tags,
+    /// importance) the caller was trying to carry forward. One `ModelContext`
+    /// and one `save()`, mirroring `update()`'s existing atomicity above, makes
+    /// this a single transaction instead.
+    func rekey(from oldID: UUID, to newItem: any Item) async throws {
+        let context = controller.newBackgroundContext()
+        try deleteStored(id: oldID, context: context)
+        try insertItem(newItem, context: context)
+        try context.save()
+        logger.info("Rekeyed item \(oldID) -> \(newItem.id) '\(newItem.title)'")
         await refreshWidgetSnapshot()
         postChange()
     }

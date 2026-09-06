@@ -1,0 +1,20 @@
+{
+  "completionB64": "eyJ0eXBlIjoib3BlbiJ9",
+  "notes": "Redacted notes text.",
+  "importanceRaw": 1,
+  "id": "CA037753-A648-47DE-A9EF-4DBC34F4FA38",
+  "createdAt": 803133796.182498,
+  "updatedAt": 803133796.182498,
+  "title": "Redacted Title",
+  "tags": [],
+  "attendees": [
+    "person1@example.com",
+    "person2@example.com"
+  ],
+  "externalRef": {
+    "identifier": "9A25F176-9CE8-45D2-A69E-84C74D551FEA:1995a2j0t0g4k1drmgs9nl01gh_R20260612T050000@google.com/20260616T1030",
+    "source": "eventKit",
+    "lastSeen": 803133796.182499
+  },
+  "anchorB64": "eyJ0eXBlIjoidGltZUJsb2NrIiwiZW5kIjoiMjAyNi0wNi0xNlQwNToxNTowMFoiLCJzdGFydCI6IjIwMjYtMDYtMTZUMDU6MDA6MDBaIn0="
+}

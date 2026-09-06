@@ -1,0 +1,14 @@
+{
+  "unitPreference": "metric",
+  "birthDate": -9849600,
+  "sex": "male",
+  "allergies": [],
+  "medicalFlags": [],
+  "intolerances": [],
+  "heightCm": 180,
+  "bodyFatPct": 23,
+  "weightKg": 74,
+  "activityLevel": "active",
+  "goalPhysique": "athletic",
+  "dietType": "omnivore"
+}

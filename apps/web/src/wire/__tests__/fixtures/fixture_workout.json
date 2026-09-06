@@ -1,0 +1,21 @@
+{
+  "anchorB64": "eyJzdGFydCI6IjIwMjYtMDYtMTVUMDE6MzA6MDBaIiwiZW5kIjoiMjAyNi0wNi0xNVQwMjozMDowMFoiLCJ0eXBlIjoidGltZUJsb2NrIn0=",
+  "id": "FEF9745C-A9C0-48E7-9AEC-4F21A73004D9",
+  "importanceRaw": 1,
+  "updatedAt": 803127709,
+  "tags": [
+    {
+      "name": "#workout",
+      "colorRaw": "blue",
+      "id": "D8FEB262-6D3E-4B22-BC46-588B37307AA3"
+    }
+  ],
+  "createdAt": 803127709,
+  "actualExercisesB64": "W3sid2VpZ2h0S2ciOjUsInNldHNDb21wbGV0ZWQiOjMsImV4ZXJjaXNlSUQiOiJleDAyMiIsInJlcHNDb21wbGV0ZWQiOjEwfSx7IndlaWdodEtnIjo3LjUsInNldHNDb21wbGV0ZWQiOjMsImV4ZXJjaXNlSUQiOiJleDAwNCIsInJlcHNDb21wbGV0ZWQiOjEyfSx7IndlaWdodEtnIjo1LCJzZXRzQ29tcGxldGVkIjozLCJleGVyY2lzZUlEIjoiZXgwMDciLCJyZXBzQ29tcGxldGVkIjoxMn0seyJ3ZWlnaHRLZyI6Mi41LCJzZXRzQ29tcGxldGVkIjozLCJleGVyY2lzZUlEIjoiZXgwMDgiLCJyZXBzQ29tcGxldGVkIjoxNX0seyJ3ZWlnaHRLZyI6MjMuMzMzMzMzMzMzMzMzMzMyLCJzZXRzQ29tcGxldGVkIjozLCJleGVyY2lzZUlEIjoiZXgwMzUiLCJyZXBzQ29tcGxldGVkIjoxMn0seyJ3ZWlnaHRLZyI6MjAsInNldHNDb21wbGV0ZWQiOjIsImV4ZXJjaXNlSUQiOiJleDAxNyIsInJlcHNDb21wbGV0ZWQiOjEyfV0=",
+  "title": "Redacted Title",
+  "plannedExercisesB64": "W3sicmVwcyI6MTAsImV4ZXJjaXNlSUQiOiJleDAyMiIsInNldHMiOjN9LHsicmVwcyI6MTIsImV4ZXJjaXNlSUQiOiJleDAwNCIsInNldHMiOjN9LHsicmVwcyI6MTIsImV4ZXJjaXNlSUQiOiJleDAwNyIsInNldHMiOjN9LHsicmVwcyI6MTUsImV4ZXJjaXNlSUQiOiJleDAwOCIsInNldHMiOjN9LHsicmVwcyI6MTIsImV4ZXJjaXNlSUQiOiJleDAzNSIsInNldHMiOjN9LHsicmVwcyI6MTUsImV4ZXJjaXNlSUQiOiJleDAxNyIsInNldHMiOjJ9XQ==",
+  "actualKcal": 300,
+  "notes": "Redacted notes text.",
+  "estimatedKcal": 300,
+  "completionB64": "eyJkYXRlIjoiMjAyNi0wNi0xNVQwNDowNzo0MFoiLCJ0eXBlIjoiY29tcGxldGVkIn0="
+}

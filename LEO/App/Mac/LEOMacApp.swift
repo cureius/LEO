@@ -34,6 +34,9 @@ struct LEOMacApp: App {
         .onChange(of: scenePhase) { _, newPhase in
             guard newPhase == .active, let env = appEnvironment else { return }
             Task { await env.calendarSyncCoordinator.syncOnForeground() }
+            #if canImport(Supabase)
+            Task { await LiveSyncController.shared.syncOnForeground() }
+            #endif
         }
 
         // MenuBar status + capture
@@ -89,6 +92,16 @@ struct LEOMacApp: App {
         await env.calendarSyncCoordinator.start()
         await env.calendarSyncCoordinator.syncOnForeground()
 
+        // Cloud sync (Supabase) — live for the whole app lifetime.
+        #if canImport(Supabase)
+        LiveSyncController.shared.configure(
+            itemRepository: env.itemRepository,
+            habitRepository: env.habitRepository,
+            bodyProfileRepository: env.bodyProfileRepository
+        )
+        await LiveSyncController.shared.startIfSignedIn()
+        #endif
+
         // Background sync using NSBackgroundActivityScheduler (macOS equivalent of BGAppRefreshTask)
         let activity = NSBackgroundActivityScheduler(identifier: "com.theblueman.leo.refresh")
         activity.interval = 30 * 60
@@ -108,6 +121,22 @@ struct LEOMacApp: App {
         await MainActor.run {
             hotkeyManager.start { [captureWindowController] in
                 captureWindowController.toggle(with: env)
+            }
+        }
+
+        // Manual refresh (⌘R). Pulls EventKit again and reconciles the cloud — the
+        // views' own refresh only re-reads the local store, so a new calendar event
+        // would never appear without this.
+        Task {
+            for await _ in NotificationCenter.default.notifications(named: .leoRefreshRequested) {
+                logger.info("Manual refresh requested")
+                await env.calendarSyncCoordinator.syncNow()
+                #if canImport(Supabase)
+                await LiveSyncController.shared.syncOnForeground()
+                #endif
+                // Always fire, even if a sync step above failed, so the toolbar
+                // spinner can never get stuck spinning.
+                NotificationCenter.default.post(name: .leoRefreshCompleted, object: nil)
             }
         }
 
@@ -237,6 +266,14 @@ struct MacCommands: Commands {
                 NotificationCenter.default.post(name: .leoToggleInspector, object: nil)
             }
             .keyboardShortcut("i", modifiers: [.control, .option, .command])
+
+            Divider()
+            // The views' `.refreshable` only draws a pull-down gesture, which macOS
+            // doesn't have — so without this there is no way to refresh at all.
+            Button("Refresh") {
+                NotificationCenter.default.post(name: .leoRefreshRequested, object: nil)
+            }
+            .keyboardShortcut("r", modifiers: .command)
         }
 
         CommandMenu("Item") {

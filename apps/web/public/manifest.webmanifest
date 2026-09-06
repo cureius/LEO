@@ -1,0 +1,19 @@
+{
+  "name": "LEO",
+  "short_name": "LEO",
+  "description": "Tasks, events, habits, and fitness in one place.",
+  "start_url": "/today",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fafafa",
+  "theme_color": "#5b5fef",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

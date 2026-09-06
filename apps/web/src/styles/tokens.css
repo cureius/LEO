@@ -1,0 +1,76 @@
+/* Design tokens — lifted directly from the native app's Theme.xcassets colorsets
+   (LEO/Resources/Theme.xcassets/Theme/*.colorset/Contents.json) so the web app is
+   visually continuous with iOS/Mac rather than inventing its own palette. */
+
+:root {
+  --leo-background: #fafafa;
+  --leo-surface: #ffffff;
+  --leo-surface-elevated: #f2f2f7;
+  --leo-accent: #5b5fef;
+  --leo-accent-muted: #e8e9fd;
+  --leo-text-primary: #1a1a1a;
+  --leo-text-secondary: #6e6e73;
+  --leo-divider: #e0e0e5;
+  --leo-success: #30b55c;
+  --leo-warning: #f59e0b;
+  --leo-danger: #ef4444;
+
+  --leo-space-1: 4px;
+  --leo-space-2: 8px;
+  --leo-space-3: 12px;
+  --leo-space-4: 16px;
+  --leo-space-6: 24px;
+  --leo-space-8: 32px;
+
+  --leo-radius-sm: 6px;
+  --leo-radius-md: 10px;
+  --leo-radius-lg: 16px;
+  --leo-radius-pill: 999px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --leo-background: #111111;
+    --leo-surface: #1c1c1e;
+    --leo-surface-elevated: #2c2c2e;
+    --leo-accent: #7b7fff;
+    --leo-accent-muted: #2c2d5a;
+    --leo-text-primary: #f2f2f7;
+    --leo-text-secondary: #8e8e93;
+    --leo-divider: #38383a;
+    --leo-success: #34c759;
+    --leo-warning: #ff9f0a;
+    --leo-danger: #ff453a;
+  }
+}
+
+/* Manual overrides — see theme/theme.ts. Higher specificity than the plain
+   :root and prefers-color-scheme blocks above, so an explicit choice always
+   wins over whatever the OS reports; absent when the preference is 'system'. */
+:root[data-theme='light'] {
+  --leo-background: #fafafa;
+  --leo-surface: #ffffff;
+  --leo-surface-elevated: #f2f2f7;
+  --leo-accent: #5b5fef;
+  --leo-accent-muted: #e8e9fd;
+  --leo-text-primary: #1a1a1a;
+  --leo-text-secondary: #6e6e73;
+  --leo-divider: #e0e0e5;
+  --leo-success: #30b55c;
+  --leo-warning: #f59e0b;
+  --leo-danger: #ef4444;
+}
+
+:root[data-theme='dark'] {
+  --leo-background: #111111;
+  --leo-surface: #1c1c1e;
+  --leo-surface-elevated: #2c2c2e;
+  --leo-accent: #7b7fff;
+  --leo-accent-muted: #2c2d5a;
+  --leo-text-primary: #f2f2f7;
+  --leo-text-secondary: #8e8e93;
+  --leo-divider: #38383a;
+  --leo-success: #34c759;
+  --leo-warning: #ff9f0a;
+  --leo-danger: #ff453a;
+}

@@ -163,8 +163,15 @@ struct DiffChange: Codable, Hashable, Sendable {
 /// Full data needed to create a new item when the user confirms an "add" diff.
 struct PendingNewItem: Codable, Hashable, Sendable {
     let title: String
-    let type: String    // "task", "event", "reminder"
+    let type: String    // "task", "event", "reminder", "workout", "meal"
     let start: String?  // ISO8601
     let end: String?    // ISO8601
     let notes: String?
+    /// Structured exercise data for `type == "workout"`. Without this, a workout
+    /// diff could only carry its exercises as a flattened notes string — the
+    /// applied item ended up with an empty `plannedExercises` array and nothing
+    /// individually trackable, even though the tool that built the diff (e.g.
+    /// ProposeWorkoutPlanTool) had already computed the real structured data.
+    var exercises: [PlannedExercise]? = nil
+    var estimatedKcal: Int? = nil
 }

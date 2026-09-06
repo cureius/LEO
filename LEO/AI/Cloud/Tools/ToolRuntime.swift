@@ -49,6 +49,7 @@ actor ToolRuntime {
         self.context = context
         register(GetTodayTool())
         register(GetWeekTool())
+        register(GetPastItemsTool())
         register(FindFreeSlotsTool())
         register(GetItemTool())
         register(ProposeRescheduleTool())
@@ -57,8 +58,10 @@ actor ToolRuntime {
         // M8: Gym Companion tools
         if let bodyProfileRepo = context.bodyProfileRepository {
             register(GetBodyProfileTool(bodyProfileRepository: bodyProfileRepo))
+            register(GetFitnessItemsTool())
             register(ProposeWorkoutPlanTool(bodyProfileRepository: bodyProfileRepo))
             register(ProposeMealPlanTool(bodyProfileRepository: bodyProfileRepo))
+            register(SetWorkoutExercisesTool())
             register(AdjustPlanTool())
         }
     }

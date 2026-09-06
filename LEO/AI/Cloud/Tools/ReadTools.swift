@@ -130,6 +130,44 @@ struct FindFreeSlotsTool: LEOTool {
     }
 }
 
+// MARK: - GetPastItemsTool
+
+/// Port of `get_past_items` (apps/web/src/ai/tools/readTools.ts) — a web-only
+/// addition ported back to native rather than the other way around.
+/// get_today/get_week are forward-only, so a question like "what did I do last
+/// week" or "when was my last X" had no tool that could ever see it — the AI
+/// would report nothing existed, not because it didn't, but because no tool
+/// could look backward at all.
+struct GetPastItemsTool: LEOTool {
+    struct Input: Decodable, Sendable {
+        var days: Int?  // defaults to 7
+    }
+    struct Output: Encodable, Sendable {
+        let items: [ItemSummary]
+    }
+
+    let definition = ToolDefinition(
+        name: "get_past_items",
+        description: "Returns items dated before today, most recent first, including both completed and still-open items. Defaults to the last 7 days; pass a larger `days` to look further back. Use this for \"what did I do last week,\" \"when was my last X,\" or anything about history — get_today/get_week are forward-only and will never see these.",
+        inputSchema: [
+            "type": .string("object"),
+            "properties": .object(["days": .object(["type": .string("integer"), "description": .string("How many days back to search. Defaults to 7.")])]),
+            "required": .array([])
+        ]
+    )
+
+    func run(_ input: Input, context: ToolContext) async throws -> Output {
+        let days = max(1, input.days ?? 7)
+        let todayStart = context.calendar.startOfDay(for: .now)
+        let start = context.calendar.date(byAdding: .day, value: -days, to: todayStart) ?? todayStart
+        let items = try await context.itemRepository.fetch(predicate: .inDateInterval(DateInterval(start: start, end: todayStart)))
+        let sorted = items.sorted { (a, b) in
+            (a.anchor.sortDate ?? .distantPast) > (b.anchor.sortDate ?? .distantPast)
+        }
+        return Output(items: sorted.map(ItemSummary.init))
+    }
+}
+
 // MARK: - GetItemTool
 
 struct GetItemTool: LEOTool {

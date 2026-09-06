@@ -22,8 +22,19 @@ struct ChatSessionView: View {
     #if os(iOS)
     @State private var selectedPhoto: PhotosPickerItem? = nil
     #endif
+    @State private var showDocumentPicker = false
+    @State private var documentPickerError: String? = nil
     @FocusState private var inputFocused: Bool
     @State private var scrollProxy: ScrollViewProxy? = nil
+
+    /// Matches apps/web/src/routes/ChatPage.tsx's MAX_PDF_SIZE_BYTES — a
+    /// conservative client-side choice, not Anthropic's real ceiling (32MB
+    /// request body, ~33% base64 overhead means the source PDF itself needs
+    /// more headroom than the raw number suggests). Also worth knowing: the
+    /// API's page limit is 600 pages on 1M-context models but only 100 on
+    /// Haiku's 200K context — a large PDF that works fine normally could
+    /// still misbehave if ever routed to Haiku.
+    private static let maxPDFSizeBytes = 20 * 1024 * 1024
 
     init(session: ChatSession, appEnv: AppEnvironment) {
         self.session = session
@@ -81,11 +92,31 @@ struct ChatSessionView: View {
             }
         }
         #endif
+        // Cross-platform (iOS + macOS) — same .fileImporter API DataSnapshotView.swift
+        // already uses successfully on both targets in this project.
+        .fileImporter(isPresented: $showDocumentPicker, allowedContentTypes: [.pdf], allowsMultipleSelection: false) { result in
+            switch result {
+            case .success(let urls):
+                guard let url = urls.first else { return }
+                loadDocument(url: url)
+            case .failure(let err):
+                documentPickerError = err.localizedDescription
+            }
+        }
         .sheet(item: $presentedProposal) { proposal in
             DiffReviewSheet(diff: proposal.diff) { acceptedChanges in
                 Task {
-                    await applyChanges(acceptedChanges)
+                    let failures = await applyChanges(acceptedChanges)
                     await vm.markProposalApplied(id: proposal.messageID)
+                    if !failures.isEmpty {
+                        // Previously these were only logged to Console — the user would
+                        // tap Apply, see nothing wrong, and have some changes silently
+                        // do nothing (most commonly adjust_plan's "notes" update path,
+                        // which had no case in applyChanges at all until this fix).
+                        let count = failures.count
+                        let detail = failures.map(\.message).joined(separator: "; ")
+                        vm.errorMessage = "\(count) of \(acceptedChanges.count) change\(acceptedChanges.count == 1 ? "" : "s") couldn't be applied: \(detail)"
+                    }
                 }
             }
             .environment(appEnv)
@@ -94,19 +125,36 @@ struct ChatSessionView: View {
 
     // MARK: - Apply confirmed diff changes to the repository
 
-    private func applyChanges(_ changes: [DiffChange]) async {
+    /// Applies every change and returns the ones that failed (thrown error, item not
+    /// found, or an unrecognized change shape) so the caller can surface them to the
+    /// user. Previously this only logged failures via `logger.error`/`logger.warning`
+    /// — a user could accept a diff, see no error, and have nothing actually happen
+    /// (most commonly: an `adjust_plan` "update notes" change, which had no case here
+    /// at all and fell through to the `default` warning).
+    private func applyChanges(_ changes: [DiffChange]) async -> [(change: DiffChange, message: String)] {
+        var failures: [(change: DiffChange, message: String)] = []
         for change in changes {
             do {
                 switch change.kind {
 
                 case "add":
-                    guard let p = change.pendingItem else { continue }
+                    guard let p = change.pendingItem else {
+                        failures.append((change, "Missing item data"))
+                        continue
+                    }
                     let anchor = buildAnchor(start: p.start, end: p.end)
                     switch p.type {
                     case "event":
                         try await appEnv.itemRepository.add(EventItem(title: p.title, notes: p.notes, anchor: anchor))
                     case "workout":
-                        try await appEnv.itemRepository.add(WorkoutItem(title: p.title, notes: p.notes, anchor: anchor))
+                        // Use the structured exercises/kcal the propose tool already computed
+                        // (ProposeWorkoutPlanTool) instead of dropping them — previously only
+                        // title/notes/anchor made it through, so an AI-generated workout
+                        // landed with an empty plannedExercises array, nothing trackable.
+                        try await appEnv.itemRepository.add(WorkoutItem(
+                            title: p.title, notes: p.notes, anchor: anchor,
+                            plannedExercises: p.exercises ?? [], estimatedKcal: p.estimatedKcal ?? 0
+                        ))
                     case "meal":
                         try await appEnv.itemRepository.add(MealItem(title: p.title, notes: p.notes, anchor: anchor, recipeID: UUID().uuidString))
                     default:
@@ -117,16 +165,21 @@ struct ChatSessionView: View {
                 case "delete":
                     guard let uuid = UUID(uuidString: change.itemID) else {
                         logger.warning("Delete: invalid UUID '\(change.itemID)'")
+                        failures.append((change, "Invalid item id"))
                         continue
                     }
                     try await appEnv.itemRepository.delete(id: uuid)
                     logger.info("Deleted item \(change.itemID)")
 
                 case "update" where change.field == "anchor":
-                    guard let uuid = UUID(uuidString: change.itemID) else { continue }
+                    guard let uuid = UUID(uuidString: change.itemID) else {
+                        failures.append((change, "Invalid item id"))
+                        continue
+                    }
                     let fetched = try await appEnv.itemRepository.fetch(predicate: .byID(uuid))
                     guard var item = fetched.first else {
                         logger.warning("Update: item \(change.itemID) not found")
+                        failures.append((change, "Item not found"))
                         continue
                     }
                     item.anchor = parseAnchorString(change.newValue)
@@ -134,13 +187,58 @@ struct ChatSessionView: View {
                     try await appEnv.itemRepository.update(item)
                     logger.info("Rescheduled item \(change.itemID)")
 
+                case "update" where change.field == "workoutDetail":
+                    // Emitted by SetWorkoutExercisesTool — a single JSON blob covering
+                    // both plannedExercises and the optional estimatedKcal.
+                    guard let uuid = UUID(uuidString: change.itemID) else {
+                        failures.append((change, "Invalid item id"))
+                        continue
+                    }
+                    let fetched = try await appEnv.itemRepository.fetch(predicate: .byID(uuid))
+                    guard var workout = fetched.first as? WorkoutItem else {
+                        failures.append((change, "Item not found or not a workout"))
+                        continue
+                    }
+                    struct WorkoutDetail: Decodable { let exercises: [PlannedExercise]; let estimatedKcal: Int? }
+                    guard let data = change.newValue.data(using: .utf8),
+                          let detail = try? JSONDecoder().decode(WorkoutDetail.self, from: data) else {
+                        failures.append((change, "Malformed exercise data"))
+                        continue
+                    }
+                    workout.plannedExercises = detail.exercises
+                    if let kcal = detail.estimatedKcal { workout.estimatedKcal = kcal }
+                    workout.updatedAt = .now
+                    try await appEnv.itemRepository.update(workout)
+                    logger.info("Set exercises on workout \(change.itemID)")
+
+                case "update" where change.field == "notes":
+                    // The path adjust_plan actually uses for anything that isn't a
+                    // delete instruction — previously unhandled, silently dropped.
+                    guard let uuid = UUID(uuidString: change.itemID) else {
+                        failures.append((change, "Invalid item id"))
+                        continue
+                    }
+                    let fetched = try await appEnv.itemRepository.fetch(predicate: .byID(uuid))
+                    guard var item = fetched.first else {
+                        logger.warning("Update: item \(change.itemID) not found")
+                        failures.append((change, "Item not found"))
+                        continue
+                    }
+                    item.notes = change.newValue
+                    item.updatedAt = .now
+                    try await appEnv.itemRepository.update(item)
+                    logger.info("Updated notes on item \(change.itemID)")
+
                 default:
                     logger.warning("Unhandled change kind '\(change.kind)' for field '\(change.field)'")
+                    failures.append((change, "Unsupported change (\(change.kind)/\(change.field))"))
                 }
             } catch {
                 logger.error("applyChanges '\(change.kind)' \(change.itemID): \(error)")
+                failures.append((change, error.localizedDescription))
             }
         }
+        return failures
     }
 
     /// Build an Anchor from optional ISO8601 start/end strings.
@@ -192,6 +290,28 @@ struct ChatSessionView: View {
     }
 
     private func parseLocalISO(_ s: String) -> Date? { parseISO(s) }
+
+    // MARK: - Document (PDF) picking
+
+    /// Security-scoped resource access is required for a `.fileImporter`-returned
+    /// URL on BOTH iOS and macOS (sandboxed apps, not just iOS) — same pattern
+    /// DataSnapshotView.swift already uses for JSON import.
+    private func loadDocument(url: URL) {
+        documentPickerError = nil
+        let accessing = url.startAccessingSecurityScopedResource()
+        defer { if accessing { url.stopAccessingSecurityScopedResource() } }
+        do {
+            let data = try Data(contentsOf: url)
+            guard data.count <= Self.maxPDFSizeBytes else {
+                documentPickerError = "That PDF is larger than 20MB — try a smaller file."
+                return
+            }
+            vm.pendingDocumentData = data
+            vm.pendingDocumentName = url.lastPathComponent
+        } catch {
+            documentPickerError = error.localizedDescription
+        }
+    }
 
     // MARK: - Message list
 
@@ -278,7 +398,9 @@ struct ChatSessionView: View {
     // MARK: - Input bar
 
     private var canSend: Bool {
-        !vm.inputText.trimmingCharacters(in: .whitespaces).isEmpty || vm.pendingImageData != nil
+        !vm.inputText.trimmingCharacters(in: .whitespaces).isEmpty
+            || vm.pendingImageData != nil
+            || vm.pendingDocumentData != nil
     }
 
     private var inputBar: some View {
@@ -308,6 +430,43 @@ struct ChatSessionView: View {
             }
             #endif
 
+            // Pending document chip — cross-platform, unlike the photo strip above.
+            if let name = vm.pendingDocumentName {
+                HStack(spacing: 8) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "doc.fill")
+                            .font(.system(size: 13))
+                        Text(name)
+                            .font(.system(size: 13, weight: .medium))
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                        Button {
+                            vm.pendingDocumentData = nil
+                            vm.pendingDocumentName = nil
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 13))
+                        }
+                    }
+                    .foregroundStyle(Theme.Color.accent)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(Theme.Color.accent.opacity(0.1))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    Spacer()
+                }
+                .padding(.leading, 14)
+                .padding(.top, 10)
+            }
+
+            if let err = documentPickerError {
+                Text(err)
+                    .font(.system(size: 12))
+                    .foregroundStyle(Theme.Color.danger)
+                    .padding(.horizontal, 14)
+                    .padding(.top, 6)
+            }
+
             HStack(alignment: .bottom, spacing: 8) {
                 #if os(iOS)
                 // Camera / photo picker button (iOS only)
@@ -318,6 +477,16 @@ struct ChatSessionView: View {
                         .frame(width: 36, height: 36)
                 }
                 #endif
+
+                // Document (PDF) picker button — outside the iOS-only block above:
+                // .fileImporter works identically on iOS and macOS in this project
+                // (already used by DataSnapshotView.swift for JSON import).
+                Button { showDocumentPicker = true } label: {
+                    Image(systemName: "doc.badge.plus")
+                        .font(.system(size: 18))
+                        .foregroundStyle(Theme.Color.textSecondary)
+                        .frame(width: 36, height: 36)
+                }
 
                 // Text field
                 TextField("Message LEO…", text: $vm.inputText, axis: .vertical)
@@ -482,6 +651,23 @@ private struct UserMessageRow: View {
                 }
                 #endif
 
+                // Document chip — cross-platform, unlike the photo thumbnail above.
+                if let name = message.documentName {
+                    HStack(spacing: 6) {
+                        Image(systemName: "doc.fill")
+                            .font(.system(size: 13))
+                        Text(name)
+                            .font(.system(size: 13, weight: .medium))
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                    }
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(.white.opacity(0.15))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+
                 // User prompt text bubble
                 if !message.text.isEmpty {
                     Text(message.text)
@@ -623,6 +809,30 @@ private struct MarkdownBubble: View {
 
         case .divider:
             Divider().padding(.vertical, 2)
+
+        case .table(let headers, let rows):
+            ScrollView(.horizontal, showsIndicators: false) {
+                Grid(alignment: .topLeading, horizontalSpacing: 14, verticalSpacing: 6) {
+                    GridRow {
+                        ForEach(Array(headers.enumerated()), id: \.offset) { _, cell in
+                            Text(inline(cell))
+                                .font(.system(size: 13, weight: .semibold))
+                                .foregroundStyle(Theme.Color.textPrimary)
+                        }
+                    }
+                    Divider().gridCellColumns(max(headers.count, 1))
+                    ForEach(Array(rows.enumerated()), id: \.offset) { _, row in
+                        GridRow {
+                            ForEach(Array(row.enumerated()), id: \.offset) { _, cell in
+                                Text(inline(cell))
+                                    .font(.system(size: 13))
+                                    .foregroundStyle(Theme.Color.textPrimary)
+                            }
+                        }
+                    }
+                }
+                .padding(.vertical, 2)
+            }
         }
     }
 
@@ -641,6 +851,7 @@ private enum MDBlock {
     case code(String)
     case para(String)
     case divider
+    case table(headers: [String], rows: [[String]])
 
     static func parse(_ raw: String) -> [MDBlock] {
         var result: [MDBlock] = []
@@ -688,6 +899,27 @@ private enum MDBlock {
                 flushPara(); result.append(.divider); i += 1; continue
             }
 
+            // GFM pipe table: a row containing "|", immediately followed by a
+            // separator row of only "-"/":" per cell (e.g. "| --- | --- |").
+            // Native previously had no table support at all — a pipe table from
+            // the model rendered as one raw, unreadable paragraph line; web
+            // already renders these via remark-gfm.
+            if trimmed.contains("|"), i + 1 < lines.count, isTableSeparatorLine(lines[i + 1]) {
+                flushPara()
+                let headers = splitTableRow(trimmed)
+                var rows: [[String]] = []
+                var j = i + 2
+                while j < lines.count {
+                    let rowLine = lines[j].trimmingCharacters(in: .whitespaces)
+                    guard !rowLine.isEmpty, rowLine.contains("|") else { break }
+                    rows.append(splitTableRow(rowLine))
+                    j += 1
+                }
+                result.append(.table(headers: headers, rows: rows))
+                i = j
+                continue
+            }
+
             // Bullet list
             if trimmed.hasPrefix("- ") || trimmed.hasPrefix("* ") || trimmed.hasPrefix("• ") {
                 flushPara()
@@ -721,6 +953,25 @@ private enum MDBlock {
         // If an unclosed code fence, emit whatever we collected
         if inCode && !codeBuf.isEmpty { result.append(.code(codeBuf.joined(separator: "\n"))) }
         return result
+    }
+
+    /// True for a GFM table separator row, e.g. "| --- | :--- | ---: |" —
+    /// every cell non-empty and made up only of "-"/":" characters.
+    private static func isTableSeparatorLine(_ line: String) -> Bool {
+        let cells = splitTableRow(line.trimmingCharacters(in: .whitespaces))
+        guard !cells.isEmpty else { return false }
+        return cells.allSatisfy { cell in
+            !cell.isEmpty && cell.allSatisfy { $0 == "-" || $0 == ":" }
+        }
+    }
+
+    /// Splits a pipe-delimited row into trimmed cells, tolerating optional
+    /// leading/trailing pipes (both "| a | b |" and "a | b" are valid GFM).
+    private static func splitTableRow(_ line: String) -> [String] {
+        var s = line
+        if s.hasPrefix("|") { s.removeFirst() }
+        if s.hasSuffix("|") { s.removeLast() }
+        return s.components(separatedBy: "|").map { $0.trimmingCharacters(in: .whitespaces) }
     }
 }
 

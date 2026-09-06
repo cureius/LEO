@@ -44,6 +44,44 @@ final class PersistenceControllerTests: XCTestCase {
         XCTAssertFalse(fetched.contains(where: { $0.id == task.id }))
     }
 
+    /// A plain edit must advance `updatedAt`, or cloud sync's `updatedAt > lastSync`
+    /// push filter never uploads it. This was the root cause of completions made on
+    /// one device not appearing on another.
+    func test_update_bumpsUpdatedAt() async throws {
+        let repo = ItemRepository(controller: PersistenceController(useInMemory: true))
+        var task = TaskItem(title: "Complete me",
+                            updatedAt: Date(timeIntervalSince1970: 1_000),
+                            anchor: .untimed)
+        try await repo.add(task)
+
+        task.completion = .completed(at: .now)
+        try await repo.update(task)   // caller did NOT touch updatedAt
+
+        let stored = try await repo.fetch(predicate: .all).first { $0.id == task.id }
+        XCTAssertNotNil(stored)
+        XCTAssertGreaterThan(stored!.updatedAt.timeIntervalSince1970, 1_000,
+                             "update() must refresh updatedAt so the change is syncable")
+    }
+
+    /// Applying a change pulled from the cloud (or mirrored from EventKit) must keep
+    /// its authoritative timestamp — otherwise last-writer-wins re-stamps it and the
+    /// row bounces straight back to the device it came from.
+    func test_update_preservesTimestampWhenRequested() async throws {
+        let repo = ItemRepository(controller: PersistenceController(useInMemory: true))
+        let remoteTime = Date(timeIntervalSince1970: 2_000)
+        var task = TaskItem(title: "From cloud", updatedAt: remoteTime, anchor: .untimed)
+        try await repo.add(task)
+
+        task.title = "From cloud (v2)"
+        var incoming = task
+        incoming.updatedAt = remoteTime
+        try await repo.update(incoming, preservingTimestamp: true)
+
+        let stored = try await repo.fetch(predicate: .all).first { $0.id == task.id }
+        XCTAssertEqual(stored?.updatedAt.timeIntervalSince1970, 2_000,
+                       "sync-applied timestamp must be preserved to avoid an echo loop")
+    }
+
     func test_filterUntimed() async throws {
         let controller = PersistenceController(useInMemory: true)
         let repo = ItemRepository(controller: controller)

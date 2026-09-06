@@ -7,6 +7,53 @@ private let anthropicAPIBase = "https://api.anthropic.com/v1/messages"
 private let anthropicVersion = "2023-06-01"
 private let anthropicBeta = "prompt-caching-2024-07-31"
 
+/// No bytes at all — not even a keepalive — for this long means the connection
+/// has stalled. Without a bound on this, a hung `bytes(for:)` call or a stalled
+/// `AsyncBytes` read left the caller awaiting forever: the assistant bubble
+/// sits at "…" with nothing to catch, since nothing has actually failed yet,
+/// it just never finishes. Armed on both the initial connect and every
+/// subsequent line read — matches the port of this same fix on the web client
+/// (apps/web/src/ai/claudeClient.ts), including the 75s value (originally 30s,
+/// raised after a real report of this firing on a legitimate multi-tool query
+/// with a non-trivial system prompt, not just a truly hung connection).
+private let idleTimeoutSeconds: TimeInterval = 75
+
+/// Was 4096 — raised after a real report of stop_reason "max_tokens" with ZERO
+/// captured text or tool calls: the model got cut off mid-generation (most
+/// likely partway through a tool_use block's JSON — e.g. propose_cancel with a
+/// long `ids` array) before content_block_stop ever fired, so nothing it had
+/// generated so far was usable. 4096 is tight for a response that also has to
+/// hold a non-trivial tool_use payload; 8192 gives real headroom without being
+/// unbounded. Matches apps/web/src/ai/claudeClient.ts's DEFAULT_MAX_TOKENS,
+/// which hit and fixed this exact bug first.
+private let defaultMaxTokens = 8192
+
+/// Races `operation` against a one-shot idle timer, throwing `.timeout` if the
+/// timer wins. Reusable for both "get the initial response" and "read the next
+/// line" — both need the same "nothing at all for N seconds is a stall" rule.
+private func withIdleTimeout<T: Sendable>(seconds: TimeInterval = idleTimeoutSeconds, _ operation: @escaping @Sendable () async throws -> T) async throws -> T {
+    try await withThrowingTaskGroup(of: T.self) { group in
+        group.addTask { try await operation() }
+        group.addTask {
+            try await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+            throw ClaudeError.timeout
+        }
+        defer { group.cancelAll() }
+        return try await group.next()!
+    }
+}
+
+/// `AsyncLineSequence`'s iterator is `mutating`, which doesn't fit cleanly into
+/// a `@Sendable` closure passed across a task-group boundary. `@unchecked
+/// Sendable` is safe here specifically because `withIdleTimeout` only ever has
+/// one of its two racing tasks actually call `next()` at a time — the loop
+/// always awaits one race before starting the next, never overlapping calls.
+private final class LineIteratorBox: @unchecked Sendable {
+    private var iterator: AsyncLineSequence<URLSession.AsyncBytes>.AsyncIterator
+    init(_ lines: AsyncLineSequence<URLSession.AsyncBytes>) { self.iterator = lines.makeAsyncIterator() }
+    func next() async throws -> String? { try await iterator.next() }
+}
+
 // MARK: - ClaudeClient
 
 /// Hand-rolled Claude API client. No third-party SDK.
@@ -43,7 +90,7 @@ actor ClaudeClient {
         messages: [Message],
         tools: [ToolDefinition]? = nil,
         system: [SystemBlock]? = nil,
-        maxTokens: Int = 4096
+        maxTokens: Int = defaultMaxTokens
     ) async throws -> ClaudeResponse {
         guard let key = apiKey else { throw ClaudeError.missingAPIKey }
         let body = try buildRequestBody(messages: messages, tools: tools, system: system, maxTokens: maxTokens, stream: false)
@@ -60,7 +107,7 @@ actor ClaudeClient {
         try checkStatus(response)
 
         let decoded = try JSONDecoder().decode(ClaudeResponse.self, from: data)
-        await telemetry.record(model: model, response: decoded)
+        await telemetry.record(model: model, usage: decoded.usage)
         return decoded
     }
 
@@ -70,7 +117,7 @@ actor ClaudeClient {
         messages: [Message],
         tools: [ToolDefinition]? = nil,
         system: [SystemBlock]? = nil,
-        maxTokens: Int = 4096
+        maxTokens: Int = defaultMaxTokens
     ) -> AsyncThrowingStream<StreamEvent, Error> {
         AsyncThrowingStream { continuation in
             Task {
@@ -87,13 +134,14 @@ actor ClaudeClient {
                     req.httpBody = body
                     req.timeoutInterval = 120
 
-                    let (bytes, response) = try await session.bytes(for: req)
+                    let (bytes, response) = try await withIdleTimeout { try await self.session.bytes(for: req) }
                     try checkStatus(response)
 
                     var toolInputBuffer: [String: String] = [:]
                     var toolBlockMeta: [String: (id: String, name: String)] = [:]
 
-                    for try await line in bytes.lines {
+                    let lineBox = LineIteratorBox(bytes.lines)
+                    while let line = try await withIdleTimeout(seconds: idleTimeoutSeconds, { try await lineBox.next() }) {
                         guard line.hasPrefix("data: ") else { continue }
                         let payload = String(line.dropFirst(6))
                         if payload == "[DONE]" { break }
@@ -139,6 +187,7 @@ actor ClaudeClient {
                             let delta = json["delta"] as? [String: Any]
                             let stopReason = delta?["stop_reason"] as? String ?? ""
                             let usage = parseUsage(json["usage"] as? [String: Any])
+                            await telemetry.record(model: model, usage: usage)
                             continuation.yield(.messageStop(stopReason: stopReason, usage: usage))
 
                         case "error":

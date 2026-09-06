@@ -47,10 +47,21 @@ actor CalendarSyncCoordinator {
 
     /// Background-task hook — runs immediately (no debounce). Returns when done.
     func syncForBackgroundTask() async {
+        await syncImmediately(reason: "background")
+    }
+
+    /// Explicit user-initiated refresh (⌘R). Skips the debounce: a command the user
+    /// invoked should act now, not two seconds later, and must not be cancellable by
+    /// an unrelated store notification arriving in the meantime.
+    func syncNow() async {
+        await syncImmediately(reason: "manual refresh")
+    }
+
+    private func syncImmediately(reason: String) async {
         pendingSync?.cancel()
         pendingSync = nil
         await bridge.refreshSources()
-        await runSync(reason: "background")
+        await runSync(reason: reason)
     }
 
     /// Debounced sync — coalesces bursts of EKEventStoreChanged into one run.

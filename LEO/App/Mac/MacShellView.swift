@@ -6,6 +6,7 @@ struct MacShellView: View {
     @SceneStorage("leo.sidebar.section") private var sectionRaw: String = SidebarSection.today.rawValue
     @AppStorage("leo.inspector.visible") private var inspectorVisible: Bool = true
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
+    @State private var isRefreshing = false
 
     var body: some View {
         @Bindable var navBinding = nav
@@ -23,6 +24,22 @@ struct MacShellView: View {
             ToolbarItem(placement: .leoTopBarLeading) {
                 MacQuickAddView()
                     .frame(minWidth: 260, idealWidth: 360)
+            }
+            ToolbarItem(placement: .leoTopBarTrailing) {
+                Button {
+                    guard !isRefreshing else { return }
+                    isRefreshing = true
+                    NotificationCenter.default.post(name: .leoRefreshRequested, object: nil)
+                } label: {
+                    if isRefreshing {
+                        ProgressView().controlSize(.small)
+                    } else {
+                        Image(systemName: "arrow.clockwise")
+                    }
+                }
+                .disabled(isRefreshing)
+                .help("Refresh — pull the latest events and synced items (⌘R)")
+                .accessibilityLabel("Refresh")
             }
         }
         // Handle item actions from menu bar / keyboard shortcuts
@@ -69,6 +86,9 @@ struct MacShellView: View {
         .onReceive(NotificationCenter.default.publisher(for: .leoToggleInspector)) { _ in
             nav.inspectorVisible.toggle()
         }
+        .onReceive(NotificationCenter.default.publisher(for: .leoRefreshCompleted)) { _ in
+            isRefreshing = false
+        }
         #if DEBUG
         .onReceive(NotificationCenter.default.publisher(for: .leoOpenDebugMenu)) { _ in
             openDebugMenu()
@@ -93,4 +113,11 @@ extension Notification.Name {
     static let leoSnoozeSelected        = Notification.Name("leoSnoozeSelected")
     static let leoDeleteSelectedItem    = Notification.Name("leoDeleteSelectedItem")
     static let leoOpenDebugMenu         = Notification.Name("leoOpenDebugMenu")
+    /// User asked for fresh data (⌘R or the toolbar button). `.refreshable` is a
+    /// pull-down gesture and macOS has no pull-to-refresh, so the Mac needs an
+    /// explicit command.
+    static let leoRefreshRequested      = Notification.Name("leoRefreshRequested")
+    /// Posted by the refresh handler once the calendar + cloud sync finishes, so
+    /// the toolbar button's spinner reflects real completion rather than a guess.
+    static let leoRefreshCompleted      = Notification.Name("leoRefreshCompleted")
 }

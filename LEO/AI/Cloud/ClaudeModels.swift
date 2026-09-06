@@ -2,9 +2,13 @@ import Foundation
 
 // MARK: - Model
 
+/// Real, current Anthropic model IDs — kept identical to
+/// apps/web/src/ai/models.ts's `ClaudeModel`, which already went through this
+/// same update (its own comment used to flag these Swift constants as "one
+/// generation behind"; that's fixed now, on both sides).
 public enum ClaudeModel: String, Sendable, Codable {
-    case opus47   = "claude-opus-4-7"
-    case sonnet46 = "claude-sonnet-4-6"
+    case opus47   = "claude-opus-4-8"
+    case sonnet46 = "claude-sonnet-5"
     case haiku45  = "claude-haiku-4-5-20251001"
 }
 
@@ -65,6 +69,31 @@ public struct ImageBlock: Codable, Sendable {
     }
 }
 
+/// PDF (or other supported document) attachment — Claude reads it natively
+/// (text, tables, layout, embedded images), no client-side extraction needed.
+/// Mirrors apps/web/src/ai/models.ts's `document` ContentBlock, which already
+/// has this working; native previously had no document type at all.
+public struct DocumentBlock: Codable, Sendable {
+    public let type: String       // "document"
+    public let source: DocumentSource
+
+    public init(pdfData: Data) {
+        self.type = "document"
+        self.source = DocumentSource(type: "base64", mediaType: "application/pdf", data: pdfData.base64EncodedString())
+    }
+
+    public struct DocumentSource: Codable, Sendable {
+        public let type: String         // "base64"
+        public let mediaType: String    // "application/pdf"
+        public let data: String         // base64 string
+
+        enum CodingKeys: String, CodingKey {
+            case type, data
+            case mediaType = "media_type"
+        }
+    }
+}
+
 public struct ToolResultBlock: Codable, Sendable {
     public let type: String       // "tool_result"
     public let toolUseId: String
@@ -89,6 +118,7 @@ public struct ToolResultBlock: Codable, Sendable {
 public enum ContentBlock: Sendable {
     case text(TextBlock)
     case image(ImageBlock)
+    case document(DocumentBlock)
     case toolUse(ToolUseBlock)
     case toolResult(ToolResultBlock)
 }
@@ -98,6 +128,7 @@ extension ContentBlock: Encodable {
         switch self {
         case .text(let b):       try b.encode(to: encoder)
         case .image(let b):      try b.encode(to: encoder)
+        case .document(let b):   try b.encode(to: encoder)
         case .toolUse(let b):    try b.encode(to: encoder)
         case .toolResult(let b): try b.encode(to: encoder)
         }
@@ -110,6 +141,7 @@ extension ContentBlock: Decodable {
         let type = try container.decode(String.self, forKey: .type)
         switch type {
         case "text":        self = .text(try TextBlock(from: decoder))
+        case "document":    self = .document(try DocumentBlock(from: decoder))
         case "image":       self = .image(try ImageBlock(from: decoder))
         case "tool_use":    self = .toolUse(try ToolUseBlock(from: decoder))
         case "tool_result": self = .toolResult(try ToolResultBlock(from: decoder))

@@ -1,0 +1,69 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+@theme {
+  --color-background: var(--leo-background);
+  --color-surface: var(--leo-surface);
+  --color-surface-elevated: var(--leo-surface-elevated);
+  --color-accent: var(--leo-accent);
+  --color-accent-muted: var(--leo-accent-muted);
+  --color-text-primary: var(--leo-text-primary);
+  --color-text-secondary: var(--leo-text-secondary);
+  --color-divider: var(--leo-divider);
+  --color-success: var(--leo-success);
+  --color-warning: var(--leo-warning);
+  --color-danger: var(--leo-danger);
+
+  --radius-leo-sm: var(--leo-radius-sm);
+  --radius-leo-md: var(--leo-radius-md);
+  --radius-leo-lg: var(--leo-radius-lg);
+  --radius-leo-pill: var(--leo-radius-pill);
+
+  /* shadcn/ui component tokens — aliased onto the LEO palette above so
+     generated components (button/input/select/...) stay visually consistent
+     with the rest of the app instead of shadcn's default zinc theme. */
+  --color-foreground: var(--leo-text-primary);
+  --color-primary: var(--leo-accent);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--leo-surface-elevated);
+  --color-secondary-foreground: var(--leo-text-primary);
+  --color-muted: var(--leo-surface-elevated);
+  --color-muted-foreground: var(--leo-text-secondary);
+  --color-destructive: var(--leo-danger);
+  --color-border: var(--leo-divider);
+  --color-input: var(--leo-divider);
+  --color-ring: var(--leo-accent);
+  --color-popover: var(--leo-surface);
+  --color-popover-foreground: var(--leo-text-primary);
+  --radius-md: var(--leo-radius-sm);
+  --radius-lg: var(--leo-radius-md);
+}
+
+@layer base {
+  html,
+  body {
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    font-family:
+      -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    /* Stops the whole-page rubber-band bounce (and the pull-to-refresh
+       gesture it triggers in standalone/PWA mode) from leaking past
+       AppShell's own scroll containers — one of the more obvious "this is
+       just a website" tells on mobile Safari/Chrome if left default. */
+    overscroll-behavior-y: contain;
+  }
+
+  /* Buttons/links get the same tap treatment a native control would: no
+     gray flash on press, no text-selection caret, no iOS long-press callout
+     (Copy/Share popup) — all defaults browsers apply to plain HTML, none of
+     which read as "app" on a touch screen. */
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+  button {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
