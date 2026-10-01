@@ -4,7 +4,6 @@
 
 **The calendar that thinks. The to-do list that talks back.**
 
-[![CI](https://github.com/cureius/LEO/actions/workflows/ci.yml/badge.svg)](https://github.com/cureius/LEO/actions/workflows/ci.yml)
 ![Swift](https://img.shields.io/badge/Swift-SwiftUI%20·%20SwiftData-F05138?logo=swift&logoColor=white)
 ![iOS](https://img.shields.io/badge/iOS-17%2B-000000?logo=apple&logoColor=white)
 ![React](https://img.shields.io/badge/Web-React%20·%20Vite%20·%20Tauri-61DAFB?logo=react&logoColor=black)
@@ -104,7 +103,7 @@ Database schema and migrations live in `supabase/migrations/`. Point the app at 
 
 ## Quality
 
-- **CI** on every push: SwiftFormat lint, SwiftLint in `--strict` mode, build and tests.
+- **Linting** with SwiftFormat and SwiftLint (`.swiftformat`, `.swiftlint.yml`) — run locally before committing.
 - **Tests** across the native app (`LEOTests`, `LEOUITests`, `LEOMacTests`) and the web app.
 - Conventions for humans and AI coding agents are documented in [`AGENTS.md`](AGENTS.md).
 
